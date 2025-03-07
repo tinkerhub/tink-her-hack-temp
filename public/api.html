@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CleanAura - Restroom Locator</title>
+    <style>
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+        }
+        #sidebar {
+            width: 30%;
+            overflow-y: auto;
+            background-color: rgb(230, 143, 179) ;
+            padding: 15px;
+            border-right: 2px solid #ddd;
+        }
+        #map-container {
+            width: 70%;
+            height: 100vh;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        .pharmacy-item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .pharmacy-item:hover {
+            background: #e9ecef;
+        }
+        #reviews-container {
+            padding: 15px;
+            background-color:rgb(230, 143, 179) ;
+        }
+        .review {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: -10px;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            padding: 8px 12px;
+            margin-top: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:not(:last-child) {
+            margin-right: 5px;
+        }
+    </style>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoNmnnEx7xjqTK56dqsim520Gcli0Qnxo",
+            authDomain: "cleanaura-a316e.firebaseapp.com",
+            projectId: "cleanaura-a316e",
+            storageBucket: "cleanaura-a316e.firebasestorage.app",
+            messagingSenderId: "880301590533",
+            appId: "1:880301590533:web:130c15ce02ace82322346c",
+            measurementId: "G-TW16HCJGTT"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        </script>
+        </head>
+        <body>
+        <div id="sidebar">
+            <h2>Nearby Public Restrooms</h2>
+            <div id="restroom-list"></div>
+        </div>
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+        <div id="reviews-container">
+            <h3>Reviews</h3>
+            <div id="reviews-content">
+
+                <!-- Reviews will be displayed here -->
+            </div>
+        </div>
+        <div id="reviewModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeModal">&times;</span>
+                <h2>Drop a Review</h2>
+                <input type="hidden" id="placeIdInput">
+                <input type="text" id="userNameInput" placeholder="Your Name" required>
+                <input type="number" id="ratingInput" placeholder="Rating (1-5)" min="1" max="5" required>
+                <textarea id="reviewTextInput" placeholder="Write your review here..." required></textarea>
+                <button onclick="submitReview()">Submit Review</button>
+            </div>
+        </div>
+    
+    <script>
+        let map, placesService;
+
+        function initMap() {
+            console.log("Initializing Google Maps...");
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 14,
+                mapId: "52863dfa0c0bf5cb" // Replace with your actual Map ID
+            });
+
+            placesService = new google.maps.places.PlacesService(map);
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const userLocation = new google.maps.LatLng(
+                        position.coords.latitude,
+                        position.coords.longitude
+                    );
+
+                    map.setCenter(userLocation);
+
+                    // Add User Location Marker (Blue Dot)
+                    new google.maps.Marker({
+                        position: userLocation,
+                        map,
+                        title: "You are here",
+                        icon: {
+                            url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                            scaledSize: new google.maps.Size(40, 40)
+                        }
+                    });
+
+                    // Call nearbySearch after user location is set
+                    nearbySearch(userLocation);
+                }, (error) => {
+                    console.error("Error getting location:", error);
+                    alert("Please enable location services.");
+                });
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+                alert("Geolocation is not supported by your browser.");
+            }
+        }
+
+        function navigateTo(lat, lng) {
+            const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
+            window.open(url, "_blank");
+        }
+        function seeReviews(placeId) {
+            console.log("Fetching reviews for Place_Id:", placeId);
+
+            const reviewsContainer = document.getElementById("reviews-content");
+            reviewsContainer.innerHTML = ""; // Clear previous reviews
+
+            // Fetch reviews from Firestore based on Place_Id
+            db.collection("reviews_restrooms").where("Place_Id", "==", placeId).get()
+                .then(querySnapshot => {
+                    if (querySnapshot.empty) {
+                        reviewsContainer.innerHTML = "<p>No reviews available for this location.</p>";
+                    } else {
+                        querySnapshot.forEach(doc => {
+                            const review = doc.data();
+                            const reviewElement = document.createElement("div");
+                            reviewElement.classList.add("review");
+                            reviewElement.innerHTML = `
+                                <p><strong>${review.userName}</strong>: ${review.text}</p>
+                                <p>Rating: ${review.rating}</p>
+                            `;
+                            reviewsContainer.appendChild(reviewElement);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching reviews:", error);
+                });
+        }
+
+        function dropReview(placeId) {
+            document.getElementById('placeIdInput').value = placeId;
+            document.getElementById('reviewModal').style.display = 'block';
+        }
+
+        function submitReview() {
+            const placeId = document.getElementById('placeIdInput').value;
+            const userName = document.getElementById('userNameInput').value;
+            const rating = document.getElementById('ratingInput').value;
+            const text = document.getElementById('reviewTextInput').value;
+
+            if (userName && rating && text) {
+                db.collection("reviews_restrooms").add({
+                    Place_Id: placeId,
+                    userName: userName,
+                    rating: parseInt(rating),
+                    text: text
+                }).then(() => {
+                    alert("Review submitted successfully!");
+                    // Close modal and clear fields
+                    document.getElementById('reviewModal').style.display = 'none';
+                    document.getElementById('userNameInput').value = '';
+                    document.getElementById('ratingInput').value = '';
+                    document.getElementById('reviewTextInput').value = '';
+                }).catch((error) => {
+                    console.error("Error submitting review:", error);
+                    alert("Error submitting review. Please try again.");
+                });
+            } else {
+                alert("Please fill out all fields.");
+            }
+        }
+
+        function nearbySearch(location) {
+            if (!placesService) {
+                console.error("PlacesService is not initialized yet.");
+                return;
+            }
+
+            const request = {
+                location: location,
+                radius: 2000,
+                keyword: "public restroom OR toilet OR washroom",
+            };
+
+            placesService.nearbySearch(request, (results, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    console.log("Found results:", results);
+                    const listContainer = document.getElementById("restroom-list");
+                    listContainer.innerHTML = "";
+
+                    results.forEach((place, index) => {
+                        if (!place.geometry || !place.geometry.location) return;
+
+                        // Add marker for each restroom
+                        new google.maps.Marker({
+                            map,
+                            position: place.geometry.location,
+                            title: place.name
+                        });
+
+                        // Add restroom to the sidebar list with buttons
+                        const restroomItem = document.createElement("div");
+                        restroomItem.classList.add("restroom-item");
+
+                        restroomItem.innerHTML = `
+                            <h3>${index + 1}. ${place.name}</h3>
+                            <p>${place.vicinity || "Location unavailable"}</p>
+                            <button onclick="navigateTo(${place.geometry.location.lat()}, ${place.geometry.location.lng()})">Navigate</button>
+                            <button onclick="seeReviews('${place.place_id}')">See Reviews</button>
+                            <button onclick="dropReview('${place.place_id}')">Drop a Review</button>
+
+                        `;
+
+                        listContainer.appendChild(restroomItem);
+                    });
+                } else {
+                    console.error(`Nearby search failed: ${status}`);
+                    alert(`No restrooms found. Status: ${status}`);
+                }
+            });
+        }
+        // Modal functionality
+        const modal = document.getElementById("reviewModal");
+        const closeModal = document.getElementById("closeModal");
+
+        // Close the modal when the user clicks the close button
+        closeModal.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Close the modal when the user clicks outside of it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function loadGoogleMapsAPI() {
+            const script = document.createElement("script");
+            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD9kP_yrJqP5M4mlxtJSaCU0XseczptmOc&libraries=places&callback=initMap";
+            script.async = true;
+            script.defer = true;
+            script.onerror = () => console.error("Failed to load Google Maps API");
+            document.head.appendChild(script);
+        }
+
+        loadGoogleMapsAPI();
+    </script>
+</body>
+</html>

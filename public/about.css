@@ -1,0 +1,98 @@
+body {
+    background-color: #E1E6E1;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    flex-direction: column;
+  }
+  
+  .horizontalbar {
+    height: 120vh;
+    width: 6vw;
+    background-color: #B66680;
+    position: absolute;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .verticalbar {
+    height: 100px;
+    width: 100%;
+    background-color: rgba(170, 128, 136, 0.81);
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .image1 {
+    height: 100px;
+    width: 90px;
+    position: absolute;
+    left: 0;
+  }
+  
+  .welcomeuser {
+    display: flex;
+    align-items: center;
+    font-size: 50px;
+    font-family: "italiana";
+    stroke-width: 1px;
+    justify-content: center;
+  }
+  
+   .heading {
+    position: absolute;
+    color: #000;
+    text-align: center;
+    -webkit-text-stroke-width: 1;
+    -webkit-text-stroke-color: #000;
+    font-family: "italiana";
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    top: 30px;
+  }
+  
+  
+  
+  .heading {
+    left: 150px;
+    font-weight: 500;
+  }
+  
+  .maingrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .row1, .row2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .aboutcontent {
+    font-family: "italiana";
+    font-size: 28px;
+    background-color: #aa8088bd;
+    padding: 20px;
+    border-radius: 30px;
+    width: 80%;
+    margin: 20px;
+    text-align: center;
+  }

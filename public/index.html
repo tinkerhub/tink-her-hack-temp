@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>CLEAN AURA</title>
+   <link rel="stylesheet" href="style.css"> 
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Italiana&display=swap" rel="stylesheet">
+<script defer src="/__/firebase/11.2.0/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/11.2.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/11.2.0/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/11.2.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/11.2.0/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/11.2.0/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/11.2.0/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/11.2.0/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/11.2.0/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/11.2.0/firebase-performance-compat.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+  </head>
+  
+    <body>
+      
+
+      <img class="image" src="./image.jpg">
+      <div class="pinkbg"> <div class="logi">
+        
+        <input class="user" id="email" placeholder="Email" type="email">
+        <input class="user" id="password" placeholder="Password" type="password">
+        <button class="loginbutton" id="login-btn"  onclick ="login()">LOGIN</button>
+        <button class="loginbutton" id="signup-btn" onclick ="signUp()">SIGN UP</button>
+        <button class ="loginbutton" id="google-login-btn" onclick="googleLogin()">
+          LOGIN WITH GOOGLE
+        </button>
+        </div></div>
+      <div class="cleanaura">CLEAN AURA </div>
+      <div class="motto">WHERE COMFORT MEETS CONVENIENCE</div>
+  
+       
+      <script src="app.js">
+      </script>
+
+
+
+  </body>
+
+</html>

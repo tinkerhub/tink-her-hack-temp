@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Review Page - CLEAN AURA</title>
+  <link rel="stylesheet" href="reviewstyle.css">
+  <!-- Include the Italiana font -->
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- For responsiveness -->
+</head>
+<body>
+  <div class="heading">CLEAN AURA</div>
+  <div class="review">Leave a Review</div>
+  <div class="textbox">
+    <form id="reviewForm">
+      <input type="text" id="nameInput" class="user" placeholder="Your Name" required>
+      <input type="number" id="ratingInput" class="user" placeholder="Rating (1-5)" min="1" max="5" required>
+      <textarea id="reviewTextInput" class="user" placeholder="Write your review here..." required></textarea>
+      <button type="submit" class="submit-button">Submit Review</button>
+    </form>
+  </div>
+
+  <!-- Add the JavaScript file at the end of body -->
+  <script src="review.js"></script>
+</body>
+</html>

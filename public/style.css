@@ -1,0 +1,285 @@
+body{
+    background-color:#E1E6E1;
+    height: 100vh;
+    width:100vw;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    overflow: hidden;
+   
+}
+
+.image
+{
+    /* width: 200; */
+    height: 150px;
+    width: fit-content;
+    position: absolute;
+}
+
+.pinkbg{
+    height: 120vh;
+    width: 50vw;
+    background-color: #B66680;
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cleanaura{
+    position:absolute;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    font-size: 90px;
+    left: 90px;
+    font-family:"italiana";
+    
+}
+
+.motto{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    top: 50px;
+    left: 102px;
+    color: #000;
+    text-align: center;
+    justify-content: center;
+    -webkit-text-stroke-color: #000;
+    font-family: Italiana;
+    font-size: 28px;
+    stroke-width: 5 ;
+    font-weight: bolder;
+}
+
+.logi {
+    /* Remove fixed width and height */
+    /* height: 450px; */
+    /* width: 400px; */
+
+    position: absolute;
+    display: flex;
+    background-color: rgba(217, 217, 217, 0.40); 
+    right: 10%;
+    top: 20%;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 30px;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px; /* Add padding for inner spacing */
+    width: 80%; /* Set width as a percentage */
+    max-width: 400px; /* Optional: Set a maximum width */
+}
+
+
+.loginbutton:active{
+background-color: #1e1e1ea0;
+}
+
+.loginbutton:hover{
+    border: 1px solid rgb(21, 20, 21);
+    width: 90%;
+}
+
+.sign{
+   margin-top: 10px;
+}
+
+
+/* Styling for the .logi box */
+.logi {
+    position: absolute;
+    display: flex;
+    background-color: rgba(217, 217, 217, 0.40);
+    right: 15%;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 30px;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px;            /* Increased padding for more inner space */
+    width: 60%;               /* Increased width percentage */
+    max-width: 600px;         /* Increased maximum width to make the box bigger */
+    box-sizing: border-box;   /* Ensure padding doesn't exceed the width */
+}
+
+/* Styling for the input fields */
+.user {
+    height: 60px;             /* Increased height */
+    width: 90%;               /* Adjusted width */
+    border: 1px solid white;
+    border-radius: 30px;
+    background-color: rgba(251, 247, 247, 0.523);
+    margin-bottom: 25px;      /* Increased margin for spacing */
+    font-size: 18px;          /* Increased font size */
+    text-align: center;
+    padding: 0 20px;          /* Added horizontal padding */
+    box-sizing: border-box;
+}
+
+
+
+/* Styling for the login button */
+.loginbutton {
+    height: 60px;             /* Increased height */
+    width: 90%;               /* Adjusted width */
+    border: 1px solid white;
+    border-radius: 30px;
+    background-color: rgba(30, 30, 30, 0.42);
+    font-family: "Italiana", serif;
+    font-weight: bold;
+    margin-top: 20px;         /* Increased margin-top */
+    font-size: 20px;          /* Increased font size */
+    text-align: center;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.loginbutton1{
+    height: 60px;             /* Increased height */
+    width: 90%;               /* Adjusted width */
+    border: 1px solid white;
+    border-radius: 30px;
+    background-color: rgba(30, 30, 30, 0.42);
+    font-family: "Italiana", serif;
+    font-weight: bold;
+    margin-top: 20px;         /* Increased margin-top */
+    font-size: 20px;          /* Increased font size */
+    text-align: center;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.signup{
+    height: 60px;             /* Increased height */
+    width: 90%;               /* Adjusted width */
+    border: 1px solid white;
+    border-radius: 30px;
+    background-color: rgba(30, 30, 30, 0.42);
+    font-family: "Italiana", serif;
+    font-weight: bold;
+    margin-top: 20px;         /* Increased margin-top */
+    font-size: 20px;          /* Increased font size */
+    text-align: center;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.loginbutton:hover {
+    border-color: rgb(21, 20, 21);
+    width: 92%;               /* Slight increase on hover */
+}
+
+.loginbutton:active {
+    background-color: rgba(30, 30, 30, 0.63);
+}
+
+.loginbutton1:hover {
+    border-color: rgb(21, 20, 21);
+    width: 92%;               /* Slight increase on hover */
+}
+
+.loginbutton1:active {
+    background-color: rgba(30, 30, 30, 0.63);
+}
+
+
+.signup:hover {
+    border-color: rgb(21, 20, 21);
+    width: 92%;               /* Slight increase on hover */
+}
+
+.signup:active {
+    background-color: rgba(30, 30, 30, 0.63);
+}
+
+
+
+.sign {
+    margin-top: 20px;         /* Added margin-top for spacing */
+    font-size: 16px;
+}
+
+/* Responsive Design */
+
+/* Tablet devices */
+@media (max-width: 768px) {
+    .logi {
+        right: 5%;
+        top: 10%;
+        width: 90%;
+        padding: 30px;
+    }
+    .user, .loginbutton {
+        width: 95%;
+        font-size: 16px;
+        height: 55px;
+    }
+    .welcome {
+        font-size: 40px;
+        margin-bottom: 25px;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+    .logi {
+        right: 2.5%;
+        top: 5%;
+        width: 95%;
+        padding: 20px;
+    }
+    .user, .loginbutton {
+        width: 100%;
+        font-size: 14px;
+        height: 50px;
+    }
+    .welcome {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+}
+@media(max-height:850px){
+    .verticalbar{
+        height: 70px;
+    }
+    .maingrid{
+        grid-template-rows: 100px 600px;
+        top: 120px;
+    }
+    .welcomeuser{
+        font-size: 35px;
+    }
+    .home{
+        font-size: 25px;
+    }
+    
+    
+    .about{
+        font-size: 25px;
+    }
+    
+    .contact{
+        font-size: 25px;
+    }
+    
+    .heading{
+        font-size: 25px;
+    }
+    .box1{
+        height: 300px;
+    }
+    .box2{
+        height: 300px;
+    }
+    .box3{
+        height: 300px;
+    }
+}
+
+
