@@ -1,0 +1,138 @@
+#include <Servo.h>
+
+Servo myservo;  // create Servo object to control a servo
+
+int pos = 0;    // variable to store the servo position
+#define LDR_SENSOR 11
+#define POST_LED 13
+#define PIR_SENSOR 9
+#define IR_DOOR_TRIGGER 2 
+#define ROOM_LED 12
+#define IR_STEP 8
+#define TRIG_PIN  A0  // Ultrasonic Sensor Trigger Pin
+#define ECHO_PIN  A1  // Ultrasonic Sensor Echo Pin
+#define BUZZER    A2  // Buzzer for Parking Sensor
+#define GAS_SENSOR A3 // MQ-2 Gas Sensor Pin
+
+int stepLeds[] = {6, 7, 5, 4, 3}; // Step LEDs from bottom to top
+int ledCount = sizeof(stepLeds) / sizeof(stepLeds[0]);  
+
+void setup() {
+  Serial.begin(9600);
+  myservo.attach(10);   // attaches the servo on pin 10 to the Servo object
+
+  pinMode(LDR_SENSOR, INPUT);
+  pinMode(PIR_SENSOR, INPUT); 
+  pinMode(IR_STEP, INPUT);
+  pinMode(IR_DOOR_TRIGGER, INPUT);
+  pinMode(POST_LED, OUTPUT);
+  pinMode(ROOM_LED, OUTPUT);
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(BUZZER, OUTPUT);
+  pinMode(GAS_SENSOR, INPUT);
+
+  digitalWrite(POST_LED, LOW);
+  digitalWrite(ROOM_LED, LOW);  
+  digitalWrite(BUZZER, LOW);
+
+  // Initialize Step LEDs
+  for (int i = 0; i < ledCount; i++) {
+    pinMode(stepLeds[i], OUTPUT);
+    digitalWrite(stepLeds[i], LOW);
+  }
+  
+  myservo.write(0);
+}
+
+void loop() {
+  // Door Automation
+  if (digitalRead(IR_DOOR_TRIGGER) == LOW) { 
+    Serial.println("Opening Door...");
+    myservo.write(90); // Open door
+    delay(5000); // Keep door open for 5 seconds
+    myservo.write(0); // Close door
+    Serial.println("Closing Door...");
+  }
+
+  // Step Lighting
+  if (digitalRead(IR_STEP) == LOW) { 
+    Serial.println("Step Lighting Activated");
+    
+    // Sequentially turn on LEDs
+    for (int i = 0; i < ledCount; i++) {
+      digitalWrite(stepLeds[i], HIGH);
+      delay(300);
+    }
+    
+    delay(3000); // Keep LEDs on for 3 seconds
+    
+    // Sequentially turn off LEDs
+    for (int i = ledCount - 1; i >= 0; i--) {
+      digitalWrite(stepLeds[i], LOW);
+      delay(300);
+    }
+  } 
+
+  // Room Lighting with PIR Sensor
+  if (digitalRead(PIR_SENSOR) == HIGH) { 
+    Serial.println("Room Motion Detected: Turning ON Light");
+    digitalWrite(ROOM_LED, HIGH);
+  } else {
+    digitalWrite(ROOM_LED, LOW);
+  }
+
+  // LDR-based Post Light Control
+  int ldrValue = digitalRead(LDR_SENSOR);
+  Serial.print("LDR Value: ");
+  Serial.println(ldrValue);
+
+  if (ldrValue != 0 ) { 
+    Serial.println("Night Detected: Turning ON Post Light");
+    digitalWrite(POST_LED, HIGH);
+  } else {
+    Serial.println("Daytime: Turning OFF Post Light");
+    digitalWrite(POST_LED, LOW);
+  }
+
+  // Parking Sensor using Ultrasonic Sensor and Buzzer
+  long duration;
+  int distance;
+
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  duration = pulseIn(ECHO_PIN, HIGH);
+  distance = duration * 0.034 / 2; // Convert to cm
+
+  Serial.print("Parking Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  if (distance > 0 && distance <= 10) {
+    tone(BUZZER, 1000); // Fast beep
+  } else if (distance > 10 && distance <= 20) {
+    tone(BUZZER, 500); // Medium beep
+  } else if (distance > 20 && distance <= 30) {
+    tone(BUZZER, 250); // Slow beep
+  } else {
+    noTone(BUZZER);
+  }
+
+  // Gas Sensor Detection
+  int gasValue = analogRead(GAS_SENSOR);
+  Serial.print("Gas Level: ");
+  Serial.println(gasValue);
+
+  if (gasValue > 400) {  // Adjust threshold as needed
+    Serial.println("Gas Leakage Detected! Please check immediately.");
+    digitalWrite(BUZZER, HIGH);
+  } else {
+    digitalWrite(BUZZER, LOW);
+  }
+
+  delay(500);
+}
