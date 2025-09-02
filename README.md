@@ -1,99 +1,78 @@
-# [Project Name] 🎯
+# MYMEDPAL🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: TriCyphers
 
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Member 1: Noana Mary Charles - Rajagiri School of Engineering and Technology
+- Member 2: Aparna Shyam - Rajagiri School of Engineering and Technology
+- Member 3: Anna Olivia Shelly - Rajagiri School of Engineering and Technology
 
 ### Hosted Project Link
-[mention your project hosted project link here]
+https://drive.google.com/file/d/1DApdUeEGeDtXoXc5qpDHmagzJPdLLayA/view?usp=sharing
 
 ### Project Description
-[2-3 lines about what your project does]
+This medication management app helps elderly individuals track and manage their medication schedules by sending timely reminders and logging doses taken. It also offers caregiver support, integrates with health data, and includes accessible features to ensure ease of use for seniors.
 
 ### The Problem statement
-[What ridiculous problem are you solving?]
+Many elderly people forget to take their medications on time due to memory issues and complicated schedules. This can cause health problems and more hospital visits. We need a solution implemented using technology that provides caregiver support and healthcare methods to help them manage their medications better.
 
 ### The Solution
-[How are you solving it? Keep it fun!]
+An app to help elderly people manage their medications can be a game-changer in improving their health outcomes. We created an app called MyMedPal which provides all such necessary reminders and details regarding the dosage, drug administration, etc of the medicines. Such an app can become an essential tool in managing the health of elderly people, allowing them to maintain their independence while ensuring proper medication adherence.
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
-
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+- Dart programming language ( Flutter )
 
 ### Implementation
 For Software:
-# Installation
-[commands]
+1. flutter
+2. vs code
 
 # Run
-[commands]
+flutter run
 
 ### Project Documentation
-For Software:
+This Flutter project is designed to help elderly individuals manage their medication schedules by sending timely reminders and tracking doses taken. It aims to reduce the risk of missed medications, improve adherence, and provide peace of mind for caregivers. With user-friendly features such as medication logging, notifications, and caregiver support, the app enhances medication management and supports overall health. It combines Flutter's cross-platform capabilities to ensure accessibility and reliability on  Android devices.
 
-# Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+# Screenshots
+![Screenshot1]
+MAIN.DART
+![main](https://github.com/user-attachments/assets/f99711db-b7a5-4318-ac9d-505da63047a4)
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot2]
+HOME_PAGE.DART
+![home](https://github.com/user-attachments/assets/60a995a7-c323-4416-8671-a43429f170b2)
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot3]
+PROFILE_PAGE.DART
+![profile](https://github.com/user-attachments/assets/d7cebd92-0d01-4102-9b05-352c352a427f)
+
+![Screenshot4]
+MYMEDS_PAGE.DART
+![mymeds](https://github.com/user-attachments/assets/b7365f35-e15b-4200-8196-4fa59802721d)
+
+![Screenshot5]
+SCHEDULE_PAGE.DART
+![schedule](https://github.com/user-attachments/assets/63ff284d-3796-438f-bb2c-d0fb3d7fff5e)
+
+![Screenshot6]
+SETTINGS_PAGE.DART
+![settings](https://github.com/user-attachments/assets/3f7187e5-53de-4956-9beb-40e2e68c5013)
 
 # Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
-
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
+![mindmap](https://github.com/user-attachments/assets/d159ee97-13ca-4d72-8351-832204c3c70f)
 
 # Build Photos
-![Team](Add photo of your team here)
-
-
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
-
-### Project Demo
-# Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
-
-# Additional Demos
-[Add any extra demo materials/links]
+![group](https://github.com/user-attachments/assets/ffdd2a55-7d3b-4bd9-8ae5-a5f5552d61f7)
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- Noana Mary Charles: Front end creation
+- Aparna Shyam: Front end creation 
+- Anna Olivia Shelly: Idea Contribution
 
 ---
 Made with ❤️ at TinkerHub
