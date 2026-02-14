@@ -1,0 +1,39 @@
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, ;
+}
+
+body {
+    height: 100vh; display: flex; 
+    justify-content: center; align-items: center;
+    background: linear-gradient(135deg, #e7dc8f, #7fc9dd);
+}
+
+.login-container, .journal-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(54, 71, 102, 0.5);
+    text-align: center;
+}
+
+.journal-form textarea {
+    width: 100%; height: 150px;
+    padding: 15px; margin: 15px 0;
+    border: 1px solid #ccc; border-radius: 10px;
+    resize: none; outline: none; font-size: 16px;
+}
+
+.save-btn, .login-btn {
+    width: 100%; padding: 12px; border: none;
+    border-radius: 8px; color: white;
+    background: linear-gradient(135deg, #daa2db, #8fb1ec);
+    cursor: pointer; font-weight: bold; transition: 0.3s;
+}
+
+.save-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+.extra-links a {
+    display: inline-block; margin-top: 15px;
+    text-decoration: none; color: #0d2651; font-size: 14px;
+}

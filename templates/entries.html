@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Entries - MindEase</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="journal-container" style="width: 600px; max-height: 80vh; overflow-y: auto;">
+        <h2>Your Journal 📖</h2>
+        <p style="margin-bottom: 20px; color: #0a6c16;">{{ motivation }}</p>
+
+        <div class="entries-list" style="text-align: left;">
+            {% for entry in entries %}
+            <div style="background: #c5c1b9; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid #6a11cb;">
+                <p><small>{{ entry.mood | upper }}</small></p>
+                <p>{{ entry.text }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="extra-links">
+            <a href="/home">← Write New Entry</a>
+        </div>
+    </div>
+</body>
+</html>

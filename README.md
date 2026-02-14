@@ -2,27 +2,27 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# [MINDEASE] 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: [NOODLES]
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: [POOJITHA ANIL] - [GOVERNMENT ENGINEERING COLLEGE THRISSUR]
+- Member 2: [PRATHYUSHA S] - [GOVERNMENT ENGINEERING COLLEGE THRISSUR]
 
 ### Hosted Project Link
-[mention your project hosted link here]
+https://mindease-y8pm.onrender.com
 
 ### Project Description
-[2-3 lines about what your project does]
+[MindEase is a Flask-powered journaling app that helps users monitor their mental health. Unlike a plain notebook, it detects your mood as you write and offers immediate motivational support based on how you’re feeling today.]
 
 ### The Problem statement
-[What problem are you solving?]
+[Many students struggle to express emotions.Existing journaling apps feel overwhelming.We built a minimal,emotionally safe digital journal that makes reflection simple and accessible.]
 
 ### The Solution
-[How are you solving it?]
+[We solved the problem of emotional tracking by building a Flask-based web application that uses state-management to provide real-time motivational support. By combining a Mood-First data entry system with a Dockerized backend, we created a reliable, empathetic tool for daily mental health management.]
 
 ---
 
@@ -31,25 +31,20 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
-
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+- Languages used: [python,HTML5,CSS3,YAML,Markdown]
+- Frameworks used: [Flask,Jinja2]
+- Libraries used: [json,os,gunicorn]
+- Tools used: [VS Code,Git&Github,Docker,ender.com]
 
 ---
 
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+- Feature 1: [Secure user authentication.]
+- Feature 2: [Mood-First Journaling Interface]
+- Feature 3: [Dynamic Motivational Feedback]
+- Feature 4: [Persistent entry history]
 
 ---
 
@@ -59,21 +54,15 @@ List the key features of your project:
 
 #### Installation
 ```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
+[pip install -r requirements.txt]
 ```
 
 #### Run
 ```bash
-[Run commands - e.g., npm start, python app.py]
+[Run commands - python app.py]
 ```
 
-### For Hardware:
 
-#### Components Required
-[List all components needed with specifications]
-
-#### Circuit Setup
-[Explain how to set up the circuit]
 
 ---
 
@@ -83,40 +72,59 @@ List the key features of your project:
 
 #### Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![![login_page](image.png)]
+This screenshot shows the secure entry point of the application, featuring a clean, responsive login interface with custom CSS gradients.
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![![journal_entry](image-1.png)]
+The core journaling interface where users select their current mood before documenting their thoughts, enabling structured emotional tracking.
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![![vscode_setup](image-5.png)]
+The backend development environment in VS Code, showing the Flask server running successfully and the organized project directory structure.
 
 #### Diagrams
 
 **System Architecture:**
 
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
+![[ User Browser ] 
+              |
+      (HTTP POST / GET)
+              |
+              ▼
+    [ Docker Container ] <---- (Deployed on Render.com)
+     _______________________
+    |  [ Flask Backend ]    |
+    |       (app.py)        |
+    |__________|____________|
+               |
+      (Read/Write JSON)
+               |
+               ▼
+      [ entries.json ] 
+    (Data Persistence)](docs/architecture.png)
+Client Layer: The user interacts with a responsive frontend built with HTML5 and CSS3, styled with a focus on mental wellness.
+
+Server Layer: A Flask (Python) backend handles the logic, including user session management and mood-based conditional routing.
+
+Data Layer: Journal entries and mood metadata are persisted in a JSON file system for lightweight, efficient data handling.
+
+Infrastructure: The entire application is containerized using Docker and deployed via Render, ensuring a consistent environment from development to production
 
 **Application Workflow:**
 
 ![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
+Authentication: The user logs in via the centered login card.
+
+Mood Selection: Before journaling, the user selects their current emotional state (Happy, Neutral, or Sad).
+
+Data Submission: The journal entry and mood are sent to the /add route via a POST request.
+
+Persistence & Analysis: The backend appends the entry to entries.json and analyzes the last_mood value.
+
+Motivational Feedback: The system redirects the user to the entries page, where a dynamic Jinja2 template displays a personalized motivational message based on the analyzed mood.
 
 ---
 
-### For Hardware:
 
-#### Schematic & Circuit
-
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-#### Build Photos
 
 ![Team](Add photo of your team here)
 
@@ -180,7 +188,27 @@ List the key features of your project:
 #### App Flow Diagram
 
 ![App Flow](docs/app-flow.png)
-*Explain the user flow through your application*
+1. Authentication Stage
+User Action: The user arrives at the landing page and enters their username into the login card.
+
+Backend Process: Flask captures the username and stores it in a session variable, allowing the app to "remember" the user as they move between pages.
+
+2. Data Entry & Mood Selection
+User Action: On the journal page, the user first selects their current emotion (Happy, Neutral, or Sad) from the dropdown and then writes their thoughts in the text area.
+
+Layout Benefit: By placing the mood picker first, the app helps the user identify their emotional state before they begin the descriptive writing process.
+
+3. Processing & Persistence
+User Action: The user clicks the "Save Entry" button.
+
+Backend Process: The form data is sent to the /add route, where the Python script appends the new entry (including the user's name, text, and mood) to the entries.json file.
+
+4. Dynamic Feedback & History
+User Action: The user is automatically redirected to the Entries History page.
+
+Backend Process: The app runs a conditional check on the most recent mood saved.
+
+Outcome: If the last mood was "Sad," the user sees a supportive message; if "Happy," they receive an encouraging celebration of their mood.
 
 #### Installation Guide
 
@@ -215,52 +243,6 @@ xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
 
 ---
 
-### For Hardware Projects:
-
-#### Bill of Materials (BOM)
-
-| Component | Quantity | Specifications | Price | Link/Source |
-|-----------|----------|----------------|-------|-------------|
-| Arduino Uno | 1 | ATmega328P, 16MHz | ₹450 | [Link] |
-| LED | 5 | Red, 5mm, 20mA | ₹5 each | [Link] |
-| Resistor | 5 | 220Ω, 1/4W | ₹1 each | [Link] |
-| Breadboard | 1 | 830 points | ₹100 | [Link] |
-| Jumper Wires | 20 | Male-to-Male | ₹50 | [Link] |
-| [Add more...] | | | | |
-
-**Total Estimated Cost:** ₹[Amount]
-
-#### Assembly Instructions
-
-**Step 1: Prepare Components**
-1. Gather all components listed in the BOM
-2. Check component specifications
-3. Prepare your workspace
-![Step 1](images/assembly-step1.jpg)
-*Caption: All components laid out*
-
-**Step 2: Build the Power Supply**
-1. Connect the power rails on the breadboard
-2. Connect Arduino 5V to breadboard positive rail
-3. Connect Arduino GND to breadboard negative rail
-![Step 2](images/assembly-step2.jpg)
-*Caption: Power connections completed*
-
-**Step 3: Add Components**
-1. Place LEDs on breadboard
-2. Connect resistors in series with LEDs
-3. Connect LED cathodes to GND
-4. Connect LED anodes to Arduino digital pins (2-6)
-![Step 3](images/assembly-step3.jpg)
-*Caption: LED circuit assembled*
-
-**Step 4: [Continue for all steps...]**
-
-**Final Assembly:**
-![Final Build](images/final-build.jpg)
-*Caption: Completed project ready for testing*
-
----
 
 ### For Scripts/CLI Tools:
 
@@ -408,7 +390,7 @@ If you used AI tools during development, document them here for transparency:
 
 ## License
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [] License - see the [LICENSE](LICENSE) file for details.
 
 **Common License Options:**
 - MIT License (Permissive, widely used)

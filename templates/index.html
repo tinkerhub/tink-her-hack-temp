@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Journal - MindEase</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="journal-container">
+        <h2>Welcome, {{ session['user'] }}! ✍️</h2>
+        
+        <form class="journal-form" method="POST" action="/add">
+           
+            
+            <div class="input-group">
+                <label>How is your mood?</label>
+                <select name="mood" style="width: 100%; padding: 10px; border-radius: 8px; margin-top: 5px;">
+                    <option value="happy">Happy 😊</option>
+                    <option value="neutral">Neutral 😐</option>
+                    <option value="sad">Sad 😔</option>
+                </select>
+            </div>
+            <textarea name="entry" placeholder="Start typing your thoughts here..." required></textarea>
+            <button type="submit" class="save-btn" style="margin-top: 20px;">Save Entry</button>
+        </form>
+        
+        <div class="extra-links">
+            <a href="/entries">View Your Entries</a>
+        </div>
+    </div>
+</body>
+</html>
