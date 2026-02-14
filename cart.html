@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Myntra3D</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>Myntra<span class="highlight">3D</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html" class="active">Cart <span id="cart-count" class="cart-badge">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <div class="container">
+            <h1 class="gradient-text">Your Cart</h1>
+            
+            <div class="cart-container">
+                <!-- Cart Items -->
+                <div class="cart-items" id="cart-items">
+                    <!-- Items will be dynamically inserted here -->
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Items:</span>
+                        <span id="items-count">0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="cart-subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="cart-total">$0.00</span>
+                    </div>
+                    <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+                    <a href="shop.html" class="continue-shopping">← Continue Shopping</a>
+                </div>
+            </div>
+
+            <!-- Empty Cart Message -->
+            <div class="empty-cart" id="empty-cart" style="display: none;">
+                <div class="empty-cart-icon">🛒</div>
+                <h2>Your cart is empty</h2>
+                <p>Looks like you haven't added any products yet.</p>
+                <a href="shop.html" class="cta-button">Start Shopping</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Myntra3D. All rights reserved.</p>
+    </footer>
+
+    <script src="js/cart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

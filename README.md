@@ -1,420 +1,411 @@
-<p align="center">
-  <img src="./img.png" alt="Project Banner" width="100%">
-</p>
+# StyleForge3D - Full Stack 3D Product Customization Platform
 
-# [Project Name] 🎯
+A complete e-commerce platform with 3D product customization featuring a modern frontend and robust Node.js backend.
 
-## Basic Details
+## 🚀 Project Overview
 
-### Team Name: [Name]
+StyleForge3D is a full-stack application that allows users to customize products in real-time 3D, select colors, add stickers, and place orders.
 
-### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+### Technology Stack
 
-### Hosted Project Link
-[mention your project hosted link here]
+**Frontend:**
+- HTML5, CSS3, JavaScript (Vanilla)
+- Three.js for 3D rendering
+- OrbitControls for 3D interaction
+- LocalStorage for cart persistence
 
-### Project Description
-[2-3 lines about what your project does]
+**Backend:**
+- Node.js & Express.js
+- MongoDB with Mongoose
+- JWT Authentication
+- RESTful API architecture
+- CORS enabled for frontend communication
 
-### The Problem statement
-[What problem are you solving?]
+## 📁 Project Structure
 
-### The Solution
-[How are you solving it?]
-
----
-
-## Technical Details
-
-### Technologies/Components Used
-
-**For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
-
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
-
----
-
-## Features
-
-List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
-
----
-
-## Implementation
-
-### For Software:
-
-#### Installation
-```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
+```
+styleforge3d-fullstack/
+│
+├── frontend/                  # Client-side application
+│   ├── index.html            # Landing page
+│   ├── shop.html             # Product catalog
+│   ├── studio.html           # 3D customizer
+│   ├── cart.html             # Shopping cart
+│   ├── css/
+│   │   └── style.css         # All styles
+│   ├── js/
+│   │   ├── app.js            # Main utilities
+│   │   ├── cart.js           # Cart functionality
+│   │   └── api.js            # API integration (NEW)
+│   └── models/
+│       └── cap.glb           # 3D models
+│
+├── backend/                   # Server-side application
+│   ├── server.js             # Main server file
+│   ├── package.json          # Dependencies
+│   ├── .env                  # Environment variables
+│   ├── models/               # Database schemas
+│   │   ├── Product.js
+│   │   ├── Order.js
+│   │   └── User.js
+│   ├── routes/               # API endpoints
+│   │   ├── products.js
+│   │   ├── cart.js
+│   │   ├── orders.js
+│   │   └── users.js
+│   └── scripts/
+│       └── initDatabase.js   # Database seeder
+│
+└── README.md                 # This file
 ```
 
-#### Run
+## 🛠️ Installation & Setup
+
+### Prerequisites
+
+1. **Node.js** (v14 or higher)
+   - Download: https://nodejs.org/
+
+2. **MongoDB** (v4.4 or higher)
+   - Download: https://www.mongodb.com/try/download/community
+   - OR use MongoDB Atlas (cloud): https://www.mongodb.com/cloud/atlas
+
+3. **VS Code** with Live Server extension
+   - Download VS Code: https://code.visualstudio.com/
+   - Install Live Server extension
+
+### Step 1: Extract Project
+
 ```bash
-[Run commands - e.g., npm start, python app.py]
+# Extract the zip file
+unzip styleforge3d-fullstack.zip
+cd styleforge3d-fullstack
 ```
 
-### For Hardware:
+### Step 2: Backend Setup
 
-#### Components Required
-[List all components needed with specifications]
+```bash
+# Navigate to backend folder
+cd backend
 
-#### Circuit Setup
-[Explain how to set up the circuit]
+# Install dependencies
+npm install
 
----
+# Configure environment variables
+# Edit .env file with your settings
+# (MongoDB URI, JWT secret, etc.)
 
-## Project Documentation
+# Initialize database with sample products
+npm run init-db
 
-### For Software:
+# Start the backend server
+npm start
+# OR for development with auto-reload:
+npm run dev
+```
 
-#### Screenshots (Add at least 3)
+The backend will start on: **http://localhost:3000**
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+### Step 3: Frontend Setup
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+```bash
+# Navigate to frontend folder
+cd ../frontend
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+# Open in VS Code
+code .
 
-#### Diagrams
+# Right-click index.html and select "Open with Live Server"
+```
 
-**System Architecture:**
+The frontend will open on: **http://localhost:5500**
 
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
+### Step 4: Add 3D Model (Optional)
 
-**Application Workflow:**
+1. Download a free .glb model from:
+   - **Sketchfab**: https://sketchfab.com/3d-models/
+   - Search for "baseball cap glb"
+   - Download in GLB format
 
-![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
+2. Rename to `cap.glb`
 
----
+3. Place in `frontend/models/cap.glb`
 
-### For Hardware:
+**Note:** The app includes fallback 3D geometry, so it works without a model file!
 
-#### Schematic & Circuit
+## 🎯 How to Use
 
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
+### 1. Start Backend Server
 
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
+```bash
+cd backend
+npm start
+```
 
-#### Build Photos
+Server runs on **http://localhost:3000**
 
-![Team](Add photo of your team here)
+### 2. Start Frontend
 
-![Components](Add photo of your components here)
-*List out all components shown*
+Open `frontend/index.html` with Live Server in VS Code
 
-![Build](Add photos of build process here)
-*Explain the build steps*
+### 3. Test the Application
 
-![Final](Add photo of final product here)
-*Explain the final build*
+1. **Landing Page** → Click "Start Customizing"
+2. **Shop Page** → Browse products, click "Customize Now"
+3. **3D Studio** → 
+   - Rotate model with mouse
+   - Select colors
+   - Add stickers
+   - Click "Add to Cart"
+4. **Cart Page** → View items, proceed to checkout
 
----
+## 📡 API Endpoints
 
-## Additional Documentation
+### Products
 
-### For Web Projects with Backend:
+```
+GET    /api/products           # Get all products
+GET    /api/products/:id       # Get single product
+POST   /api/products           # Create product (Admin)
+PUT    /api/products/:id       # Update product (Admin)
+DELETE /api/products/:id       # Delete product (Admin)
+```
 
-#### API Documentation
+### Cart
 
-**Base URL:** `https://api.yourproject.com`
+```
+GET    /api/cart/:sessionId           # Get cart items
+POST   /api/cart/:sessionId           # Add to cart
+DELETE /api/cart/:sessionId/:itemId   # Remove from cart
+DELETE /api/cart/:sessionId           # Clear cart
+```
 
-##### Endpoints
+### Orders
 
-**GET /api/endpoint**
-- **Description:** [What it does]
-- **Parameters:**
-  - `param1` (string): [Description]
-  - `param2` (integer): [Description]
-- **Response:**
-```json
+```
+POST   /api/orders                    # Create order
+GET    /api/orders/:orderNumber       # Get order by number
+GET    /api/orders/email/:email       # Get orders by email
+PUT    /api/orders/:orderNumber/status # Update order status
+```
+
+### Users
+
+```
+POST   /api/users/register            # Register new user
+POST   /api/users/login               # Login user
+GET    /api/users/profile/:userId     # Get user profile
+```
+
+## 🧪 Testing the API
+
+### Using curl:
+
+```bash
+# Get all products
+curl http://localhost:3000/api/products
+
+# Get single product
+curl http://localhost:3000/api/products/PRODUCT_ID
+
+# Create order
+curl -X POST http://localhost:3000/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customerEmail": "test@example.com",
+    "customerName": "John Doe",
+    "items": [...]
+  }'
+```
+
+### Using Postman:
+
+1. Import the API endpoints
+2. Set base URL: `http://localhost:3000/api`
+3. Test each endpoint
+
+## 🔧 Configuration
+
+### Backend Environment Variables (.env)
+
+```env
+PORT=3000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:5500
+MONGODB_URI=mongodb://localhost:27017/styleforge3d
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRE=7d
+```
+
+### Database Connection
+
+**Local MongoDB:**
+```
+MONGODB_URI=mongodb://localhost:27017/styleforge3d
+```
+
+**MongoDB Atlas (Cloud):**
+```
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/styleforge3d
+```
+
+## 📦 Database Schema
+
+### Product Schema
+```javascript
 {
-  "status": "success",
-  "data": {}
+  name: String,
+  description: String,
+  basePrice: Number,
+  category: String,
+  availableColors: [{ name, hex }],
+  availableStickers: [{ name, icon, price }],
+  stock: Number,
+  featured: Boolean
 }
 ```
 
-**POST /api/endpoint**
-- **Description:** [What it does]
-- **Request Body:**
-```json
+### Order Schema
+```javascript
 {
-  "field1": "value1",
-  "field2": "value2"
-}
-```
-- **Response:**
-```json
-{
-  "status": "success",
-  "message": "Operation completed"
+  orderNumber: String,
+  customerEmail: String,
+  customerName: String,
+  items: [OrderItem],
+  subtotal: Number,
+  total: Number,
+  status: String,
+  paymentStatus: String
 }
 ```
 
-[Add more endpoints as needed...]
+## 🐛 Troubleshooting
 
----
+### Backend Issues
 
-### For Mobile Apps:
-
-#### App Flow Diagram
-
-![App Flow](docs/app-flow.png)
-*Explain the user flow through your application*
-
-#### Installation Guide
-
-**For Android (APK):**
-1. Download the APK from [Release Link]
-2. Enable "Install from Unknown Sources" in your device settings:
-   - Go to Settings > Security
-   - Enable "Unknown Sources"
-3. Open the downloaded APK file
-4. Follow the installation prompts
-5. Open the app and enjoy!
-
-**For iOS (IPA) - TestFlight:**
-1. Download TestFlight from the App Store
-2. Open this TestFlight link: [Your TestFlight Link]
-3. Click "Install" or "Accept"
-4. Wait for the app to install
-5. Open the app from your home screen
-
-**Building from Source:**
+**Problem:** MongoDB connection failed
 ```bash
-# For Android
-flutter build apk
-# or
-./gradlew assembleDebug
+# Solution: Make sure MongoDB is running
+# Windows:
+net start MongoDB
 
-# For iOS
-flutter build ios
-# or
-xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
+# Mac/Linux:
+sudo systemctl start mongod
 ```
 
----
-
-### For Hardware Projects:
-
-#### Bill of Materials (BOM)
-
-| Component | Quantity | Specifications | Price | Link/Source |
-|-----------|----------|----------------|-------|-------------|
-| Arduino Uno | 1 | ATmega328P, 16MHz | ₹450 | [Link] |
-| LED | 5 | Red, 5mm, 20mA | ₹5 each | [Link] |
-| Resistor | 5 | 220Ω, 1/4W | ₹1 each | [Link] |
-| Breadboard | 1 | 830 points | ₹100 | [Link] |
-| Jumper Wires | 20 | Male-to-Male | ₹50 | [Link] |
-| [Add more...] | | | | |
-
-**Total Estimated Cost:** ₹[Amount]
-
-#### Assembly Instructions
-
-**Step 1: Prepare Components**
-1. Gather all components listed in the BOM
-2. Check component specifications
-3. Prepare your workspace
-![Step 1](images/assembly-step1.jpg)
-*Caption: All components laid out*
-
-**Step 2: Build the Power Supply**
-1. Connect the power rails on the breadboard
-2. Connect Arduino 5V to breadboard positive rail
-3. Connect Arduino GND to breadboard negative rail
-![Step 2](images/assembly-step2.jpg)
-*Caption: Power connections completed*
-
-**Step 3: Add Components**
-1. Place LEDs on breadboard
-2. Connect resistors in series with LEDs
-3. Connect LED cathodes to GND
-4. Connect LED anodes to Arduino digital pins (2-6)
-![Step 3](images/assembly-step3.jpg)
-*Caption: LED circuit assembled*
-
-**Step 4: [Continue for all steps...]**
-
-**Final Assembly:**
-![Final Build](images/final-build.jpg)
-*Caption: Completed project ready for testing*
-
----
-
-### For Scripts/CLI Tools:
-
-#### Command Reference
-
-**Basic Usage:**
+**Problem:** Port 3000 already in use
 ```bash
-python script.py [options] [arguments]
+# Solution: Change PORT in .env file
+PORT=5000
 ```
 
-**Available Commands:**
-- `command1 [args]` - Description of what command1 does
-- `command2 [args]` - Description of what command2 does
-- `command3 [args]` - Description of what command3 does
+### Frontend Issues
 
-**Options:**
-- `-h, --help` - Show help message and exit
-- `-v, --verbose` - Enable verbose output
-- `-o, --output FILE` - Specify output file path
-- `-c, --config FILE` - Specify configuration file
-- `--version` - Show version information
+**Problem:** CORS errors
+```bash
+# Solution: Check FRONTEND_URL in backend .env matches your Live Server URL
+FRONTEND_URL=http://localhost:5500
+```
 
-**Examples:**
+**Problem:** API not responding
+```bash
+# Solution: Make sure backend server is running
+cd backend
+npm start
+```
+
+## 🚀 Deployment
+
+### Backend Deployment (Heroku, Railway, Render)
+
+1. **Push code to GitHub**
+2. **Connect repository to hosting platform**
+3. **Set environment variables**
+4. **Deploy**
+
+### Frontend Deployment (Netlify, Vercel, GitHub Pages)
+
+1. **Build frontend** (no build step needed - static files)
+2. **Upload to hosting platform**
+3. **Update API URL** in frontend to production backend URL
+
+## 📝 Development Workflow
+
+### Adding New Products
 
 ```bash
-# Example 1: Basic usage
-python script.py input.txt
-
-# Example 2: With verbose output
-python script.py -v input.txt
-
-# Example 3: Specify output file
-python script.py -o output.txt input.txt
-
-# Example 4: Using configuration
-python script.py -c config.json --verbose input.txt
+# Edit backend/scripts/initDatabase.js
+# Add new product object to sampleProducts array
+# Run:
+cd backend
+npm run init-db
 ```
 
-#### Demo Output
+### Adding New API Endpoints
 
-**Example 1: Basic Processing**
+1. Create route in `backend/routes/`
+2. Import in `backend/server.js`
+3. Add route: `app.use('/api/endpoint', routeName)`
 
-**Input:**
-```
-This is a sample input file
-with multiple lines of text
-for demonstration purposes
-```
+### Customizing Frontend
 
-**Command:**
-```bash
-python script.py sample.txt
-```
+- **Colors**: Edit `frontend/studio.html` color picker
+- **Stickers**: Edit `frontend/studio.html` sticker grid
+- **Products**: Edit `frontend/shop.html` product cards
+- **Styles**: Edit `frontend/css/style.css`
 
-**Output:**
-```
-Processing: sample.txt
-Lines processed: 3
-Characters counted: 86
-Status: Success
-Output saved to: output.txt
-```
+## 🎨 Features
 
-**Example 2: Advanced Usage**
+✅ Real-time 3D product visualization  
+✅ Dynamic color selection  
+✅ Sticker customization  
+✅ Live price calculation  
+✅ Shopping cart with localStorage  
+✅ RESTful API backend  
+✅ MongoDB database integration  
+✅ User authentication (JWT)  
+✅ Order management  
+✅ Responsive design  
 
-**Input:**
-```json
-{
-  "name": "test",
-  "value": 123
-}
-```
+## 🔐 Security
 
-**Command:**
-```bash
-python script.py -v --format json data.json
-```
+- JWT authentication for protected routes
+- Password hashing with bcrypt
+- Helmet.js for security headers
+- Input validation with express-validator
+- CORS configuration
+- Environment variables for secrets
 
-**Output:**
-```
-[VERBOSE] Loading configuration...
-[VERBOSE] Parsing JSON input...
-[VERBOSE] Processing data...
-{
-  "status": "success",
-  "processed": true,
-  "result": {
-    "name": "test",
-    "value": 123,
-    "timestamp": "2024-02-07T10:30:00"
-  }
-}
-[VERBOSE] Operation completed in 0.23s
-```
+## 📊 Performance
+
+- Compression middleware
+- MongoDB indexing
+- Efficient 3D model loading
+- LocalStorage for cart caching
+- Minimal dependencies
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Open pull request
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+## 🎉 Happy Coding!
+
+Build amazing 3D customization experiences with StyleForge3D!
 
 ---
 
-## Project Demo
+**Need Help?**
+- Check the troubleshooting section
+- Review API documentation
+- Inspect browser console for errors
+- Check backend logs
 
-### Video
-[Add your demo video link here - YouTube, Google Drive, etc.]
-
-*Explain what the video demonstrates - key features, user flow, technical highlights*
-
-### Additional Demos
-[Add any extra demo materials/links - Live site, APK download, online demo, etc.]
-
----
-
-## AI Tools Used (Optional - For Transparency Bonus)
-
-If you used AI tools during development, document them here for transparency:
-
-**Tool Used:** [e.g., GitHub Copilot, v0.dev, Cursor, ChatGPT, Claude]
-
-**Purpose:** [What you used it for]
-- Example: "Generated boilerplate React components"
-- Example: "Debugging assistance for async functions"
-- Example: "Code review and optimization suggestions"
-
-**Key Prompts Used:**
-- "Create a REST API endpoint for user authentication"
-- "Debug this async function that's causing race conditions"
-- "Optimize this database query for better performance"
-
-**Percentage of AI-generated code:** [Approximately X%]
-
-**Human Contributions:**
-- Architecture design and planning
-- Custom business logic implementation
-- Integration and testing
-- UI/UX design decisions
-
-*Note: Proper documentation of AI usage demonstrates transparency and earns bonus points in evaluation!*
-
----
-
-## Team Contributions
-
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
-
----
-
-## License
-
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
-
-**Common License Options:**
-- MIT License (Permissive, widely used)
-- Apache 2.0 (Permissive with patent grant)
-- GPL v3 (Copyleft, requires derivative works to be open source)
-
----
-
-Made with ❤️ at TinkerHub
+**Created with ❤️ for learning and innovation**

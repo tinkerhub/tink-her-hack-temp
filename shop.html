@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Myntra3D</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>Myntra<span class="highlight">3D</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html" class="active">Shop</a></li>
+                <li><a href="cart.html">Cart <span id="cart-count" class="cart-badge">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Shop Header -->
+    <section class="shop-header">
+        <div class="container">
+            <h1 class="gradient-text">Our Collection</h1>
+            <p>Select a product to start customizing</p>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products">
+        <div class="container">
+            <div class="products-grid">
+                
+                <!-- Product 1: Classic Cap -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <div class="product-badge">Bestseller</div>
+                        <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400&h=400&fit=crop" alt="Classic Cap">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Classic Cap</h3>
+                        <p class="product-description">Premium quality baseball cap with adjustable strap</p>
+                        <div class="product-price">$24.99</div>
+                        <button class="customize-btn" onclick="customizeProduct('Classic Cap', 24.99, 'cap')">
+                            Customize Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 2: Urban Backpack -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <div class="product-badge">New</div>
+                        <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop" alt="Urban Backpack">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Urban Backpack</h3>
+                        <p class="product-description">Spacious and durable backpack for daily adventures</p>
+                        <div class="product-price">$49.99</div>
+                        <button class="customize-btn" onclick="customizeProduct('Urban Backpack', 49.99, 'backpack')">
+                            Customize Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3: Essential T-Shirt -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <div class="product-badge">Popular</div>
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop" alt="Essential T-Shirt">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Essential T-Shirt</h3>
+                        <p class="product-description">Comfortable cotton t-shirt with modern fit</p>
+                        <div class="product-price">$19.99</div>
+                        <button class="customize-btn" onclick="customizeProduct('Essential T-Shirt', 19.99, 'tshirt')">
+                            Customize Now
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Myntra3D. All rights reserved.</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Function to navigate to customizer with product details
+        function customizeProduct(name, price, type) {
+            // Store product details in sessionStorage
+            sessionStorage.setItem('selectedProduct', JSON.stringify({
+                name: name,
+                basePrice: price,
+                type: type
+            }));
+            // Navigate to studio page
+            window.location.href = 'studio.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+╔════════════════════════════════════════════════════════════╗
+║         STYLEFORGE3D FULLSTACK QUICK START GUIDE           ║
+║          3D Product Customization Platform                 ║
+╚════════════════════════════════════════════════════════════╝
+
+📋 WHAT YOU NEED
+----------------
+✓ Node.js (v14+) - https://nodejs.org/
+✓ MongoDB - https://www.mongodb.com/ (OR use MongoDB Atlas cloud)
+✓ VS Code - https://code.visualstudio.com/
+✓ Live Server Extension for VS Code
+
+🚀 QUICK START IN 5 STEPS
+--------------------------
+
+STEP 1: Install Prerequisites
+   • Install Node.js from https://nodejs.org/
+   • Install MongoDB (local) OR sign up for MongoDB Atlas (cloud)
+   • Install VS Code
+   • Add Live Server extension to VS Code
+
+STEP 2: Setup Backend
+   • Extract styleforge3d-fullstack.zip
+   • Open terminal/command prompt
+   • Run these commands:
+   
+     cd styleforge3d-fullstack/backend
+     npm install
+     npm run init-db
+     npm start
+   
+   • Backend now running on http://localhost:3000 ✅
+
+STEP 3: Setup Frontend
+   • Open VS Code
+   • File → Open Folder → Select "frontend" folder
+   • Right-click index.html
+   • Click "Open with Live Server"
+   • Browser opens automatically on http://localhost:5500 ✅
+
+STEP 4: Test the Application
+   1. Landing Page → Click "Start Customizing"
+   2. Shop Page → Click "Customize Now"
+   3. 3D Studio → Select colors, add stickers
+   4. Click "Add to Cart"
+   5. Cart Page → Checkout
+
+STEP 5: (Optional) Add 3D Model
+   • Download free .glb from Sketchfab
+   • Rename to cap.glb
+   • Place in frontend/models/cap.glb
+   • Note: App works with fallback geometry if no model!
+
+📡 HOW IT WORKS
+---------------
+
+FRONTEND (Client)
+   ↓ Makes HTTP requests
+BACKEND API (Server on port 3000)
+   ↓ Reads/Writes data
+MONGODB DATABASE (Stores products, orders, users)
+
+🎯 KEY COMMANDS
+---------------
+
+START BACKEND:
+   cd backend
+   npm start
+
+START FRONTEND:
+   Open frontend/index.html with Live Server in VS Code
+
+RESET DATABASE:
+   cd backend
+   npm run init-db
+
+DEVELOPMENT MODE (auto-reload):
+   cd backend
+   npm run dev
+
+📁 PROJECT STRUCTURE
+--------------------
+
+styleforge3d-fullstack/
+│
+├── frontend/          ← HTML, CSS, JS, 3D viewer
+│   ├── index.html
+│   ├── shop.html
+│   ├── studio.html
+│   ├── cart.html
+│   ├── css/
+│   ├── js/
+│   └── models/
+│
+├── backend/           ← Node.js API server
+│   ├── server.js
+│   ├── routes/
+│   ├── models/
+│   ├── scripts/
+│   └── package.json
+│
+└── README.md
+
+🔧 CONFIGURATION
+----------------
+
+Backend Environment (.env file):
+   PORT=3000
+   MONGODB_URI=mongodb://localhost:27017/styleforge3d
+   FRONTEND_URL=http://localhost:5500
+
+Frontend API URL:
+   Default: http://localhost:3000/api
+   (configured in frontend/js/api.js)
+
+📡 API ENDPOINTS
+----------------
+
+Products:
+   GET  /api/products           - Get all products
+   GET  /api/products/:id       - Get single product
+
+Orders:
+   POST /api/orders             - Create order
+   GET  /api/orders/:number     - Get order details
+
+Cart:
+   GET  /api/cart/:sessionId    - Get cart
+   POST /api/cart/:sessionId    - Add to cart
+
+Users:
+   POST /api/users/register     - Register
+   POST /api/users/login        - Login
+
+💡 TESTING THE API
+------------------
+
+Method 1: Use browser
+   http://localhost:3000/api/products
+
+Method 2: Use curl
+   curl http://localhost:3000/api/products
+
+Method 3: Use Postman
+   Import endpoints and test
+
+⚠️ COMMON ISSUES & FIXES
+-------------------------
+
+Issue: MongoDB connection error
+Fix: 
+   • Make sure MongoDB is running
+   • OR use MongoDB Atlas cloud URL in .env
+
+Issue: Backend won't start
+Fix:
+   • Check if port 3000 is available
+   • Change PORT in .env if needed
+   • Run: npm install
+
+Issue: Frontend can't connect to backend
+Fix:
+   • Make sure backend is running (npm start)
+   • Check CORS settings in backend
+   • Verify API URL in frontend
+
+Issue: 3D model not loading
+Fix:
+   • Download .glb model from Sketchfab
+   • Place in frontend/models/cap.glb
+   • Fallback geometry will show if missing
+
+🎨 CUSTOMIZATION TIPS
+---------------------
+
+Add Products:
+   • Edit backend/scripts/initDatabase.js
+   • Run: npm run init-db
+
+Change Colors:
+   • Edit frontend/studio.html (color picker section)
+
+Add Stickers:
+   • Edit frontend/studio.html (sticker grid)
+
+Change Styles:
+   • Edit frontend/css/style.css
+
+🌐 DEPLOYMENT READY
+-------------------
+
+Frontend → Netlify, Vercel, GitHub Pages
+Backend → Heroku, Railway, Render, AWS
+
+See README.md for detailed deployment instructions
+
+📚 LEARN MORE
+-------------
+
+Full Documentation: README.md in project root
+API Documentation: See API ENDPOINTS section
+Code Comments: All files have detailed comments
+
+🎯 WHAT'S INCLUDED
+------------------
+
+✅ Frontend with 3D customization
+✅ Backend REST API
+✅ MongoDB database integration
+✅ User authentication
+✅ Order management
+✅ Cart system
+✅ Product catalog
+✅ Sample data seeder
+
+═══════════════════════════════════════════════════════════
+
+🎉 YOU'RE READY TO GO! 🎉
+
+1. cd backend && npm install && npm start
+2. Open frontend/index.html with Live Server
+3. Start building!
+
+Questions? Check README.md for detailed help!
+
+═══════════════════════════════════════════════════════════
