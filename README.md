@@ -2,27 +2,28 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# MediGo 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: raiandmursh
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: fathimath raihana- LBS college of engineering ,kasaragod
+- Member 2: khadeejath mursheeda.k - LBS college of engineering ,kasaragod
 
 ### Hosted Project Link
-[mention your project hosted link here]
+https://medigo.page.gd/login.php
+https://medigo.page.gd/admin/admin_login.php
 
 ### Project Description
-[2-3 lines about what your project does]
+Medigo is a location-based medicine availability platform that helps users quickly find required medicines in nearby pharmacies. Pharmacies can manage their inventory in real time, while users can report issues directly to the admin for better accuracy and transparency.
 
 ### The Problem statement
-[What problem are you solving?]
+Finding medicines at the right time is difficult due to the lack of real-time information about availability in nearby pharmacies. Users often visit multiple pharmacies or make repeated calls, causing delays and inconvenience, especially during emergencies.
 
 ### The Solution
-[How are you solving it?]
+Medigo provides a centralized platform where users can search medicines by name, composition, and location. Pharmacies update their stock digitally, and users can report issues to the admin, ensuring accurate data and efficient management.
 
 ---
 
@@ -31,25 +32,25 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+- Languages used: HTML,CSS,JavaScript,PHP,SQL (MySQL)
+- Frameworks used: None (Core PHP, custom frontend)
+- Libraries used:MySQLi (PHP extension),PHP password hashing (password_hash, password_verify),PHP sessions,Vanilla JavaScript (DOM API)
+- Tools used: XAMPP,Visual Studio Code,phpMyAdmin,Web Browser
 
 **For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+-Not applicable (Web-based project)
 
 ---
 
 ## Features
-
-List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+User registration and secure login
+Search medicines by name, composition, and location
+Real-time medicine availability from nearby pharmacies
+Pharmacy inventory management (add/update quantity)
+Admin approval for pharmacies
+User issue reporting system
+Role-based access (User / Pharmacy / Admin)
+Secure authentication and database handling
 
 ---
 
@@ -58,24 +59,16 @@ List the key features of your project:
 ### For Software:
 
 #### Installation
-```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
-```
+Install XAMPP
+Start Apache and MySQL
+Place project folder inside htdocs
+
+
 
 #### Run
-```bash
-[Run commands - e.g., npm start, python app.py]
-```
+Open browser
+Go to http://localhost/medigo
 
-### For Hardware:
-
-#### Components Required
-[List all components needed with specifications]
-
-#### Circuit Setup
-[Explain how to set up the circuit]
-
----
 
 ## Project Documentation
 
@@ -83,15 +76,18 @@ List the key features of your project:
 
 #### Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+<img width="1920" height="766" alt="pharmacy_dash" src="https://github.com/user-attachments/assets/6b2fae18-0e8f-440b-8c0a-a70f983108dd" />
+This screen shows the Pharmacy Dashboard of the Medigo system. It provides a quick overview of the pharmacy’s inventory status, including the total number of medicines, total stock value, low-stock count, and expired medicines. The dashboard also includes action buttons to add new medicines and view/manage existing medicines, enabling pharmacies to efficiently control their inventory from a single interface.
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+*
+<img width="1920" height="773" alt="user_dash" src="https://github.com/user-attachments/assets/4fed225d-f6c7-46a9-887e-8c41da04931e" />
+his screen shows the User Dashboard of the Medigo system, where users can search for medicines by name, composition, and location. The search results display real-time availability details, including the pharmacy name, location, available quantity, and contact number. Users can also report issues such as incorrect information or unavailable stock directly to the admin using the integrated reporting feature, ensuring data accuracy and platform reliability.
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+<img width="1920" height="791" alt="admin_dash" src="https://github.com/user-attachments/assets/b15ad6b7-cd30-4778-bfc7-7b8937fce8ff" />
+This screen represents the Admin Dashboard of the Medigo platform, providing a centralized overview of the system. It displays key metrics such as total registered users, total pharmacies, and pending user reports. From this dashboard, the admin can manage pharmacy approvals and review reported issues, ensuring platform integrity, accurate medicine listings, and effective system moderation.
 
+Demo Video:
+https://drive.google.com/drive/folders/1LE-mvw2JJ1WySDaoxzklRWyqulCpaAtX?usp=sharing 
 #### Diagrams
 
 **System Architecture:**
