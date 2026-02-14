@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Predictor - Dream Job Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+            animation: slideIn 0.5s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .section { display: none; animation: fadeIn 0.5s ease-in; }
+        .section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group { margin-bottom: 25px; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.1);
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .skill-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .skill-item label {
+            margin: 0;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .role-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-option:hover {
+            border-color: #667eea;
+            background: #f0f2ff;
+            transform: translateX(5px);
+        }
+
+        .role-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .role-info { flex: 1; }
+        .role-info strong { display: block; color: #333; margin-bottom: 5px; }
+        .role-info small { color: #666; display: block; }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-next { background: #667eea; color: white; flex: 1; max-width: 200px; min-width: 150px; }
+        .btn-next:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3); }
+
+        .btn-back { background: #e0e0e0; color: #333; flex: 1; max-width: 200px; min-width: 150px; }
+        .btn-back:hover { background: #c0c0c0; }
+
+        .btn-restart { background: #764ba2; color: white; flex: 1; max-width: 200px; min-width: 150px; }
+        .btn-restart:hover { background: #653a8a; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(118, 75, 162, 0.3); }
+
+        .btn-download { background: #10b981; color: white; flex: 1; max-width: 200px; min-width: 150px; }
+        .btn-download:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .result-card.eligible { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .result-card.not-eligible { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+
+        .result-card h2 { font-size: 1.8em; margin-bottom: 10px; }
+        .result-card p { font-size: 1.1em; opacity: 0.95; }
+
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .company-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .company-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        .company-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .company-badge.startup { background: #f59e0b; }
+
+        .company-card h3 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.3em;
+            font-weight: 700;
+            padding-right: 80px;
+        }
+
+        .company-type {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .company-card ul { list-style: none; }
+        .company-card li {
+            color: #666;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.95em;
+        }
+
+        .company-card li:last-child { border-bottom: none; }
+        .company-card li:before { content: "→ "; color: #667eea; font-weight: bold; margin-right: 8px; }
+
+        .improvement-plan {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .improvement-plan h3 { color: #92400e; margin-bottom: 15px; font-weight: 700; }
+        .improvement-plan ol { color: #92400e; margin-left: 20px; }
+        .improvement-plan li { margin-bottom: 10px; line-height: 1.6; }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #667eea;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .info-box {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #1e40af;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: -1;
+        }
+
+        .step { text-align: center; flex: 1; }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #e0e0e0;
+            color: #666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 10px;
+            transition: all 0.3s;
+        }
+
+        .step.active .step-number { background: #667eea; color: white; transform: scale(1.2); }
+        .step.completed .step-number { background: #10b981; color: white; }
+
+        .step-label { font-size: 0.9em; color: #666; }
+        .step.active .step-label { color: #667eea; font-weight: 600; }
+
+        .report-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .report-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 650px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 { color: #333; margin: 0; font-size: 1.8em; }
+
+        .modal-close {
+            background: #e0e0e0;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover { background: #c0c0c0; }
+
+        .prep-category {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .prep-category h4 { color: #667eea; margin: 0 0 15px 0; font-size: 1.1em; }
+
+        .prep-list { list-style: none; margin: 0; padding: 0; }
+        .prep-list li { padding: 10px 0; color: #555; border-bottom: 1px solid #e0e0e0; }
+        .prep-list li:last-child { border-bottom: none; }
+        .prep-list li:before { content: "✓ "; color: #10b981; font-weight: bold; margin-right: 8px; }
+
+        .ai-tips-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .ai-tip-card {
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .ai-tip-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(245, 158, 11, 0.3); }
+        .ai-tip-card.urgent { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .ai-tip-card.success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+
+        .ai-tip-icon { font-size: 2.5em; margin-bottom: 10px; }
+        .ai-tip-title { font-size: 1.2em; font-weight: 700; margin-bottom: 10px; }
+        .ai-tip-content { font-size: 0.95em; line-height: 1.6; }
+
+        .week-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .week-number { font-size: 2em; font-weight: 700; margin-bottom: 10px; }
+        .week-title { font-size: 1.3em; font-weight: 600; margin-bottom: 15px; }
+
+        .week-tasks { list-style: none; margin: 0; padding: 0; }
+        .week-tasks li { padding: 8px 0; margin-left: 20px; position: relative; }
+        .week-tasks li:before { content: "✓"; position: absolute; left: -20px; color: #10b981; font-weight: bold; }
+
+        .balance-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .balance-score .score-number { font-size: 3em; font-weight: 700; margin-bottom: 10px; }
+        .balance-score .score-label { font-size: 1.5em; font-weight: 600; margin-bottom: 5px; }
+        .balance-score .score-category { font-size: 1.1em; }
+
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .header h1 { font-size: 1.8em; }
+            .company-grid { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column; }
+            .button-group button { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Placement Predictor</h1>
+            <p>Dream Job Edition - Find Your Perfect Career Path</p>
+        </div>
+
+        <!-- Welcome Section -->
+        <div id="welcome" class="section active">
+            <div class="step-indicator">
+                <div class="step completed">
+                    <div class="step-number">✓</div>
+                    <div class="step-label">Welcome</div>
+                </div>
+                <div class="step"><div class="step-number">1</div><div class="step-label">Info</div></div>
+                <div class="step"><div class="step-number">2</div><div class="step-label">Role</div></div>
+                <div class="step"><div class="step-number">3</div><div class="step-label">Skills</div></div>
+                <div class="step"><div class="step-number">4</div><div class="step-label">Result</div></div>
+            </div>
+            <div style="text-align: center; margin: 40px 0;">
+                <h2 style="color: #333; margin-bottom: 20px;">Welcome! 🚀</h2>
+                <p style="color: #666; font-size: 1.05em; line-height: 1.8; margin-bottom: 30px;">
+                    This advanced placement predictor helps you identify suitable job roles and companies based on your skills and CGPA.
+                </p>
+                <div class="info-box">
+                    ✓ Get personalized job recommendations<br>
+                    ✓ View 50+ companies<br>
+                    ✓ Get preparation plans<br>
+                    ✓ Calculate prediction balance score
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn-next" onclick="showSection('basicInfo')">Get Started ➜</button>
+            </div>
+        </div>
+
+        <!-- Basic Information Section -->
+        <div id="basicInfo" class="section">
+            <h2 style="color: #333; margin-bottom: 30px;">📋 Basic Information</h2>
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="cgpa">CGPA (0-10) *</label>
+                <input type="number" id="cgpa" min="0" max="10" step="0.01" placeholder="Enter your CGPA">
+                <div class="progress-bar"><div class="progress-fill" id="cgpaProgress" style="width: 0%;"></div></div>
+            </div>
+            <div class="form-group">
+                <label for="branch">Branch *</label>
+                <select id="branch">
+                    <option value="">-- Select Branch --</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Information Technology">Information Technology</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Mechanical">Mechanical</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Civil">Civil</option>
+                </select>
+            </div>
+            <div class="button-group">
+                <button class="btn-back" onclick="showSection('welcome')">← Back</button>
+                <button class="btn-next" onclick="validateAndNext('basicInfo', 'jobRole')">Next ➜</button>
+            </div>
+        </div>
+
+        <!-- Job Role Section -->
+        <div id="jobRole" class="section">
+            <h2 style="color: #333; margin-bottom: 30px;">🏢 Select Your Dream Job Role</h2>
+            <div id="rolesList"></div>
+            <div class="button-group">
+                <button class="btn-back" onclick="showSection('basicInfo')">← Back</button>
+                <button class="btn-next" onclick="validateAndNext('jobRole', 'skillAssess')">Next ➜</button>
+            </div>
+        </div>
+
+        <!-- Skill Assessment Section -->
+        <div id="skillAssess" class="section">
+            <h2 style="color: #333; margin-bottom: 30px;">📚 Skill Assessment</h2>
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #667eea; margin-bottom: 20px;">Required Skills</h3>
+                <div id="requiredSkills"></div>
+            </div>
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #ef4444; margin-bottom: 20px;">Must-Have Skills (Critical)</h3>
+                <div id="mustHaveSkills"></div>
+            </div>
+            <div class="button-group">
+                <button class="btn-back" onclick="showSection('jobRole')">← Back</button>
+                <button class="btn-next" onclick="calculatePrediction()">View Result ➜</button>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        <div id="result" class="section">
+            <h2 style="color: #333; margin-bottom: 30px;">🎯 Placement Prediction Result</h2>
+            <div class="report-section">
+                <h3>Your Profile</h3>
+                <p><strong>Name:</strong> <span id="resultName"></span></p>
+                <p><strong>CGPA:</strong> <span id="resultCGPA"></span>/10</p>
+                <p><strong>Branch:</strong> <span id="resultBranch"></span></p>
+                <p><strong>Selected Role:</strong> <span id="resultRole"></span></p>
+            </div>
+            <div id="resultCard"></div>
+            <div id="balanceSection"></div>
+            <div id="aiTipsSection"></div>
+            <div id="weeklyStrategySection"></div>
+            <div id="companiesPreview"></div>
+            <div id="improvementPlanPreview"></div>
+            <div class="button-group">
+                <button class="btn-back" onclick="showSection('skillAssess')">← Back</button>
+                <button class="btn-download" onclick="downloadReport()">📥 Download Report</button>
+                <button class="btn-restart" onclick="resetForm()">🔄 Start Over</button>
+            </div>
+        </div>
+
+        <!-- Companies Detail Section -->
+        <div id="companiesDetail" class="section">
+            <h2 style="color: #333; margin-bottom: 30px;">🏢 Companies & Job Roles</h2>
+            <div id="companiesDetailContent"></div>
+            <div class="button-group">
+                <button class="btn-back" onclick="showSection('result')">← Back</button>
+                <button class="btn-restart" onclick="resetForm()">🔄 Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Modal -->
+    <div id="jobModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalJobTitle"></h2>
+                <button class="modal-close" onclick="closeJobModal()">×</button>
+            </div>
+            <div id="modalJobContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Job Requirements Data with Companies
+        const jobRequirements = {
+            "Frontend Developer": {
+                "required_skills": ["HTML/CSS", "JavaScript", "React/Vue", "UI/UX Design"],
+                "must_have": ["DSA", "Problem Solving"],
+                "cgpa_min": 6.5,
+                "description": "Build interactive user interfaces and web applications",
+                "companies": {
+                    "big": { "Google": ["Senior Frontend Developer", "Junior Frontend Developer", "UI Engineer"], "Microsoft": ["Frontend Developer", "Web Developer"], "Amazon": ["Frontend Engineer", "Web Developer"], "Adobe": ["UI Developer", "Frontend Engineer"], "Flipkart": ["Frontend Developer", "Web Engineer"] },
+                    "startup": { "Swiggy": ["Frontend Developer", "UI Engineer"], "Byju's": ["Web Developer", "Frontend Engineer"], "Unacademy": ["Frontend Developer", "React Developer"], "PhonePe": ["Senior Frontend Developer"], "CRED": ["Frontend Developer"] }
+                }
+            },
+            "Backend Developer": {
+                "required_skills": ["Python", "Java", "Node.js", "Database Design"],
+                "must_have": ["DSA", "System Design"],
+                "cgpa_min": 6.5,
+                "description": "Develop server-side logic and database systems",
+                "companies": {
+                    "big": { "Google": ["Backend Engineer", "Software Engineer"], "Microsoft": ["Backend Developer", "Cloud Engineer"], "Amazon": ["Backend Engineer", "Software Development Engineer"], "Goldman Sachs": ["Backend Developer"], "Flipkart": ["Backend Engineer"] },
+                    "startup": { "Swiggy": ["Backend Engineer"], "Ola": ["Backend Developer"], "Razorpay": ["Senior Backend Engineer"], "Gorgias": ["Backend Engineer"], "Whatfix": ["Backend Developer"] }
+                }
+            },
+            "Data Analyst": {
+                "required_skills": ["SQL", "Python/R", "Tableau", "Excel"],
+                "must_have": ["Statistics", "Data Visualization"],
+                "cgpa_min": 6.0,
+                "description": "Analyze data and create insights",
+                "companies": {
+                    "big": { "Google": ["Data Analyst", "Business Analyst"], "Amazon": ["Data Analyst", "BI Developer"], "Cognizant": ["Data Analyst"], "TCS": ["Data Analyst"], "Accenture": ["Data Analyst"] },
+                    "startup": { "Udaan": ["Data Analyst"], "InMobi": ["Data Analyst"], "Freshworks": ["Data Analyst"], "Dream11": ["Data Analyst"], "Grofers": ["Data Analyst"] }
+                }
+            },
+            "Data Scientist": {
+                "required_skills": ["Python", "Machine Learning", "Statistics", "SQL"],
+                "must_have": ["ML Algorithms", "Data Analysis"],
+                "cgpa_min": 7.0,
+                "description": "Build predictive models and ML solutions",
+                "companies": {
+                    "big": { "Google": ["ML Engineer", "Data Scientist", "AI Engineer"], "Microsoft": ["Data Scientist", "ML Engineer"], "Amazon": ["Applied Scientist", "Data Scientist"], "Adobe": ["Data Scientist"], "Flipkart": ["Data Scientist"] },
+                    "startup": { "Sprinklr": ["Data Scientist"], "MyGov": ["Data Scientist"], "Fractal": ["Data Scientist"], "Arpit": ["Data Scientist"], "Hyperbaric": ["Data Scientist"] }
+                }
+            },
+            "DevOps Engineer": {
+                "required_skills": ["Docker", "Kubernetes", "CI/CD", "Linux"],
+                "must_have": ["System Design", "Cloud Platforms"],
+                "cgpa_min": 6.5,
+                "description": "Manage infrastructure and deployment",
+                "companies": {
+                    "big": { "Google": ["DevOps Engineer", "SRE"], "Amazon": ["DevOps Engineer", "SRE"], "Microsoft": ["DevOps Engineer"], "Salesforce": ["DevOps Engineer"], "Flipkart": ["DevOps Engineer"] },
+                    "startup": { "Swiggy": ["DevOps Engineer"], "Oyo": ["DevOps Engineer"], "Vedantu": ["DevOps Engineer"], "Chargebee": ["DevOps Engineer"], "Postman": ["DevOps Engineer"] }
+                }
+            },
+            "Mobile Developer": {
+                "required_skills": ["Java/Kotlin", "Swift", "React Native", "API Integration"],
+                "must_have": ["DSA", "Mobile UI/UX"],
+                "cgpa_min": 6.5,
+                "description": "Develop mobile applications",
+                "companies": {
+                    "big": { "Google": ["Android Developer", "iOS Developer"], "Microsoft": ["Mobile Developer"], "Amazon": ["Mobile Developer"], "Flipkart": ["Mobile Developer"], "Adobe": ["Mobile Developer"] },
+                    "startup": { "Swiggy": ["Android Developer"], "Ola": ["Mobile Developer"], "Paytm": ["Mobile Developer"], "Zomato": ["Mobile Developer"], "Dream11": ["Mobile Developer"] }
+                }
+            },
+            "Full Stack Developer": {
+                "required_skills": ["Frontend Tech", "Backend Tech", "Database", "APIs"],
+                "must_have": ["DSA", "System Design"],
+                "cgpa_min": 6.7,
+                "description": "Develop full web applications",
+                "companies": {
+                    "big": { "Google": ["Full Stack Developer"], "Microsoft": ["Full Stack Developer"], "Amazon": ["Full Stack Developer"], "Flipkart": ["Full Stack Developer"], "Uber": ["Full Stack Engineer"] },
+                    "startup": { "Swiggy": ["Full Stack Developer"], "Dunzo": ["Full Stack Developer"], "Bounce": ["Full Stack Developer"], "Unacademy": ["Full Stack Developer"], "Gurugram": ["Full Stack Developer"] }
+                }
+            },
+            "QA Engineer": {
+                "required_skills": ["Test Automation", "Manual Testing", "Selenium", "REST APIs"],
+                "must_have": ["Testing Mindset", "Documentation"],
+                "cgpa_min": 5.5,
+                "description": "Ensure software quality",
+                "companies": {
+                    "big": { "Google": ["QA Engineer"], "Microsoft": ["QA Engineer"], "Amazon": ["QA Engineer"], "TCS": ["QA Engineer"], "HCL": ["QA Engineer"] },
+                    "startup": { "Swiggy": ["QA Engineer"], "Freshworks": ["QA Engineer"], "Zomato": ["QA Engineer"], "InstantPay": ["QA Engineer"], "Chargebee": ["QA Engineer"] }
+                }
+            },
+            "Software Engineer": {
+                "required_skills": ["Programming", "Problem Solving", "Algorithms"],
+                "must_have": ["DSA", "OOPS Concepts"],
+                "cgpa_min": 6.0,
+                "description": "General software development",
+                "companies": {
+                    "big": { "Google": ["Software Engineer"], "Microsoft": ["Software Engineer"], "Amazon": ["SDE"], "Goldman Sachs": ["Software Engineer"], "Flipkart": ["Software Engineer"] },
+                    "startup": { "Swiggy": ["Software Engineer"], "Paytm": ["Software Engineer"], "PhonePe": ["Software Engineer"], "Razorpay": ["Software Engineer"], "Myntra": ["Software Engineer"] }
+                }
+            },
+            "Cloud Engineer": {
+                "required_skills": ["AWS/Azure/GCP", "Networking", "Security", "Automation"],
+                "must_have": ["Cloud Platforms", "Infrastructure Knowledge"],
+                "cgpa_min": 6.3,
+                "description": "Design cloud infrastructure",
+                "companies": {
+                    "big": { "Amazon": ["Cloud Engineer"], "Microsoft": ["Cloud Engineer"], "Google": ["Cloud Engineer"], "IBM": ["Cloud Engineer"], "Salesforce": ["Cloud Engineer"] },
+                    "startup": { "Hostinger": ["Cloud Engineer"], "Scaleway": ["Cloud Engineer"], "Heroku": ["Cloud Engineer"], "DigitalOcean": ["Cloud Engineer"], "Linode": ["Cloud Engineer"] }
+                }
+            }
+        };
+
+        const weeklyStrategy = {
+            "Frontend Developer": [
+                { week: 1, title: "HTML & CSS Fundamentals", tasks: ["Master semantic HTML5", "Learn CSS Grid and Flexbox", "Build 2 responsive websites"] },
+                { week: 2, title: "JavaScript Mastery", tasks: ["Learn ES6+ features", "Master DOM manipulation", "Solve 20 JS problems"] },
+                { week: 3, title: "Framework Deep Dive", tasks: ["Learn React hooks", "Build 3 React projects", "Master state management"] },
+                { week: 4, title: "UI/UX & Optimization", tasks: ["Study responsive design", "Learn web performance", "Build a portfolio project"] }
+            ],
+            "Backend Developer": [
+                { week: 1, title: "Programming Fundamentals", tasks: ["Master Python/Java", "Practice DSA", "Understand OOP"] },
+                { week: 2, title: "Database Design", tasks: ["Learn SQL deeply", "Master databases", "Design schemas"] },
+                { week: 3, title: "Backend Frameworks", tasks: ["Learn Flask/Spring", "Build REST APIs", "Implement authentication"] },
+                { week: 4, title: "System Design", tasks: ["Study design patterns", "Learn testing", "Build API project"] }
+            ],
+            "Data Analyst": [
+                { week: 1, title: "SQL Mastery", tasks: ["Learn SQL queries", "Practice joins", "Master aggregation"] },
+                { week: 2, title: "Python for Data", tasks: ["Learn Pandas", "Master data cleaning", "Learn NumPy"] },
+                { week: 3, title: "Data Visualization", tasks: ["Learn Tableau", "Create charts", "Master dashboards"] },
+                { week: 4, title: "Analytics Projects", tasks: ["Build 2 projects", "Create presentations", "Practice cases"] }
+            ],
+            "Data Scientist": [
+                { week: 1, title: "Python & Math", tasks: ["Master Python", "Learn Statistics", "Study Linear Algebra"] },
+                { week: 2, title: "ML Basics", tasks: ["Learn supervised learning", "Understand regression", "Master scikit"] },
+                { week: 3, title: "Advanced ML", tasks: ["Learn deep learning", "Study classification", "Practice tuning"] },
+                { week: 4, title: "Portfolio & Interviews", tasks: ["Build ML project", "Document work", "Practice cases"] }
+            ],
+            "DevOps Engineer": [
+                { week: 1, title: "Linux & Basics", tasks: ["Master Linux commands", "Learn sysadmin", "Study networking"] },
+                { week: 2, title: "Containerization", tasks: ["Learn Docker", "Practice dockerfiles", "Build 3 projects"] },
+                { week: 3, title: "Kubernetes & Cloud", tasks: ["Learn Kubernetes", "Study AWS/Azure", "Master CI/CD"] },
+                { week: 4, title: "Monitoring", tasks: ["Learn logging", "Understand monitoring", "Build pipeline"] }
+            ],
+            "Mobile Developer": [
+                { week: 1, title: "Mobile Fundamentals", tasks: ["Learn Android/iOS", "Master UI", "Build 2 apps"] },
+                { week: 2, title: "Advanced Concepts", tasks: ["Learn storage", "Master APIs", "Build 1 app"] },
+                { week: 3, title: "Performance", tasks: ["Learn optimization", "Master testing", "Practice debugging"] },
+                { week: 4, title: "Portfolio", tasks: ["Build feature-rich app", "Deploy to store", "Document work"] }
+            ],
+            "Full Stack Developer": [
+                { week: 1, title: "Frontend", tasks: ["Master HTML/CSS", "Learn JavaScript", "Choose framework"] },
+                { week: 2, title: "Backend", tasks: ["Learn backend framework", "Master databases", "Study APIs"] },
+                { week: 3, title: "Integration", tasks: ["Connect frontend/backend", "Learn auth", "Handle errors"] },
+                { week: 4, title: "Deployment", tasks: ["Learn deployment", "Build project", "Deploy live"] }
+            ],
+            "QA Engineer": [
+                { week: 1, title: "Testing Fundamentals", tasks: ["Learn test types", "Master test design", "Practice manual"] },
+                { week: 2, title: "Automati", tasks: ["Learn Selenium", "Master frameworks", "Build test suites"] },
+                { week: 3, title: "Advanced Tools", tasks: ["Learn CI/CD integration", "Master bug tracking", "Learn API testing"] },
+                { week: 4, title: "Projects", tasks: ["Build automation", "Test real apps", "Document practices"] }
+            ],
+            "Software Engineer": [
+                { week: 1, title: "DSA Fundamentals", tasks: ["Master data structures", "Learn algorithms", "Solve problems"] },
+                { week: 2, title: "OOP & Patterns", tasks: ["Learn SOLID", "Master patterns", "Study design"] },
+                { week: 3, title: "Web Development", tasks: ["Learn web tech", "Master backend", "Study databases"] },
+                { week: 4, title: "Interviews", tasks: ["Practice interviews", "Learn behavioral", "Build projects"] }
+            ],
+            "Cloud Engineer": [
+                { week: 1, title: "Cloud Fundamentals", tasks: ["Learn concepts", "Master basics", "Study pricing"] },
+                { week: 2, title: "Cloud Services", tasks: ["Learn compute", "Master storage", "Study networking"] },
+                { week: 3, title: "Security", tasks: ["Learn cloud security", "Master IAM", "Study compliance"] },
+                { week: 4, title: "Architecture", tasks: ["Learn patterns", "Design systems", "Prepare certification"] }
+            ]
+        };
+
+        const aiTips = {
+            "Frontend Developer": [
+                { icon: "🎨", title: "Master CSS", content: "Deep CSS knowledge is essential. Learn Grid and Flexbox.", type: "default" },
+                { icon: "⚛️", title: "React Best Practices", content: "Learn Hooks and Context API thoroughly.", type: "default" },
+                { icon: "📊", title: "Performance", content: "Learn lazy loading and code splitting.", type: "urgent" }
+            ],
+            "Backend Developer": [
+                { icon: "🗄️", title: "Database Design", content: "Learn normalization and indexing.", type: "default" },
+                { icon: "🔐", title: "Security", content: "Master JWT and security best practices.", type: "urgent" },
+                { icon: "📈", title: "API Design", content: "Learn REST principles and versioning.", type: "default" }
+            ],
+            "Data Analyst": [
+                { icon: "📊", title: "Excel Mastery", content: "Master VLOOKUP and Pivot Tables.", type: "default" },
+                { icon: "🧮", title: "SQL", content: "Learn query optimization deeply.", type: "default" },
+                { icon: "📈", title: "Visualization", content: "Master Tableau or Power BI.", type: "default" }
+            ],
+            "Data Scientist": [
+                { icon: "🤖", title: "ML Fundamentals", content: "Master supervised/unsupervised learning.", type: "default" },
+                { icon: "🧠", title: "Deep Learning", content: "Learn neural networks with TensorFlow.", type: "urgent" },
+                { icon: "📊", title: "Feature Engineering", content: "This is the most important skill.", type: "urgent" }
+            ],
+            "DevOps Engineer": [
+                { icon: "🐳", title: "Docker", content: "Become proficient with containers.", type: "default" },
+                { icon: "☸️", title: "Kubernetes", content: "Learn orchestration deeply.", type: "urgent" },
+                { icon: "☁️", title: "Cloud Platform", content: "Master AWS/Azure/GCP.", type: "urgent" }
+            ],
+            "Mobile Developer": [
+                { icon: "📱", title: "Native Development", content: "Choose Android or iOS and master it.", type: "default" },
+                { icon: "⚛️", title: "Cross-platform", content: "Learn React Native or Flutter.", type: "default" },
+                { icon: "⚡", title: "Performance", content: "Optimize battery and memory usage.", type: "default" }
+            ],
+            "Full Stack Developer": [
+                { icon: "🔗", title: "Full Circle", content: "Understand frontend-backend communication.", type: "default" },
+                { icon: "🗄️", title: "Databases", content: "Learn SQL and NoSQL.", type: "default" },
+                { icon: "🚀", title: "DevOps", content: "Learn deployment and CI/CD.", type: "default" }
+            ],
+            "QA Engineer": [
+                { icon: "🤖", title: "Automation", content: "Learn Selenium and TestNG.", type: "urgent" },
+                { icon: "📋", title: "Test Planning", content: "Master test case design.", type: "default" },
+                { icon: "🐛", title: "Bug Reporting", content: "Write clear bug reports.", type: "default" }
+            ],
+            "Software Engineer": [
+                { icon: "💡", title: "Problem Solving", content: "Build DSA fundamentals.", type: "urgent" },
+                { icon: "🧩", title: "Design Patterns", content: "Learn common patterns.", type: "default" },
+                { icon: "🔍", title: "Code Quality", content: "Write clean maintainable code.", type: "default" }
+            ],
+            "Cloud Engineer": [
+                { icon: "☁️", title: "Certifications", content: "Get AWS or GCP certification.", type: "urgent" },
+                { icon: "🔒", title: "Security", content: "Learn cloud security deeply.", type: "urgent" },
+                { icon: "💰", title: "Cost Optimization", content: "Optimize cloud costs.", type: "default" }
+            ]
+        };
+
+        const jobPreparationPlans = {
+            "Frontend Developer": {
+                "big_company": { difficulty: "Hard", timeline: "3-4 months", focus: "System Design", sections: { "Technical Skills": ["Master React hooks", "Learn state management", "Practice optimization", "Study accessibility"], "Interview": ["System design", "LeetCode Medium/Hard", "Behavioral questions"], "Portfolio": ["Production SPA", "Complex dashboard", "Open-source contrib"] } },
+                "startup": { difficulty: "Medium", timeline: "2-3 months", focus: "Speed & Features", sections: { "Technical Skills": ["React fundamentals", "HTML/CSS mastery", "API integration", "Responsive design"], "Interview": ["LeetCode Easy/Medium", "Build features fast", "Quick prototyping"], "Portfolio": ["2-3 web apps", "Portfolio website", "GitHub showcase"] } }
+            },
+            "Backend Developer": {
+                "big_company": { difficulty: "Hard", timeline: "4-5 months", focus: "System Design", sections: { "Technical Skills": ["DSA deeply", "Database optimization", "Microservices", "Caching strategies"], "Interview": ["System design", "LeetCode Hard", "Scalability"], "Portfolio": ["Scalable API", "Microservices arch", "Real-time app"] } },
+                "startup": { difficulty: "Medium", timeline: "2-3 months", focus: "MVP APIs", sections: { "Technical Skills": ["Python/Node basics", "SQL queries", "REST API design", "Authentication"], "Interview": ["LeetCode Easy/Medium", "API design", "Quick coding"], "Portfolio": ["Working REST API", "Backend for app", "CRUD app"] } }
+            },
+            "Data Analyst": {
+                "big_company": { difficulty: "Medium-Hard", timeline: "3 months", focus: "Advanced Analytics", sections: { "Technical Skills": ["SQL optimization", "Advanced Excel", "Tableau/Power BI", "Statistical analysis"], "Interview": ["Complex SQL", "Case studies", "Dashboard design"], "Portfolio": ["2 analytics projects", "Data dashboards", "Case reports"] } },
+                "startup": { difficulty: "Easy-Medium", timeline: "2 months", focus: "Quick Insights", sections: { "Technical Skills": ["SQL basics", "Excel fundamentals", "Google Sheets", "Basic stats"], "Interview": ["SQL queries", "Quick analysis", "Dashboard creation"], "Portfolio": ["Dataset analyses", "Simple dashboards", "Insights reports"] } }
+            },
+            "Data Scientist": {
+                "big_company": { difficulty: "Hard", timeline: "4-5 months", focus: "Advanced ML", sections: { "Technical Skills": ["ML algorithms", "Deep learning", "Feature engineering", "Production ML"], "Interview": ["ML explanation", "Feature eng", "Model deployment"], "Portfolio": ["End-to-end ML", "Kaggle", "Production models"] } },
+                "startup": { difficulty: "Medium", timeline: "3-4 months", focus: "Practical ML", sections: { "Technical Skills": ["Python stack", "ML fundamentals", "Basic DL", "Feature eng"], "Interview": ["ML questions", "Feature eng", "Model building"], "Portfolio": ["2-3 ML projects", "Kaggle", "Model deploy"] } }
+            },
+            "DevOps Engineer": {
+                "big_company": { difficulty: "Hard", timeline: "4-5 months", focus: "Infrastructure", sections: { "Technical Skills": ["Kubernetes deep", "Terraform", "Cloud platforms", "Monitoring"], "Interview": ["System design", "K8s questions", "Cost optimization"], "Portfolio": ["Complex K8s deploy", "Terraform infra", "CI/CD pipelines"] } },
+                "startup": { difficulty: "Medium", timeline: "2-3 months", focus: "Quick Deploy", sections: { "Technical Skills": ["Docker basics", "K8s basic", "Cloud basics", "CI/CD basics"], "Interview": ["Docker questions", "Deployments", "Problem solving"], "Portfolio": ["Docker apps", "Basic CI/CD", "Deployment scripts"] } }
+            },
+            "Mobile Developer": {
+                "big_company": { difficulty: "Hard", timeline: "4-5 months", focus: "Performance", sections: { "Technical Skills": ["Native dev deep", "Optimization", "Testing", "Architecture"], "Interview": ["Complex problems", "Performance", "Architecture"], "Portfolio": ["2 complex apps", "App Store deploy", "Complex features"] } },
+                "startup": { difficulty: "Medium", timeline: "2-3 months", focus: "Cross-platform", sections: { "Technical Skills": ["React Native/Flutter", "UI basics", "APIs", "State mgmt"], "Interview": ["UI problems", "Feature building", "API integration"], "Portfolio": ["2 working apps", "Firebase deploy", "Prototypes"] } }
+            },
+            "Full Stack Developer": {
+                "big_company": { difficulty: "Hard", timeline: "4-5 months", focus: "System Design", sections: { "Technical Skills": ["Frontend & backend", "System design", "Databases", "DevOps"], "Interview": ["Full stack design", "Complex problems", "Architecture"], "Portfolio": ["Production apps", "Complex features", "Optimization"] } },
+                "startup": { difficulty: "Medium", timeline: "3-4 months", focus: "MVP Launch", sections: { "Technical Skills": ["Tech stack", "Frontend basics", "Backend basics", "Quick deploy"], "Interview": ["Feature building", "Tech decisions", "Quick coding"], "Portfolio": ["2 web apps", "Deployed apps", "Quick prototypes"] } }
+            },
+            "QA Engineer": {
+                "big_company": { difficulty: "Medium", timeline: "2-3 months", focus: "Automation", sections: { "Technical Skills": ["Selenium deep", "Test framework", "CI/CD integration", "API testing"], "Interview": ["Test automation", "Framework design", "Bug analysis"], "Portfolio": ["Test automation", "Test framework", "CI/CD testing"] } },
+                "startup": { difficulty: "Easy-Medium", timeline: "1-2 months", focus: "Manual+Automation", sections: { "Technical Skills": ["Manual testing", "Selenium basics", "Test writing", "Bug logging"], "Interview": ["Manual testing", "Quick automation", "Bug ID"], "Portfolio": ["Test cases", "Automation scripts", "Bug reports"] } }
+            },
+            "Software Engineer": {
+                "big_company": { difficulty: "Hard", timeline: "4-5 months", focus: "DSA & Design", sections: { "Technical Skills": ["Data structures", "Algorithms", "System design", "OOP/patterns"], "Interview": ["LeetCode hard", "System design", "Behavioral"], "Portfolio": ["Algorithmic solutions", "Open-source", "Complete projects"] } },
+                "startup": { difficulty: "Medium", timeline: "2-3 months", focus: "Problem Solving", sections: { "Technical Skills": ["Programming", "Data structures", "Algorithms", "Code quality"], "Interview": ["LeetCode medium", "Quick coding", "Problem solving"], "Portfolio": ["2-3 apps", "Coding challenges", "GitHub portfolio"] } }
+            },
+            "Cloud Engineer": {
+                "big_company": { difficulty: "Hard", timeline: "4-6 months", focus: "Advanced Cloud", sections: { "Technical Skills": ["Cloud deep", "Security/compliance", "Cost optimization", "Disaster recovery"], "Interview": ["Cloud architecture", "Security", "Cost optimization"], "Portfolio": ["Complex architectures", "Certifications", "Production systems"] } },
+                "startup": { difficulty: "Medium", timeline: "2-3 months", focus: "Cloud Basics", sections: { "Technical Skills": ["Cloud basics", "VM/container setup", "Security", "Cost tracking"], "Interview": ["Cloud basics", "Quick deploy", "Architecture"], "Portfolio": ["Deployed apps", "Cloud infra", "Monitoring setup"] } }
+            }
+        };
+
+        let userData = {
+            name: '',
+            cgpa: 0,
+            branch: '',
+            selectedRole: '',
+            requiredSkills: [],
+            mustHaveSkills: [],
+            eligibility: {}
+        };
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function initializeJobRoles() {
+            const rolesList = document.getElementById('rolesList');
+            rolesList.innerHTML = '';
+            Object.keys(jobRequirements).forEach(role => {
+                const data = jobRequirements[role];
+                rolesList.innerHTML += `
+                    <div class="role-option" onclick="selectRole('${role}')">
+                        <input type="radio" name="jobRole" value="${role}">
+                        <div class="role-info">
+                            <strong>${role}</strong>
+                            <small>${data.description}</small>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function selectRole(role) {
+            userData.selectedRole = role;
+            document.querySelectorAll('.role-option').forEach(opt => {
+                opt.style.borderColor = '#e0e0e0';
+                opt.style.background = '#f8f9fa';
+            });
+            event.currentTarget.style.borderColor = '#667eea';
+            event.currentTarget.style.background = '#f0f2ff';
+        }
+
+        function initializeSkills() {
+            if (!userData.selectedRole) return;
+            const role = userData.selectedRole;
+            const data = jobRequirements[role];
+
+            const requiredSkillsDiv = document.getElementById('requiredSkills');
+            requiredSkillsDiv.innerHTML = '';
+            data.required_skills.forEach((skill, idx) => {
+                requiredSkillsDiv.innerHTML += `
+                    <div class="skill-item">
+                        <input type="checkbox" id="req_${idx}" value="${skill}">
+                        <label for="req_${idx}">${skill}</label>
+                    </div>
+                `;
+            });
+
+            const mustHaveSkillsDiv = document.getElementById('mustHaveSkills');
+            mustHaveSkillsDiv.innerHTML = '';
+            data.must_have.forEach((skill, idx) => {
+                mustHaveSkillsDiv.innerHTML += `
+                    <div class="skill-item">
+                        <input type="checkbox" id="must_${idx}" value="${skill}">
+                        <label for="must_${idx}">${skill}</label>
+                    </div>
+                `;
+            });
+        }
+
+        function validateAndNext(currentSection, nextSection) {
+            if (currentSection === 'basicInfo') {
+                const name = document.getElementById('name').value.trim();
+                const cgpa = parseFloat(document.getElementById('cgpa').value);
+                const branch = document.getElementById('branch').value;
+
+                if (!name) { alert('Please enter your name'); return; }
+                if (isNaN(cgpa) || cgpa < 0 || cgpa > 10) { alert('Please enter valid CGPA'); return; }
+                if (!branch) { alert('Please select branch'); return; }
+
+                userData.name = name;
+                userData.cgpa = cgpa;
+                userData.branch = branch;
+                initializeJobRoles();
+            } else if (currentSection === 'jobRole') {
+                if (!userData.selectedRole) { alert('Please select a job role'); return; }
+                initializeSkills();
+            }
+
+            showSection(nextSection);
+        }
+
+        function calculatePredictionBalance() {
+            const role = userData.selectedRole;
+            const roleData = jobRequirements[role];
+            const minCGPA = roleData.cgpa_min;
+            
+            const cgpaScore = (userData.cgpa / 10) * 30;
+            const skillsScore = (userData.requiredSkills.length / roleData.required_skills.length) * 30;
+            const mustHaveScore = (userData.mustHaveSkills.length / roleData.must_have.length) * 40;
+            
+            const totalBalance = cgpaScore + skillsScore + mustHaveScore;
+            
+            const cgpaPercentage = (userData.cgpa / 10) * 100;
+            const skillsPercentage = (userData.requiredSkills.length / roleData.required_skills.length) * 100;
+            const mustHavePercentage = (userData.mustHaveSkills.length / roleData.must_have.length) * 100;
+            
+            let ratingCategory = '';
+            if (totalBalance >= 85) ratingCategory = 'Excellent';
+            else if (totalBalance >= 70) ratingCategory = 'Very Good';
+            else if (totalBalance >= 60) ratingCategory = 'Good';
+            else if (totalBalance >= 50) ratingCategory = 'Fair';
+            else ratingCategory = 'Needs Improvement';
+            
+            return {
+                totalBalance: totalBalance.toFixed(1),
+                cgpaScore: cgpaScore.toFixed(1),
+                skillsScore: skillsScore.toFixed(1),
+                mustHaveScore: mustHaveScore.toFixed(1),
+                cgpaPercentage: cgpaPercentage.toFixed(1),
+                skillsPercentage: skillsPercentage.toFixed(1),
+                mustHavePercentage: mustHavePercentage.toFixed(1),
+                ratingCategory: ratingCategory,
+                cgpaEligible: userData.cgpa >= minCGPA,
+                mustHaveEligible: mustHavePercentage >= 70
+            };
+        }
+
+        function calculatePrediction() {
+            if (!userData.selectedRole) { alert('Please select a job role'); return; }
+
+            const requiredChecked = Array.from(document.querySelectorAll('#requiredSkills input[type="checkbox"]:checked')).map(cb => cb.value);
+            const mustHaveChecked = Array.from(document.querySelectorAll('#mustHaveSkills input[type="checkbox"]:checked')).map(cb => cb.value);
+
+            userData.requiredSkills = requiredChecked;
+            userData.mustHaveSkills = mustHaveChecked;
+
+            const role = userData.selectedRole;
+            const roleData = jobRequirements[role];
+            const minCGPA = roleData.cgpa_min;
+
+            const cgpaEligible = userData.cgpa >= minCGPA;
+            const mustHavePercentage = (mustHaveChecked.length / roleData.must_have.length) * 100;
+            const mustHaveEligible = mustHavePercentage >= 70;
+
+            userData.eligibility = {
+                eligible: cgpaEligible && mustHaveEligible,
+                cgpaEligible: cgpaEligible,
+                mustHaveEligible: mustHaveEligible,
+                cgpaRequired: minCGPA,
+                mustHavePercentage: mustHavePercentage
+            };
+
+            displayResult();
+            showSection('result');
+        }
+
+        function displayResult() {
+            const role = userData.selectedRole;
+            const roleData = jobRequirements[role];
+
+            document.getElementById('resultName').textContent = userData.name;
+            document.getElementById('resultCGPA').textContent = userData.cgpa;
+            document.getElementById('resultBranch').textContent = userData.branch;
+            document.getElementById('resultRole').textContent = role;
+
+            const resultCard = document.getElementById('resultCard');
+            const eligible = userData.eligibility.eligible;
+            resultCard.innerHTML = `<div class="result-card ${eligible ? 'eligible' : 'not-eligible'}"><h2>${eligible ? '✅ ELIGIBLE!' : '❌ NOT YET ELIGIBLE'}</h2><p>${eligible ? 'You are eligible for placement!' : 'Work on improvements'}</p></div>`;
+
+            const balance = calculatePredictionBalance();
+
+            const balanceDiv = document.getElementById('balanceSection');
+            balanceDiv.innerHTML = `
+                <div class="balance-score">
+                    <div class="score-number">${balance.totalBalance}%</div>
+                    <div class="score-label">Prediction Balance</div>
+                    <div class="score-category">${balance.ratingCategory}</div>
+                </div>
+                <div class="report-section">
+                    <h3>Score Breakdown</h3>
+                    <p><strong>CGPA:</strong> ${balance.cgpaScore}/30 (${balance.cgpaPercentage}%)</p>
+                    <p><strong>Required Skills:</strong> ${balance.skillsScore}/30 (${balance.skillsPercentage}%)</p>
+                    <p><strong>Critical Skills:</strong> ${balance.mustHaveScore}/40 (${balance.mustHavePercentage}%)</p>
+                </div>
+            `;
+
+            const aiTipsDiv = document.getElementById('aiTipsSection');
+            let tipsHTML = '<div class="report-section"><h3>🤖 AI Tips</h3><div class="ai-tips-container">';
+            if (aiTips[role]) {
+                aiTips[role].forEach(tip => {
+                    tipsHTML += `<div class="ai-tip-card ${tip.type}"><div class="ai-tip-icon">${tip.icon}</div><div class="ai-tip-title">${tip.title}</div><div class="ai-tip-content">${tip.content}</div></div>`;
+                });
+            }
+            tipsHTML += '</div></div>';
+            aiTipsDiv.innerHTML = tipsHTML;
+
+            const weeklyDiv = document.getElementById('weeklyStrategySection');
+            const weeks = weeklyStrategy[role] || [];
+            let strategyHTML = `<div class="report-section"><h3>📅 4-Week Strategy</h3>`;
+            weeks.forEach(week => {
+                strategyHTML += `<div class="week-card"><div class="week-number">Week ${week.week}</div><div class="week-title">${week.title}</div><ul class="week-tasks">${week.tasks.map(t => `<li>${t}</li>`).join('')}</ul></div>`;
+            });
+            strategyHTML += `</div>`;
+            weeklyDiv.innerHTML = strategyHTML;
+
+            const companiesDiv = document.getElementById('companiesPreview');
+            if (userData.eligibility.eligible) {
+                const bigCompanies = Object.keys(roleData.companies.big);
+                const startupCompanies = Object.keys(roleData.companies.startup);
+                companiesDiv.innerHTML = `<div class="report-section"><h3>📌 Eligible Companies (${bigCompanies.length + startupCompanies.length})</h3><p>🏢 Big: ${bigCompanies.length} | 🚀 Startups: ${startupCompanies.length}</p><button class="btn-next" style="margin-top: 15px; width: 100%;" onclick="displayAndShowCompanies()">View Companies →</button></div>`;
+            } else {
+                companiesDiv.innerHTML = '';
+            }
+
+            const improvementDiv = document.getElementById('improvementPlanPreview');
+            if (!userData.eligibility.eligible) {
+                let improvementHTML = '<div class="improvement-plan"><h3>📈 Improve</h3><ol>';
+                if (!balance.cgpaEligible) {
+                    const gap = roleData.cgpa_min - userData.cgpa;
+                    improvementHTML += `<li>CGPA: Need ${gap.toFixed(2)} more points</li>`;
+                }
+                const missingSkills = roleData.must_have.filter(s => !userData.mustHaveSkills.includes(s));
+                if (missingSkills.length > 0) {
+                    improvementHTML += `<li>Learn: ${missingSkills.join(', ')}</li>`;
+                }
+                improvementHTML += `<li>Current: ${balance.totalBalance}% - Target: ≥70%</li></ol></div>`;
+                improvementDiv.innerHTML = improvementHTML;
+            } else {
+                improvementDiv.innerHTML = `<div class="improvement-plan" style="background: #d1fae5; border-left-color: #10b981;"><h3 style="color: #065f46;">✨ Success Steps</h3><ol style="color: #065f46;"><li>Current Score: ${balance.totalBalance}% (${balance.ratingCategory})</li><li>Build portfolio projects</li><li>Practice interviews</li></ol></div>`;
+            }
+        }
+
+        function displayCompaniesDetail() {
+            const role = userData.selectedRole;
+            const roleData = jobRequirements[role];
+
+            let html = '<div class="company-category-title">🏢 Big Companies</div><div class="company-grid">';
+            Object.entries(roleData.companies.big).forEach(([company, roles]) => {
+                html += `<div class="company-card" onclick="openJobModal('${roles[0]}', '${company}', 'big')"><span class="company-badge">Big</span><h3>${company}</h3><div class="company-type">Established</div><ul>${roles.map(r => `<li>${r}</li>`).join('')}</ul></div>`;
+            });
+            html += '</div><div class="company-category-title">🚀 Startups</div><div class="company-grid">';
+            Object.entries(roleData.companies.startup).forEach(([company, roles]) => {
+                html += `<div class="company-card" onclick="openJobModal('${roles[0]}', '${company}', 'startup')"><span class="company-badge startup">Startup</span><h3>${company}</h3><div class="company-type">Growth</div><ul>${roles.map(r => `<li>${r}</li>`).join('')}</ul></div>`;
+            });
+            html += '</div>';
+
+            document.getElementById('companiesDetailContent').innerHTML = html;
+        }
+
+        function openJobModal(jobTitle, companyName, companyType) {
+            const prepData = jobPreparationPlans[userData.selectedRole] || {};
+            const jobTypeKey = companyType === 'big' ? 'big_company' : 'startup';
+            const prep = prepData[jobTypeKey] || {};
+
+            let modalHTML = `<div style="background: linear-gradient(135deg, ${companyType === 'big' ? '#667eea' : '#f59e0b'} 0%, ${companyType === 'big' ? '#764ba2' : '#f97316'} 100%); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;"><p style="margin: 0 0 10px 0;"><strong>${companyName}</strong> • ${companyType === 'big' ? '🏢 Big Company' : '🚀 Startup'}</p><h3 style="margin: 10px 0;">${jobTitle}</h3><div style="display: flex; gap: 20px; margin-top: 15px; flex-wrap: wrap;"><div><strong>📊 Difficulty:</strong> ${prep.difficulty || 'N/A'}</div><div><strong>⏱️ Timeline:</strong> ${prep.timeline || 'N/A'}</div><div><strong>🎯 Focus:</strong> ${prep.focus || 'N/A'}</div></div></div>`;
+
+            if (prep.sections) {
+                Object.entries(prep.sections).forEach(([category, items]) => {
+                    modalHTML += `<div class="prep-category"><h4>${category}</h4><ul class="prep-list">${items.map(item => `<li>${item}</li>`).join('')}</ul></div>`;
+                });
+            }
+
+            document.getElementById('modalJobTitle').textContent = jobTitle;
+            document.getElementById('modalJobContent').innerHTML = modalHTML;
+            document.getElementById('jobModal').classList.add('active');
+        }
+
+        function closeJobModal() {
+            document.getElementById('jobModal').classList.remove('active');
+        }
+
+        function displayAndShowCompanies() {
+            displayCompaniesDetail();
+            showSection('companiesDetail');
+        }
+
+        function downloadReport() {
+            const balance = calculatePredictionBalance();
+            const content = `PLACEMENT PREDICTION REPORT\n\nName: ${userData.name}\nCGPA: ${userData.cgpa}\nRole: ${userData.selectedRole}\n\nBalance Score: ${balance.totalBalance}% (${balance.ratingCategory})\nEligible: ${userData.eligibility.eligible ? 'YES' : 'NO'}`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `report_${userData.name}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function resetForm() {
+            userData = { name: '', cgpa: 0, branch: '', selectedRole: '', requiredSkills: [], mustHaveSkills: [], eligibility: {} };
+            document.getElementById('name').value = '';
+            document.getElementById('cgpa').value = '';
+            document.getElementById('branch').value = '';
+            document.getElementById('cgpaProgress').style.width = '0%';
+            showSection('welcome');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const cgpaInput = document.getElementById('cgpa');
+            if (cgpaInput) {
+                cgpaInput.addEventListener('input', function() {
+                    document.getElementById('cgpaProgress').style.width = (this.value / 10) * 100 + '%';
+                });
+            }
+
+            const modal = document.getElementById('jobModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) closeJobModal();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
