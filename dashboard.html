@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - She Wants</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fdfbfb;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #d53f8c;
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid #cbd5e0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #718096;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card h2 {
+            margin: 0 0 10px 0;
+            color: #2d3748;
+        }
+
+        .card p {
+            color: #718096;
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        .emergency-card {
+            background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%);
+            border: 2px solid #FC8181;
+        }
+
+        .emergency-card h2 {
+            color: #C53030;
+        }
+
+        .emergency-card .card-icon {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Helper Toggle */
+        .helper-status {
+            background: #EBF8FF;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #667eea;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>🌸 She Wants</h1>
+        <div class="user-profile">
+            <span id="userName">User</span>
+            <button class="logout-btn" onclick="Auth.logout()">Logout</button>
+        </div>
+    </header>
+
+    <div class="grid">
+        <a href="period-tracker.html" class="card">
+            <span class="card-icon">📅</span>
+            <h2>Period Tracker</h2>
+            <p>Track your cycle and symptoms</p>
+        </a>
+
+        <a href="emergency-support.html" class="card emergency-card">
+            <span class="card-icon">🆘</span>
+            <h2>Emergency Support</h2>
+            <p>Find nearby help for sanitary supplies</p>
+        </a>
+
+        <a href="chat-support.html" class="card">
+            <span class="card-icon">💬</span>
+            <h2>Sisterhood Chat</h2>
+            <p>Connect with the community</p>
+        </a>
+    </div>
+
+    <div class="helper-status">
+        <div>
+            <strong>Helper Mode</strong>
+            <p style="margin: 5px 0 0; font-size: 0.85em; color: #718096;">Receive alerts from nearby women</p>
+        </div>
+        <label class="switch">
+            <input type="checkbox" id="helperToggle" onchange="toggleHelperMode()">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/emergency.js"></script>
+    <script>
+        Auth.requireAuth();
+        const user = Auth.getCurrentUser();
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('helperToggle').checked = user.willingToHelp;
+
+        function toggleHelperMode() {
+            user.willingToHelp = document.getElementById('helperToggle').checked;
+            Auth.setCurrentUser(user);
+            // In a real app, update server
+        }
+
+        // Listen for emergencies in background if helper mode is on
+        if (user.willingToHelp) {
+            Emergency.listen((request) => {
+                // Show notification (simple alert for demo)
+                const response = confirm(`🆘 EMERGENCY ALERT!\n\n${request.user.name} needs help nearby!\n\nLocation: ${request.location.lat}, ${request.location.lng}\n\nDo you want to help?`);
+                if (response) {
+                    // Redirect to map view (simplified)
+                    alert(`Thank you! Please contact or find ${request.user.name}. We have notified them you are coming.`);
+                    Emergency.respondToHelp(request.id, user);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

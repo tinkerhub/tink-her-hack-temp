@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Debug - She Wants</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Debug / Reset Tool</h1>
+    <button onclick="clearAll()">Clear All Data (Factory Reset)</button>
+    <button onclick="viewData()">View LocalStorage Data</button>
+    <a href="index.html">Back to Home</a>
+
+    <pre id="output" style="background: #eee; padding: 10px; margin-top: 20px;"></pre>
+
+    <script>
+        function clearAll() {
+            if (confirm("Delete all users and data?")) {
+                localStorage.clear();
+                alert("Cleared!");
+                viewData();
+            }
+        }
+
+        function viewData() {
+            const data = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                try {
+                    data[key] = JSON.parse(localStorage.getItem(key));
+                } catch (e) {
+                    data[key] = localStorage.getItem(key);
+                }
+            }
+            document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+        }
+
+        viewData();
+    </script>
+</body>
+
+</html>

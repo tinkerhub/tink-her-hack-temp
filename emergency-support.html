@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Support - She Wants</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff5f5;
+            color: #2d3748;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #c53030;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .sos-btn {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #e53e3e;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            border: none;
+            box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7);
+            cursor: pointer;
+            animation: pulse-red 2s infinite;
+            transition: transform 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .sos-btn:active {
+            transform: scale(0.95);
+        }
+
+        .sos-btn span {
+            font-size: 0.4em;
+            font-weight: normal;
+            margin-top: 5px;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 20px rgba(229, 62, 62, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(229, 62, 62, 0);
+            }
+        }
+
+        .status-container {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .status-message {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            min-height: 1.5em;
+        }
+
+        .helpers-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .helper-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .helper-info strong {
+            display: block;
+            color: #2d3748;
+        }
+
+        .helper-info span {
+            font-size: 0.85em;
+            color: #718096;
+        }
+
+        .connect-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .cancel-btn {
+            margin-top: 30px;
+            background: transparent;
+            border: 2px solid #cbd5e0;
+            color: #718096;
+            padding: 10px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .searching-animation {
+            display: none;
+        }
+
+        .searching-animation.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Emergency Support</h1>
+    <p>Press the button to alert nearby helpers</p>
+
+    <button class="sos-btn" id="sosBtn" onclick="triggerEmergency()">
+        SOS
+        <span>Click for Help</span>
+    </button>
+
+    <div class="status-container">
+        <div class="status-message" id="statusMessage"></div>
+        <div class="searching-animation" id="searchingAnim">
+            Finding nearby angels... 📡
+        </div>
+        <ul class="helpers-list" id="helpersList">
+            <!-- Helpers will appear here -->
+        </ul>
+    </div>
+
+    <button class="cancel-btn" onclick="cancelEmergency()">I am Safe Now</button>
+    <a href="dashboard.html" style="margin-top: 20px; color: #718096; text-decoration: none;">Back to Dashboard</a>
+
+    <script src="js/auth.js"></script>
+    <script src="js/emergency.js"></script>
+    <script>
+        Auth.requireAuth();
+        const user = Auth.getCurrentUser();
+        let isSearching = false;
+
+        function triggerEmergency() {
+            if (isSearching) return;
+
+            isSearching = true;
+            document.getElementById('sosBtn').classList.add('active'); // Pulse faster?
+            document.getElementById('statusMessage').textContent = "Broadcasting distress signal...";
+            document.getElementById('searchingAnim').classList.add('active');
+
+            // Get location (Mocked for demo if permission denied)
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const location = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    sendRequest(location);
+                },
+                (err) => {
+                    console.warn("Location denied, using default");
+                    sendRequest({ lat: 0, lng: 0 }); // Mock
+                }
+            );
+        }
+
+        function sendRequest(location) {
+            const request = Emergency.requestHelp(user, location);
+            document.getElementById('statusMessage').textContent = "Alert sent! Waiting for nearby helpers...";
+
+            // Simulate finding helpers for DEMO purposes
+            // (In real app, this comes from socket/broadcast response)
+            setTimeout(() => {
+                addHelper({ id: 'h1', name: 'Sarah M.', dist: '0.2 km' });
+            }, 2000);
+
+            setTimeout(() => {
+                addHelper({ id: 'h2', name: 'Dr. Emily', dist: '0.5 km' });
+            }, 4500);
+        }
+
+        function addHelper(helper) {
+            const list = document.getElementById('helpersList');
+            const item = document.createElement('li');
+            item.className = 'helper-item';
+            item.innerHTML = `
+                <div class="helper-info">
+                    <strong>${helper.name}</strong>
+                    <span>${helper.dist} away • Verified Helper</span>
+                </div>
+                <button class="connect-btn" onclick="connectToHelper('${helper.name}')">Request</button>
+            `;
+            list.appendChild(item);
+        }
+
+        function connectToHelper(name) {
+            alert(`Request sent directly to ${name}. They will be notified immediately.`);
+            document.getElementById('statusMessage').textContent = `Waiting for ${name} to arrive...`;
+            document.getElementById('statusMessage').style.color = '#2f855a';
+        }
+
+        function cancelEmergency() {
+            isSearching = false;
+            document.getElementById('statusMessage').textContent = "Emergency Cancelled";
+            document.getElementById('searchingAnim').classList.remove('active');
+            document.getElementById('helpersList').innerHTML = '';
+            setTimeout(() => {
+                document.getElementById('statusMessage').textContent = "";
+            }, 2000);
+        }
+
+        // Listen for real broadcasts too (if testing with multiple tabs)
+        Emergency.listen(null, (response) => {
+            // Handle response from real other tab
+            addHelper({
+                id: response.helper.id,
+                name: response.helper.name + ' (Real User)',
+                dist: 'Nearby'
+            });
+        });
+    </script>
+</body>
+
+</html>

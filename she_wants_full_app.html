@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>She Wants - Complete App</title>
+    <style>
+        /* ================= GLOBAL STYLES ================= */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow-x: hidden;
+            background: #fdfbfb;
+        }
+
+        .page {
+            display: none;
+            height: 100%;
+            width: 100%;
+            overflow-y: auto;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ================= AUTH / SIGNUP STYLES ================= */
+        .auth-body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .signup-container,
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .signup-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            text-align: center;
+            color: white;
+        }
+
+        .signup-body {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .alert {
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        /* ================= CALCULATOR STYLES ================= */
+        .calculator-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+        }
+
+        .calculator {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            padding: 20px;
+        }
+
+        .display {
+            background: #f8f9fa;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+            height: 80px;
+            font-size: 2.5em;
+            text-align: right;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: monospace;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .calc-btn {
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.25em;
+            cursor: pointer;
+            background: #eee;
+        }
+
+        .calc-btn.operator {
+            background: #ff9f43;
+            color: white;
+        }
+
+        .calc-btn.equals {
+            background: #2ecc71;
+            color: white;
+            grid-column: span 2;
+            width: 100%;
+            border-radius: 30px;
+        }
+
+        .calc-btn.clear {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* ================= WELCOME ANIMATION ================= */
+        .welcome-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        }
+
+        .flower {
+            font-size: 5em;
+            animation: bloom 2s ease-in-out infinite alternate;
+            margin: 20px;
+        }
+
+        @keyframes bloom {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.2) rotate(10deg);
+            }
+        }
+
+        /* ================= DASHBOARD STYLES ================= */
+        .dash-body {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 4em;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .emergency-card {
+            background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%);
+            border: 2px solid #FC8181;
+        }
+
+        /* ================= EMERGENCY STYLES ================= */
+        .emergency-body {
+            text-align: center;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sos-btn {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #e53e3e;
+            color: white;
+            font-size: 2em;
+            border: none;
+            cursor: pointer;
+            animation: pulse-red 2s infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 20px rgba(229, 62, 62, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(229, 62, 62, 0);
+            }
+        }
+
+        .helper-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= PAGE: CALCULATOR (HOME) ================= -->
+    <div id="page-calculator" class="page active">
+        <div class="calculator-body">
+            <div class="calculator">
+                <input type="text" class="display" id="calc-display" readonly value="0">
+                <div class="buttons">
+                    <button class="calc-btn clear" onclick="clearDisplay()">C</button>
+                    <button class="calc-btn" onclick="appendOperator('%')">%</button>
+                    <button class="calc-btn" onclick="appendOperator('/')">/</button>
+                    <button class="calc-btn operator" onclick="deleteLast()">DEL</button>
+                    <button class="calc-btn" onclick="appendNumber('7')">7</button>
+                    <button class="calc-btn" onclick="appendNumber('8')">8</button>
+                    <button class="calc-btn" onclick="appendNumber('9')">9</button>
+                    <button class="calc-btn operator" onclick="appendOperator('*')">×</button>
+                    <button class="calc-btn" onclick="appendNumber('4')">4</button>
+                    <button class="calc-btn" onclick="appendNumber('5')">5</button>
+                    <button class="calc-btn" onclick="appendNumber('6')">6</button>
+                    <button class="calc-btn operator" onclick="appendOperator('-')">-</button>
+                    <button class="calc-btn" onclick="appendNumber('1')">1</button>
+                    <button class="calc-btn" onclick="appendNumber('2')">2</button>
+                    <button class="calc-btn" onclick="appendNumber('3')">3</button>
+                    <button class="calc-btn operator" onclick="appendOperator('+')">+</button>
+                    <button class="calc-btn" onclick="appendNumber('0')">0</button>
+                    <button class="calc-btn" onclick="appendNumber('.')">.</button>
+                    <button class="calc-btn equals" onclick="calculate()">=</button>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="#" onclick="Navigate('page-signup')"
+                        style="font-size: 0.85em; color: #bbb; text-decoration: none;">New User?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE: SIGNUP ================= -->
+    <div id="page-signup" class="page">
+        <div class="auth-body">
+            <div class="signup-container">
+                <div class="signup-header">
+                    <h1>🌸 She Wants</h1>
+                    <p>Join our community</p>
+                </div>
+                <div class="signup-body">
+                    <div class="alert alert-error" id="signup-error"></div>
+                    <form onsubmit="handleSignup(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="s-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="s-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="s-pass" required minlength="8">
+                        </div>
+                        <button type="submit" class="submit-btn" id="s-btn">Create Account</button>
+                    </form>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <a href="#" onclick="Navigate('page-calculator')" style="color: #667eea;">Back to Calculator</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE: CODE DISPLAY ================= -->
+    <div id="page-code" class="page">
+        <div class="auth-body">
+            <div class="signup-container" style="text-align: center; padding: 40px;">
+                <h2 style="color: #9c27b0;">🎉 Account Created!</h2>
+                <p>Your unique secret access code is:</p>
+                <div id="generated-code"
+                    style="font-size: 3em; font-weight: bold; color: #e91e63; margin: 20px 0; font-family: monospace;">
+                    -----</div>
+                <p style="color: #666; font-size: 0.9em;">Use this code on the calculator to login secretly.</p>
+                <button class="submit-btn" onclick="Navigate('page-calculator')">Go to Calculator Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE: WELCOME ================= -->
+    <div id="page-welcome" class="page">
+        <div class="welcome-container">
+            <div class="flower">🌸</div>
+            <h1 id="w-greeting">Welcome Back!</h1>
+            <p>Accessing Secure Dashboard...</p>
+        </div>
+    </div>
+
+    <!-- ================= PAGE: DASHBOARD ================= -->
+    <div id="page-dashboard" class="page">
+        <div class="dash-body">
+            <header>
+                <h1 style="color: #d53f8c;">🌸 She Wants</h1>
+                <div>
+                    <span id="d-username" style="margin-right: 15px; font-weight: bold;">User</span>
+                    <button onclick="Auth.logout()" style="padding: 5px 10px; cursor: pointer;">Logout</button>
+                </div>
+            </header>
+
+            <div class="dash-grid">
+                <div class="card" onclick="alert('Period Tracker coming soon! 📅')">
+                    <span class="card-icon">📅</span>
+                    <h2>Period Tracker</h2>
+                    <p>Track your cycle</p>
+                </div>
+                <div class="card emergency-card" onclick="Navigate('page-emergency')">
+                    <span class="card-icon">🆘</span>
+                    <h2>Emergency Support</h2>
+                    <p>Find nearby help</p>
+                </div>
+                <div class="card" onclick="alert('Chat coming soon! 💬')">
+                    <span class="card-icon">💬</span>
+                    <h2>Sisterhood Chat</h2>
+                    <p>Connect with others</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; background: #EBF8FF; padding: 15px; border-radius: 10px;">
+                <label style="display: flex; align-items: center; cursor: pointer;">
+                    <input type="checkbox" id="helper-toggle" onchange="toggleHelperMode()">
+                    <span style="font-weight: bold; margin-left: 10px;">🛡️ I'm willing to help others (Helper
+                        Mode)</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE: EMERGENCY ================= -->
+    <div id="page-emergency" class="page">
+        <div class="emergency-body">
+            <h1>Emergency Support</h1>
+            <p>Press to alert nearby helpers</p>
+            <button class="sos-btn" id="sos-btn" onclick="triggerEmergency()">
+                SOS
+                <span style="font-size: 0.4em; font-weight: normal; margin-top: 5px;">Click for Help</span>
+            </button>
+
+            <div id="e-status" style="margin: 20px 0; font-weight: bold; font-size: 1.2em;"></div>
+            <div id="e-helpers" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
+
+            <button onclick="Navigate('page-dashboard')"
+                style="margin-top: 30px; background: transparent; border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; cursor: pointer;">Cancel
+                / Back</button>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // --- NAVIGATION ---
+        function Navigate(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+
+            // On Load checks
+            if (pageId === 'page-dashboard') {
+                const user = Auth.getCurrentUser();
+                if (!user) return Navigate('page-signup'); // Guard
+                document.getElementById('d-username').textContent = user.name;
+                document.getElementById('helper-toggle').checked = user.willingToHelp;
+            }
+            if (pageId === 'page-welcome') {
+                const user = Auth.getCurrentUser();
+                document.getElementById('w-greeting').textContent = `Welcome, ${user.name}!`;
+                setTimeout(() => Navigate('page-dashboard'), 2000);
+            }
+        }
+
+        // --- AUTH MODULE ---
+        const Auth = {
+            getUsers: () => JSON.parse(localStorage.getItem('sw_users') || '[]'),
+            saveUser: (u) => { const users = Auth.getUsers(); users.push(u); localStorage.setItem('sw_users', JSON.stringify(users)); },
+            findUserByCode: (c) => Auth.getUsers().find(u => u.code === c),
+            getCurrentUser: () => JSON.parse(localStorage.getItem('sw_current') || 'null'),
+
+            signup: (name, email, pass) => {
+                const code = Math.floor(100000 + Math.random() * 900000).toString();
+                const user = { name, email, pass, code, willingToHelp: false };
+                Auth.saveUser(user);
+                return code;
+            },
+
+            login: (code) => {
+                const user = Auth.findUserByCode(code);
+                if (user) {
+                    localStorage.setItem('sw_current', JSON.stringify(user));
+                    return true;
+                }
+                return false;
+            },
+
+            logout: () => {
+                localStorage.removeItem('sw_current');
+                Navigate('page-calculator');
+                clearDisplay(); // reset calc
+            }
+        };
+
+        // --- CALCULATOR LOGIC ---
+        let calcInput = '0';
+        function updateDisplay() { document.getElementById('calc-display').value = calcInput; }
+        function appendNumber(n) { calcInput = (calcInput === '0') ? n : calcInput + n; updateDisplay(); }
+        function appendOperator(op) { calcInput += op; updateDisplay(); }
+        function clearDisplay() { calcInput = '0'; updateDisplay(); }
+        function deleteLast() { calcInput = calcInput.length > 1 ? calcInput.slice(0, -1) : '0'; updateDisplay(); }
+
+        function calculate() {
+            // LOGIN CHECK
+            if (calcInput.length === 6 && Auth.login(calcInput)) {
+                Navigate('page-welcome');
+                return;
+            }
+            try {
+                // Safe Math
+                calcInput = new Function('return ' + calcInput.replace('×', '*'))().toString();
+            } catch { calcInput = 'Error'; }
+            updateDisplay();
+        }
+
+        // --- APP HANDLERS ---
+        function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('s-name').value;
+            const email = document.getElementById('s-email').value;
+            const pass = document.getElementById('s-pass').value;
+
+            try {
+                const code = Auth.signup(name, email, pass);
+                document.getElementById('generated-code').textContent = code;
+                Navigate('page-code');
+                e.target.reset(); // clear form
+            } catch (err) {
+                alert("Error creating account");
+            }
+        }
+
+        function toggleHelperMode() {
+            const user = Auth.getCurrentUser();
+            user.willingToHelp = document.getElementById('helper-toggle').checked;
+            localStorage.setItem('sw_current', JSON.stringify(user));
+            // Update in full list too (simplified)
+            const users = Auth.getUsers().map(u => u.code === user.code ? user : u);
+            localStorage.setItem('sw_users', JSON.stringify(users));
+        }
+
+        // --- EMERGENCY LOGIC (Simulated) ---
+        function triggerEmergency() {
+            document.getElementById('e-status').textContent = "Broadcasting Alert... 📡";
+            document.getElementById('sos-btn').style.animationDuration = '0.5s'; // Panic mode
+
+            // Mock finding helpers
+            setTimeout(() => {
+                document.getElementById('e-status').textContent = "Helpers found nearby!";
+                const list = document.getElementById('e-helpers');
+                list.innerHTML = `
+                    <div class="helper-item">
+                        <div><strong>Sarah M.</strong><br><small>0.2km away</small></div>
+                        <button style="background: green; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Request</button>
+                    </div>
+                `;
+            }, 2000);
+        }
+
+        // Init
+        // Check if already logged in?
+        if (Auth.getCurrentUser()) {
+            Navigate('page-dashboard');
+        } else {
+            Navigate('page-calculator');
+        }
+    </script>
+</body>
+
+</html>
