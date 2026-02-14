@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1771031708196",
+    "admission": "1234aaa",
+    "email": "jayantichandran10700@gmail.com",
+    "password": "$2a$10$07RDuJuNa2nAHVxl9eMJE.cpcOizsL0noazGSGCOmt/C2NC.9Wklq",
+    "createdAt": "2026-02-14T01:15:08.196Z"
+  },
+  {
+    "id": "1771032289322",
+    "admission": "1234567",
+    "email": "anchugadevi18@gmail.com",
+    "password": "$2a$10$3S5YR4hI57674olEGSHDieGtPwCOLWNRnR98VDsxyd/XKfiq296bm",
+    "createdAt": "2026-02-14T01:24:49.322Z"
+  },
+  {
+    "id": "1771032462939",
+    "admission": "234c",
+    "email": "aisharyasd@6gmail.com",
+    "password": "$2a$10$6hbUTg4IjZX/IGXfmOjfgewDxFigXhLSCKlNpeh1cMDx5p4Hz4tZu",
+    "createdAt": "2026-02-14T01:27:42.939Z"
+  }
+]

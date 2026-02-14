@@ -1,0 +1,27 @@
+{
+  "name": "let-s-confess",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">\r   <img src=\"./img.png\" alt=\"Project Banner\" width=\"100%\">\r </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jayantichandran10700-rgb/let-s-confess.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jayantichandran10700-rgb/let-s-confess/issues"
+  },
+  "homepage": "https://github.com/jayantichandran10700-rgb/let-s-confess#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "nodemailer": "^8.0.1"
+  }
+}

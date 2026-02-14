@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Let's Confess - Share Your Heart</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>💌 Let's Confess</h1>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <button class="btn btn-secondary" onclick="logout()">Logout</button>
+    </div>
+
+    <div id="sessionInfo" class="session-info" style="display: none;">
+      Logged in as: <strong id="userName"></strong> (<span id="userEmail"></span>)
+    </div>
+
+    <div id="alertBox"></div>
+
+    <h2>Share Your Secret 💝</h2>
+    <div class="form-group">
+      <textarea id="confession" placeholder="Your confession here... (It will remain anonymous)" maxlength="500"></textarea>
+      <small id="charCount">0/500 characters</small>
+    </div>
+    <button class="btn" id="postBtn" onclick="postConfession()">Post Confession</button>
+
+    <h2 style="margin-top: 40px;">Read Confessions 💬</h2>
+    <div class="confession-list" id="list">
+      <div class="empty-state">
+        <div class="empty-state-icon">💭</div>
+        Loading confessions...
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentToken = localStorage.getItem("token");
+    let currentUser = localStorage.getItem("admission");
+
+    // Character counter
+    document.getElementById("confession").addEventListener("input", (e) => {
+      const count = e.target.value.length;
+      document.getElementById("charCount").textContent = `${count}/500 characters`;
+    });
+
+    // Check authentication on page load
+    window.addEventListener("load", () => {
+      if (!currentToken) {
+        window.location.href = "/login";
+        return;
+      }
+
+      // Display user info
+      document.getElementById("sessionInfo").style.display = "block";
+      document.getElementById("userName").textContent = currentUser;
+      const email = localStorage.getItem("email") || "unknown@email.com";
+      document.getElementById("userEmail").textContent = email;
+
+      // Verify session on backend
+      verifySession();
+
+      // Load confessions
+      loadConfessions();
+      setInterval(loadConfessions, 5000); // Refresh every 5 seconds
+    });
+
+    function showAlert(message, type = "info") {
+      const alertBox = document.getElementById("alertBox");
+      alertBox.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      setTimeout(() => {
+        alertBox.innerHTML = "";
+      }, 4000);
+    }
+
+    function verifySession() {
+      fetch("/api/verify-session", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${currentToken}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.success) {
+          console.warn("Session invalid, redirecting to login");
+          localStorage.removeItem("token");
+          localStorage.removeItem("admission");
+          localStorage.removeItem("email");
+          window.location.href = "/login";
+        }
+      })
+      .catch(err => {
+        console.error("Session verification error:", err);
+      });
+    }
+
+    function postConfession() {
+      const text = document.getElementById("confession").value;
+      const postBtn = document.getElementById("postBtn");
+
+      if (!text.trim()) {
+        showAlert("Please write something!", "error");
+        return;
+      }
+
+      if (text.trim().length > 500) {
+        showAlert("Confession too long (max 500 characters)", "error");
+        return;
+      }
+
+      postBtn.disabled = true;
+      postBtn.textContent = "Posting...";
+
+      fetch("/api/confess", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${currentToken}`
+        },
+        body: JSON.stringify({ text })
+      })
+      .then(res => res.json())
+      .then(data => {
+        postBtn.disabled = false;
+        postBtn.textContent = "Post Confession";
+
+        if (data.success) {
+          document.getElementById("confession").value = "";
+          document.getElementById("charCount").textContent = "0/500 characters";
+          showAlert(data.message || "Confession posted!", "success");
+          loadConfessions();
+        } else {
+          showAlert(data.message || "Failed to post", "error");
+        }
+      })
+      .catch(err => {
+        postBtn.disabled = false;
+        postBtn.textContent = "Post Confession";
+        showAlert("Error posting confession", "error");
+        console.error("Post error:", err);
+      });
+    }
+
+    function reportConfession(id) {
+      if (!confirm("Report this confession?")) return;
+
+      fetch("/api/report", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${currentToken}`
+        },
+        body: JSON.stringify({ id })
+      })
+      .then(res => res.json())
+      .then(data => {
+        showAlert(data.message || "Thanks for reporting", "info");
+        loadConfessions();
+      })
+      .catch(err => {
+        showAlert("Error reporting confession", "error");
+        console.error("Report error:", err);
+      });
+    }
+
+    function loadConfessions() {
+      fetch("/api/confessions")
+        .then(res => res.json())
+        .then(data => {
+          const confessions = data.confessions || [];
+          
+          if (confessions.length === 0) {
+            document.getElementById("list").innerHTML = `
+              <div class="empty-state">
+                <div class="empty-state-icon">📝</div>
+                No confessions yet. Be the first to share!
+              </div>
+            `;
+            return;
+          }
+
+          document.getElementById("list").innerHTML = confessions
+            .map(c => {
+              const date = new Date(c.timestamp).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+              });
+              return `
+                <div class="confession-item">
+                  <div class="confession-text">"${escapeHtml(c.text)}"</div>
+                  <div class="confession-meta">
+                    📅 ${date} • 🚩 ${c.reports} ${c.reports === 1 ? "report" : "reports"}
+                  </div>
+                  <div class="confession-actions">
+                    <button class="btn-report" onclick="reportConfession(${c.id})">Report</button>
+                  </div>
+                </div>
+              `;
+            })
+            .join("");
+        })
+        .catch(err => {
+          document.getElementById("list").innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">⚠️</div>
+              Failed to load confessions
+            </div>
+          `;
+          console.error("Load confessions error:", err);
+        });
+    }
+
+    function logout() {
+      const token = currentToken;
+      
+      fetch("/api/logout", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      })
+      .then(() => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("admission");
+        localStorage.removeItem("email");
+        window.location.href = "/login";
+      })
+      .catch(err => {
+        console.error("Logout error:", err);
+        // Logout locally even if server fails
+        localStorage.removeItem("token");
+        localStorage.removeItem("admission");
+        localStorage.removeItem("email");
+        window.location.href = "/login";
+      });
+    }
+
+    // Utility function to escape HTML
+    function escapeHtml(text) {
+      const map = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+  </script>
+</body>
+</html>
+<h2>Share Your Secret 💝</h2>
+
+<div class="form-group">
+  <label for="category">Category *</label>
+  <select id="category" required>
+    <option value="">Select a category...</option>
+    <option value="crush">💕 Crush</option>
+    <option value="department">🏫 Department</option>
+    <option value="confession">😔 Confession</option>
+    <option value="life-experience">🌟 Life Experience</option>
+    <option value="trauma">💔 Trauma</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <textarea id="confession" placeholder="Your confession here... (It will remain anonymous)" maxlength="500"></textarea>
+  <small id="charCount">0/500 characters</small>
+</div>
+<button class="btn" id="postBtn" onclick="postConfession()">Post Confession</button>
+function loadConfessions() {
+  fetch("/api/confessions")
+    .then(res => res.json())
+    .then(data => {
+      const confessions = data.confessions || [];
+      
+      if (confessions.length === 0) {
+        document.getElementById("list").innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📝</div>
+            No confessions yet. Be the first to share!
+          </div>
+        `;
+        return;
+      }
+
+      const categoryEmojis = {
+        crush: "💕",
+        department: "🏫",
+        confession: "😔",
+        "life-experience": "🌟",
+        trauma: "💔"
+      };
+
+      document.getElementById("list").innerHTML = confessions
+        .map(c => {
+          const date = new Date(c.timestamp).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+          });
+          const emoji = categoryEmojis[c.category] || "📝";
+          const categoryLabel = c.category?.replace("-", " ") || "General";
+          
+          return `
+            <div class="confession-item">
+              <div class="confession-category">
+                ${emoji} <strong>${categoryLabel}</strong>
+              </div>
+              <div class="confession-text">"${escapeHtml(c.text)}"</div>
+              <div class="confession-meta">
+                📅 ${date} • 🚩 ${c.reports} ${c.reports === 1 ? "report" : "reports"}
+              </div>
+              <div class="confession-actions">
+                <button class="btn-report" onclick="reportConfession(${c.id})">Report</button>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    })
+    .catch(err => {
+      document.getElementById("list").innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">⚠️</div>
+          Failed to load confessions
+        </div>
+      `;
+      console.error("Load confessions error:", err);
+    });
+}

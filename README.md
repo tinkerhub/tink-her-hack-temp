@@ -6,23 +6,25 @@
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: [team rocket]
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: [C.Jayanti] - [gec thrissur]
+- Member 2: [Aiswarya SD] - [gec thrissur]
 
 ### Hosted Project Link
-[mention your project hosted link here]
+[file:///C:/Users/anchu/OneDrive/Desktop/let-s-confess/frontend/register.html]
 
 ### Project Description
-[2-3 lines about what your project does]
+[Confess your sins and your crushes! cause our server needs some drama.
+one stop website for all your sins and drama confessions
+where you can also write your own desires and drama anonymously]
 
 ### The Problem statement
-[What problem are you solving?]
+[confession of long hold feelings]
 
 ### The Solution
-[How are you solving it?]
+[by creating a web site where anyone everyone can confess and express]
 
 ---
 
@@ -46,11 +48,10 @@
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
-
+- Feature 1: [Lightweight Data Storage (JSON-based)]
+- Feature 2: [Secure Student Login]
+- Feature 3: [Report System (User Protection)]
+- Feature 4: [Anonymous Confessions]
 ---
 
 ## Implementation

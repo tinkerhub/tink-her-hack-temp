@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Let's Confess</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>💗 Welcome Back</h1>
+    
+    <div id="alertBox"></div>
+
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="admission">Admission Number</label>
+        <input 
+          type="text" 
+          id="admission" 
+          placeholder="Enter your admission number" 
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          placeholder="Enter your password" 
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+
+    <div class="link-text">
+      Don't have an account? <a href="register.html">Register here</a>
+    </div>
+  </div>
+
+  <script>
+    // Redirect if already logged in
+    if (localStorage.getItem("token")) {
+      window.location.href = "index.html";
+    }
+
+    function showAlert(message, type = "info") {
+      const alertBox = document.getElementById("alertBox");
+      alertBox.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      setTimeout(() => {
+        alertBox.innerHTML = "";
+      }, 4000);
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const admission = document.getElementById("admission").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!admission || !password) {
+        showAlert("Please fill in all fields", "error");
+        return;
+      }
+
+      // Show loading state
+      const btn = event.target.querySelector(".btn");
+      const originalText = btn.textContent;
+      btn.textContent = "Logging in...";
+      btn.disabled = true;
+
+      fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ admission, password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+
+        if (data.success) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("admission", data.user.admission);
+          localStorage.setItem("email", data.user.email);
+          showAlert("Login successful! Redirecting...", "success");
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 1500);
+        } else {
+          showAlert(data.message || "Login failed", "error");
+        }
+      })
+      .catch(err => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+        showAlert("Connection error. Try again.", "error");
+        console.error("Login error:", err);
+      });
+    }
+  </script>
+</body>
+</html>
