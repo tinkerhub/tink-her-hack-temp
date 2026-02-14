@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "854006934123",
+    "project_id": "restarther",
+    "storage_bucket": "restarther.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854006934123:android:06823d7acf449a2ad21f2e",
+        "android_client_info": {
+          "package_name": "Re.start_.her"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjmJZ5kwazdeqaiglw_SLykJNLXB3Ty4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854006934123:android:4ac834324fe5a066d21f2e",
+        "android_client_info": {
+          "package_name": "com.example.restart_her"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjmJZ5kwazdeqaiglw_SLykJNLXB3Ty4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
