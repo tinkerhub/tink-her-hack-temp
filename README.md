@@ -1,28 +1,67 @@
+# Sanchaari Backend
+
+Express + SQLite backend for the Sanchaari frontend.
+
+Quick start
+
+1. Copy `.env.example` to `.env` and fill values (especially `JWT_SECRET`).
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Initialize database (creates `data/db.sqlite`):
+
+```bash
+npm run db:init
+```
+
+4. Start server:
+
+```bash
+npm run dev
+```
+
+API overview
+
+- `POST /api/auth/register` - register user
+- `POST /api/auth/login` - login, returns JWT
+- `POST /api/itineraries` - create/generate an itinerary (protected)
+- `GET /api/itineraries` - list user's itineraries (protected)
+- `GET /api/itineraries/:id` - get specific itinerary (protected)
+- `DELETE /api/itineraries/:id` - delete itinerary (protected)
+
+Notes
+
+- This uses SQLite (file at `data/db.sqlite`) for simplicity. For production multi-instance deployments use a central DB.
+- Ensure `JWT_SECRET` is a long random secret in production.
 <p align="center">
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# Sanchaari 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: Sherlock & Watson
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: Arshia P - Government Engineering College, Thrissur
+- Member 2: Aryananda C M - Government Engineering College, Thrissur
+   
 
 ### Hosted Project Link
 [mention your project hosted link here]
 
 ### Project Description
-[2-3 lines about what your project does]
+The all in one personalised travelmate everyone needs
 
 ### The Problem statement
-[What problem are you solving?]
+to avoid hallucinations and confusions while travelling especially during a solo trip
 
 ### The Solution
-[How are you solving it?]
+we created a website that assits the passenger in all aspects- to plan, to know the destinations and while travelling they could know the necessary spots available near them.
 
 ---
 
@@ -31,10 +70,10 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
+- Languages used : javascript, html,css
 - Frameworks used: [e.g., React, Django, Spring Boot]
 - Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+- Tools used: vs code, git, gemini
 
 **For Hardware:**
 - Main components: [List main components]
@@ -46,8 +85,8 @@
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
+- Feature 1: personalised planning for trip
+- Feature 2: let us know necessary services available nearby.
 - Feature 3: [Description]
 - Feature 4: [Description]
 

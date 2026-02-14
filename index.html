@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanchaari - Your Travel Companion</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style9.css">
+
+    
+</head>
+<body>
+
+    <!-- Background Layers -->
+    <div id="main-bg" class="bg-container"></div>
+    <div class="overlay"></div>
+
+    <!-- Main App Container -->
+    <div class="min-h-screen flex items-center justify-center p-4">
+        
+        <!-- 1. LOGIN PAGE -->
+        <section id="login-page" class="page-section active flex-col w-full max-w-md">
+            <div class="glass-card p-8 text-center">
+                <div class="mb-6 animate-bounce">
+                    <i class="fas fa-leaf text-5xl text-green-400"></i>
+                </div>
+                <h1 class="text-3xl font-bold mb-2">Sanchaari</h1>
+                <p class="text-gray-200 mb-8 text-sm">Explore the world with nature.</p>
+                
+                <form id="login-form" class="space-y-4">
+                    <div class="text-left">
+                        <label class="text-xs font-semibold ml-1 text-gray-300">Username</label>
+                        <input type="text" id="username" required class="input-field w-full px-4 py-3 rounded-xl mt-1" placeholder="Enter your name">
+                    </div>
+                    <div class="text-left">
+                        <label class="text-xs font-semibold ml-1 text-gray-300">Password</label>
+                        <input type="password" id="password" required class="input-field w-full px-4 py-3 rounded-xl mt-1" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-primary w-full py-3 rounded-xl font-semibold text-lg mt-4 text-white">
+                        Start Journey
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 2. MODE SELECTION -->
+        <section id="mode-selection" class="page-section flex-col w-full max-w-2xl">
+            <div class="glass-card p-8">
+                <h2 class="text-2xl font-semibold mb-6 text-center">Hello, <span id="display-username" class="text-green-300">Traveler</span>! 👋</h2>
+                <p class="text-center text-gray-200 mb-8">What is your current status?</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Planning Card -->
+                    <div onclick="selectMode('planning')" class="option-card glass-card p-6 flex flex-col items-center justify-center h-48 text-center group">
+                        <i class="fas fa-map-marked-alt text-4xl mb-4 text-yellow-300 group-hover:scale-110 transition-transform"></i>
+                        <h3 class="text-xl font-bold">Planning a Trip</h3>
+                        <p class="text-xs text-gray-300 mt-2">Create a perfect itinerary</p>
+                    </div>
+                    
+                    <!-- In Trip Card -->
+                    <div onclick="selectMode('in-trip')" class="option-card glass-card p-6 flex flex-col items-center justify-center h-48 text-center group">
+                        <i class="fas fa-compass text-4xl mb-4 text-blue-300 group-hover:rotate-45 transition-transform"></i>
+                        <h3 class="text-xl font-bold">On the Trip</h3>
+                        <p class="text-xs text-gray-300 mt-2">Find nearby essentials</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PLANNING FORM -->
+        <section id="planning-form" class="page-section flex-col w-full max-w-lg">
+            <div class="glass-card p-8">
+                <div class="flex items-center mb-6">
+                    <button onclick="goBack('mode-selection')" class="text-white hover:text-green-300 mr-4"><i class="fas fa-arrow-left"></i></button>
+                    <h2 class="text-2xl font-semibold">Plan Your Trip</h2>
+                </div>
+
+                <form id="trip-details-form" class="space-y-4">
+                    <div>
+                        <label class="text-sm font-semibold ml-1">Destination</label>
+                        <input type="text" id="destination" required class="input-field w-full px-4 py-3 rounded-xl mt-1" placeholder="e.g., Kochi, Paris, Tokyo">
+                    </div>
+                    
+                    <div>
+                        <label class="text-sm font-semibold ml-1">Number of Days</label>
+                        <input type="number" id="days" min="1" max="14" required class="input-field w-full px-4 py-3 rounded-xl mt-1" placeholder="e.g., 3">
+                    </div>
+
+                    <div class="pt-2">
+                        <p class="text-sm font-semibold ml-1 mb-2">Set Priorities (1 = Highest)</p>
+                        <div class="grid gap-3">
+                            <select id="priority-1" class="input-field w-full px-4 py-2 rounded-lg cursor-pointer">
+                                <option value="Tourist Spots">Tourist Spots (Scenic)</option>
+                                <option value="Food Spots">Food Spots (Cuisine)</option>
+                                <option value="Shopping">Shopping (Markets)</option>
+                            </select>
+                            <select id="priority-2" class="input-field w-full px-4 py-2 rounded-lg cursor-pointer">
+                                <option value="Food Spots">Food Spots (Cuisine)</option>
+                                <option value="Tourist Spots">Tourist Spots (Scenic)</option>
+                                <option value="Shopping">Shopping (Markets)</option>
+                            </select>
+                            <select id="priority-3" class="input-field w-full px-4 py-2 rounded-lg cursor-pointer">
+                                <option value="Shopping">Shopping (Markets)</option>
+                                <option value="Tourist Spots">Tourist Spots (Scenic)</option>
+                                <option value="Food Spots">Food Spots (Cuisine)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold mt-6 text-white">
+                        Generate Itinerary
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 3.1 ITINERARY RESULT -->
+        <section id="itinerary-result" class="page-section flex-col w-full max-w-3xl">
+            <div class="glass-card p-8 max-h-[85vh] flex flex-col">
+                <div class="flex items-center justify-between mb-4 flex-shrink-0">
+                    <div class="flex items-center">
+                        <button onclick="goBack('planning-form')" class="text-white hover:text-green-300 mr-4"><i class="fas fa-arrow-left"></i></button>
+                        <h2 class="text-2xl font-bold">Your Itinerary</h2>
+                    </div>
+                    <span id="result-dest" class="text-green-300 font-semibold uppercase tracking-wider text-sm border border-green-300 px-3 py-1 rounded-full"></span>
+                </div>
+
+                <div id="itinerary-container" class="overflow-y-auto pr-2 space-y-4">
+                    <!-- Dynamic Content Inserted Here -->
+                </div>
+                
+                <div class="mt-6 pt-4 border-t border-gray-600 flex-shrink-0 text-center">
+                    <p class="text-sm text-gray-300">Enjoy your trip with Sanchaari!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. IN-TRIP ASSISTANCE -->
+        <section id="trip-assistance" class="page-section flex-col w-full max-w-4xl">
+            <div class="glass-card p-8">
+                <div class="flex items-center mb-6">
+                    <button onclick="goBack('mode-selection')" class="text-white hover:text-green-300 mr-4"><i class="fas fa-arrow-left"></i></button>
+                    <div>
+                        <h2 class="text-2xl font-semibold">Immediate Assistance</h2>
+                        <p class="text-sm text-gray-300">What are you looking for right now?</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <button onclick="findNearby('Washrooms')" class="option-card glass-card p-4 rounded-xl flex flex-col items-center justify-center h-32 group">
+                        <i class="fas fa-restroom text-3xl mb-2 text-blue-200 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium text-sm">Washrooms</span>
+                    </button>
+                    <button onclick="findNearby('Food Spots')" class="option-card glass-card p-4 rounded-xl flex flex-col items-center justify-center h-32 group">
+                        <i class="fas fa-utensils text-3xl mb-2 text-orange-200 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium text-sm">Food Spots</span>
+                    </button>
+                    <button onclick="findNearby('Health Clinic')" class="option-card glass-card p-4 rounded-xl flex flex-col items-center justify-center h-32 group">
+                        <i class="fas fa-hospital-alt text-3xl mb-2 text-red-300 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium text-sm">Clinics</span>
+                    </button>
+                    <button onclick="findNearby('Tourist Spots')" class="option-card glass-card p-4 rounded-xl flex flex-col items-center justify-center h-32 group">
+                        <i class="fas fa-camera text-3xl mb-2 text-purple-300 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium text-sm">Tour Spots</span>
+                    </button>
+                </div>
+
+                <!-- Map Result Area -->
+                <div id="map-area" class="hidden">
+                    <h3 class="text-lg font-semibold mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
+                        Nearest <span id="map-category-name" class="ml-1 text-green-300"></span>
+                    </h3>
+                    
+                    <div class="w-full h-64 bg-gray-800 rounded-xl overflow-hidden relative border border-gray-600">
+                        <iframe id="google-map-embed" class="map-frame" src="" loading="lazy"></iframe>
+                        
+                        <!-- Overlay for "Open App" if iframe fails or for better UX -->
+                        <div class="absolute bottom-4 right-4">
+                            <a id="open-maps-btn" href="#" target="_blank" class="bg-white text-gray-900 px-4 py-2 rounded-full font-bold shadow-lg text-xs hover:bg-gray-100 flex items-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Google_Maps_icon_%282020%29.svg" class="w-4 h-4 mr-2" alt="Maps">
+                                Open in App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    
+    <script src="script9.js"></script>
+</body>
+</html>

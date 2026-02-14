@@ -1,0 +1,144 @@
+
+        /* Custom Styles & Animations */
+        :root {
+            --primary-green: #2F855A;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #0f172a; /* Fallback */
+            color: #fff;
+        }
+
+        /* Dynamic Nature Background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Default Nature Background - 4K Quality */
+            background: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=3840&auto=format&fit=crop') no-repeat center center/cover;
+            transition: background-image 1s ease-in-out, transform 20s ease;
+            animation: panZoom 30s infinite alternate;
+        }
+        
+        /* Darker overlay for better text readability on bright city images */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8));
+            backdrop-filter: blur(2px);
+            transition: backdrop-filter 1s ease;
+        }
+
+        @keyframes panZoom {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.1) translate(-1%, -1%); }
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.4s ease;
+        }
+
+        /* Inputs */
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #68D391;
+            outline: none;
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #48BB78 0%, #2F855A 100%);
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Option Cards */
+        .option-card {
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s;
+        }
+        .option-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .option-card.selected {
+            border: 2px solid #68D391;
+            background: rgba(47, 133, 90, 0.3);
+        }
+
+        /* Page Transitions */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .page-section.active {
+            display: flex; /* or block depending on layout */
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+        }
+
+        /* Map Container */
+        .map-frame {
+            border: none;
+            border-radius: 16px;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Select Dropdown Styling */
+        select option {
+            background-color: #2D3748;
+            color: white;
+        }
+    
