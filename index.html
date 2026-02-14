@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>College Gate Pass App</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --gray: #6b7280;
+      --light: #f3f4f6;
+      --dark: #111827;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+    header { text-align:center; margin-bottom:2rem; }
+    h1 { color: var(--primary); margin-bottom:0.5rem; }
+    .card {
+      background:white;
+      border-radius:12px;
+      box-shadow:0 4px 15px rgba(0,0,0,0.08);
+      padding:1.8rem;
+      margin-bottom:1.5rem;
+    }
+    .form-group { margin-bottom:1.2rem; }
+    label { display:block; margin-bottom:0.4rem; font-weight:500; color:#374151; }
+    input, textarea, select {
+      width:100%;
+      padding:10px 14px;
+      border:1px solid #d1d5db;
+      border-radius:6px;
+      font-size:1rem;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline:none;
+      border-color:var(--primary);
+      box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+    }
+    .btn {
+      padding:10px 20px;
+      border:none;
+      border-radius:6px;
+      font-size:1rem;
+      font-weight:500;
+      cursor:pointer;
+      transition:all 0.2s;
+    }
+    .btn-primary { background:var(--primary); color:white; }
+    .btn-primary:hover { background:var(--primary-dark); }
+    .btn-success { background:var(--success); color:white; }
+    .btn-danger  { background:var(--danger);  color:white; }
+    .btn-outline { background:transparent; border:1px solid var(--gray); color:var(--gray); }
+    .btn-outline:hover { background:#f3f4f6; }
+    .role-tabs { display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+    .role-btn {
+      padding:10px 24px;
+      font-size:1rem;
+      border-radius:50px;
+      border:2px solid var(--primary);
+      background:white;
+      color:var(--primary);
+      cursor:pointer;
+      transition:all 0.2s;
+    }
+    .role-btn.active { background:var(--primary); color:white; }
+    .request-card {
+      border-left:5px solid var(--gray);
+      margin-bottom:1.2rem;
+      padding-left:1rem;
+    }
+    .request-card.pending        { border-left-color:#d97706; }
+    .request-card.parent-approved { border-left-color:#2563eb; }
+    .request-card.approved       { border-left-color:var(--success); }
+    .request-card.declined       { border-left-color:var(--danger); }
+    .status-badge {
+      padding:4px 12px;
+      border-radius:999px;
+      font-size:0.85rem;
+      font-weight:500;
+    }
+    .status-pending  { background:#fef3c7; color:#92400e; }
+    .status-approved { background:#dcfce7; color:#166534; }
+    .status-declined { background:#fee2e2; color:#991b1b; }
+    .logout {
+      position:fixed;
+      top:20px;
+      right:20px;
+      padding:8px 16px;
+      background:#ef4444;
+      color:white;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+    }
+    .hidden { display:none !important; }
+    .two-cols { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media (max-width:600px) { .two-cols { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <button class="logout hidden" id="logoutBtn">Logout</button>
+
+  <header>
+    <h1>College Gate Pass System</h1>
+    <p>Student → Parent → Teacher approval flow</p>
+  </header>
+
+  <!-- ── AUTH / ROLE SELECTION ─────────────────────────────────────── -->
+  <div id="authScreen">
+    <div class="card">
+      <h2 style="margin-bottom:1rem">Choose Your Role</h2>
+      <div class="role-tabs">
+        <button class="role-btn" data-role="student">Student</button>
+        <button class="role-btn" data-role="parent">Parent</button>
+        <button class="role-btn" data-role="teacher">Teacher</button>
+      </div>
+
+      <div id="loginFormFields">
+        <div class="form-group">
+          <label for="fullName">Your Full Name</label>
+          <input type="text" id="fullName" placeholder="Enter your name" />
+        </div>
+
+        <!-- Student registration fields (shown only for new students) -->
+        <div id="studentRegisterFields" class="hidden">
+          <div class="two-cols">
+            <div class="form-group">
+              <label for="rollNumber">Roll Number</label>
+              <input type="text" id="rollNumber" placeholder="e.g. CS22B001" />
+            </div>
+            <div class="form-group">
+              <label for="studentClass">Class / Section</label>
+              <input type="text" id="studentClass" placeholder="e.g. FY-A, CSE-3, TY-B" />
+            </div>
+          </div>
+          <p style="font-size:0.9rem; color:#6b7280; margin-top:0.5rem;">
+            Fill these fields to register as a new student.
+          </p>
+        </div>
+
+        <!-- Parent child selection -->
+        <div class="form-group hidden" id="childSelectField">
+          <label for="selectedChild">Your Child</label>
+          <select id="selectedChild">
+            <option value="">— Select your child —</option>
+          </select>
+        </div>
+
+        <!-- Teacher class selection -->
+        <div class="form-group hidden" id="classSelectField">
+          <label for="teacherClass">Class you are responsible for</label>
+          <input type="text" id="teacherClass" placeholder="e.g. FY-A, CSE-3" />
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="loginBtn" style="margin-top:1.2rem; width:100%;">
+        Continue
+      </button>
+    </div>
+  </div>
+
+  <!-- ── STUDENT DASHBOARD ─────────────────────────────────────────── -->
+  <div id="studentScreen" class="hidden">
+    <div class="card">
+      <h2 id="studentGreeting"></h2>
+      <h3>Create New Gate Pass Request</h3>
+
+      <div class="form-group">
+        <label for="reason">Reason for going out</label>
+        <textarea id="reason" rows="3" placeholder="Medical check-up, family function, urgent work..."></textarea>
+      </div>
+
+      <div class="two-cols">
+        <div class="form-group">
+          <label for="outDateTime">Leaving Date & Time</label>
+          <input type="datetime-local" id="outDateTime" />
+        </div>
+        <div class="form-group">
+          <label for="returnDateTime">Expected Return (optional)</label>
+          <input type="datetime-local" id="returnDateTime" />
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="submitRequest" style="margin-top:1rem;">Submit Request</button>
+    </div>
+
+    <div class="card">
+      <h3>Your Gate Pass Requests</h3>
+      <div id="studentRequestsList"></div>
+    </div>
+  </div>
+
+  <!-- ── PARENT DASHBOARD ──────────────────────────────────────────── -->
+  <div id="parentScreen" class="hidden">
+    <div class="card">
+      <h2 id="parentGreeting"></h2>
+      <h3>Pending Requests from Your Child</h3>
+      <div id="parentRequestsList"></div>
+    </div>
+  </div>
+
+  <!-- ── TEACHER DASHBOARD ─────────────────────────────────────────── -->
+  <div id="teacherScreen" class="hidden">
+    <div class="card">
+      <h2 id="teacherGreeting"></h2>
+      <h3>Parent-Approved Requests in Your Class</h3>
+      <div id="teacherRequestsList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ──────────────────────────────────────────────────────────────
+// DATA & STATE
+// ──────────────────────────────────────────────────────────────
+
+let currentUser = null;
+const STORAGE_KEY = 'gatepass_data_v2';
+
+function loadData() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  return raw ? JSON.parse(raw) : { users: [], requests: [] };
+}
+
+function saveData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+let db = loadData();
+
+// ──────────────────────────────────────────────────────────────
+// HELPERS
+// ──────────────────────────────────────────────────────────────
+
+function findUser(name, role) {
+  return db.users.find(u => u.name.toLowerCase() === name.toLowerCase() && u.role === role);
+}
+
+function createUser(name, role, extra = {}) {
+  const user = {
+    id: Date.now(),
+    name: name.trim(),
+    role,
+    ...extra,
+    createdAt: new Date().toISOString()
+  };
+  db.users.push(user);
+  saveData(db);
+  return user;
+}
+
+function formatDateTime(dt) {
+  return dt ? new Date(dt).toLocaleString([], { dateStyle:"medium", timeStyle:"short" }) : "—";
+}
+
+function getStatus(req) {
+  if (req.parentApproval === 'declined' || req.teacherApproval === 'declined') {
+    return { text: 'Declined', css: 'declined' };
+  }
+  if (req.parentApproval === 'approved' && req.teacherApproval === 'approved') {
+    return { text: 'Approved', css: 'approved' };
+  }
+  if (req.parentApproval === 'approved') {
+    return { text: 'Parent Approved – Awaiting Teacher', css: 'parent-approved' };
+  }
+  return { text: 'Pending Parent Approval', css: 'pending' };
+}
+
+function getStudents() {
+  return db.users.filter(u => u.role === 'student');
+}
+
+// ──────────────────────────────────────────────────────────────
+// RENDER DASHBOARDS
+// ──────────────────────────────────────────────────────────────
+
+function renderStudentRequests() {
+  const list = document.getElementById('studentRequestsList');
+  list.innerHTML = '';
+  const mine = db.requests.filter(r => r.studentId === currentUser.id);
+
+  if (mine.length === 0) {
+    list.innerHTML = '<p style="color:#6b7280;">No requests submitted yet.</p>';
+    return;
+  }
+
+  mine.forEach(r => {
+    const st = getStatus(r);
+    const div = document.createElement('div');
+    div.className = `request-card ${st.css}`;
+    div.innerHTML = `
+      <p><strong>Reason:</strong> ${r.reason}</p>
+      <p><strong>Out:</strong> ${formatDateTime(r.outDateTime)}</p>
+      ${r.returnDateTime ? `<p><strong>Return:</strong> ${formatDateTime(r.returnDateTime)}</p>` : ''}
+      <p><strong>Status:</strong> <span class="status-badge status-${st.css}">${st.text}</span></p>
+      ${r.parentComment   ? `<p><em>Parent:</em> ${r.parentComment}</p>` : ''}
+      ${r.teacherComment  ? `<p><em>Teacher:</em> ${r.teacherComment}</p>` : ''}
+    `;
+    list.appendChild(div);
+  });
+}
+
+function renderParentRequests() {
+  const list = document.getElementById('parentRequestsList');
+  list.innerHTML = '';
+
+  const myChild = db.users.find(u => u.role === 'student' && u.parentName === currentUser.name);
+  if (!myChild) {
+    list.innerHTML = '<p style="color:#6b7280;">No child linked yet.</p>';
+    return;
+  }
+
+  const pending = db.requests.filter(r => r.studentId === myChild.id && r.parentApproval === 'pending');
+
+  if (pending.length === 0) {
+    list.innerHTML = '<p style="color:#6b7280;">No pending requests.</p>';
+    return;
+  }
+
+  pending.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'request-card pending';
+    div.innerHTML = `
+      <p><strong>Reason:</strong> ${r.reason}</p>
+      <p><strong>Out:</strong> ${formatDateTime(r.outDateTime)}</p>
+      ${r.returnDateTime ? `<p><strong>Return:</strong> ${formatDateTime(r.returnDateTime)}</p>` : ''}
+      <div style="margin:1rem 0 0;">
+        <textarea id="pcom-${r.id}" placeholder="Comment (optional)" rows="2" style="width:100%;"></textarea>
+        <div style="margin-top:0.8rem;">
+          <button class="btn btn-success" onclick="approve('parent',${r.id})">Approve</button>
+          <button class="btn btn-danger"  onclick="decline('parent',${r.id})">Decline</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function renderTeacherRequests() {
+  const list = document.getElementById('teacherRequestsList');
+  list.innerHTML = '';
+
+  const cls = currentUser.class?.toLowerCase();
+  if (!cls) {
+    list.innerHTML = '<p style="color:#6b7280;">No class selected.</p>';
+    return;
+  }
+
+  const students = getStudents().filter(s => (s.class || '').toLowerCase() === cls);
+  const ids = students.map(s => s.id);
+
+  const pending = db.requests.filter(r =>
+    ids.includes(r.studentId) &&
+    r.parentApproval === 'approved' &&
+    r.teacherApproval === 'pending'
+  );
+
+  if (pending.length === 0) {
+    list.innerHTML = '<p style="color:#6b7280;">No parent-approved requests in your class.</p>';
+    return;
+  }
+
+  pending.forEach(r => {
+    const stu = getStudents().find(s => s.id === r.studentId);
+    const div = document.createElement('div');
+    div.className = 'request-card parent-approved';
+    div.innerHTML = `
+      <p><strong>Student:</strong> ${stu ? stu.name + ' (' + (stu.roll||'?') + ')' : 'Unknown'}</p>
+      <p><strong>Reason:</strong> ${r.reason}</p>
+      <p><strong>Out:</strong> ${formatDateTime(r.outDateTime)}</p>
+      ${r.returnDateTime ? `<p><strong>Return:</strong> ${formatDateTime(r.returnDateTime)}</p>` : ''}
+      ${r.parentComment ? `<p><em>Parent note:</em> ${r.parentComment}</p>` : ''}
+      <div style="margin:1rem 0 0;">
+        <textarea id="tcom-${r.id}" placeholder="Comment (optional)" rows="2" style="width:100%;"></textarea>
+        <div style="margin-top:0.8rem;">
+          <button class="btn btn-success" onclick="approve('teacher',${r.id})">Approve</button>
+          <button class="btn btn-danger"  onclick="decline('teacher',${r.id})">Decline</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIONS
+// ──────────────────────────────────────────────────────────────
+
+window.approve = function(role, id) {
+  const req = db.requests.find(r => r.id === id);
+  if (!req) return;
+
+  const comment = document.getElementById(role === 'parent' ? `pcom-${id}` : `tcom-${id}`)?.value?.trim() || '';
+
+  if (role === 'parent') {
+    req.parentApproval = 'approved';
+    req.parentApprovedAt = new Date().toISOString();
+    if (comment) req.parentComment = comment;
+  } else {
+    req.teacherApproval = 'approved';
+    req.teacherApprovedAt = new Date().toISOString();
+    if (comment) req.teacherComment = comment;
+  }
+
+  saveData(db);
+  refresh();
+};
+
+window.decline = function(role, id) {
+  const req = db.requests.find(r => r.id === id);
+  if (!req) return;
+
+  const comment = document.getElementById(role === 'parent' ? `pcom-${id}` : `tcom-${id}`)?.value?.trim() || '';
+
+  if (role === 'parent') {
+    req.parentApproval = 'declined';
+    if (comment) req.parentComment = comment;
+  } else {
+    req.teacherApproval = 'declined';
+    if (comment) req.teacherComment = comment;
+  }
+
+  saveData(db);
+  refresh();
+};
+
+function submitRequest() {
+  const reason = document.getElementById('reason').value.trim();
+  const out = document.getElementById('outDateTime').value;
+  const ret = document.getElementById('returnDateTime').value;
+
+  if (!reason || !out) {
+    alert("Reason and leaving time are required.");
+    return;
+  }
+
+  db.requests.push({
+    id: Date.now(),
+    studentId: currentUser.id,
+    reason,
+    outDateTime: out,
+    returnDateTime: ret || null,
+    parentApproval: 'pending',
+    teacherApproval: 'pending',
+    createdAt: new Date().toISOString()
+  });
+
+  saveData(db);
+  document.getElementById('reason').value = '';
+  document.getElementById('outDateTime').value = '';
+  document.getElementById('returnDateTime').value = '';
+  renderStudentRequests();
+  alert("Request submitted!");
+}
+
+function refresh() {
+  if (!currentUser) return;
+  if (currentUser.role === 'student') {
+    document.getElementById('studentGreeting').textContent = `Welcome, ${currentUser.name}`;
+    renderStudentRequests();
+  } else if (currentUser.role === 'parent') {
+    document.getElementById('parentGreeting').textContent = `Welcome, Parent of ${currentUser.childName || 'your child'}`;
+    renderParentRequests();
+  } else if (currentUser.role === 'teacher') {
+    document.getElementById('teacherGreeting').textContent = `Welcome, ${currentUser.name} (${currentUser.class || 'class teacher'})`;
+    renderTeacherRequests();
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
+// LOGIN LOGIC
+// ──────────────────────────────────────────────────────────────
+
+document.querySelectorAll('.role-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const role = btn.dataset.role;
+
+    document.getElementById('childSelectField').classList.toggle('hidden', role !== 'parent');
+    document.getElementById('classSelectField').classList.toggle('hidden', role !== 'teacher');
+    document.getElementById('studentRegisterFields').classList.add('hidden');
+
+    // Populate child dropdown for parents
+    if (role === 'parent') {
+      const sel = document.getElementById('selectedChild');
+      sel.innerHTML = '<option value="">— Select your child —</option>';
+      getStudents().forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.name;
+        opt.textContent = `${s.name} (${s.roll || '?'} - ${s.class || '?'})`;
+        sel.appendChild(opt);
+      });
+    }
+  });
+});
+
+document.getElementById('loginBtn').addEventListener('click', () => {
+  const active = document.querySelector('.role-btn.active');
+  if (!active) return alert("Select a role first.");
+
+  const role = active.dataset.role;
+  const name = document.getElementById('fullName').value.trim();
+
+  if (!name) return alert("Please enter your name.");
+
+  let user = findUser(name, role);
+
+  if (!user) {
+    // ── NEW USER ───────────────────────────────────────
+    if (role === 'student') {
+      const roll = document.getElementById('rollNumber').value.trim();
+      const cls  = document.getElementById('studentClass').value.trim();
+
+      if (!roll || !cls) {
+        document.getElementById('studentRegisterFields').classList.remove('hidden');
+        return alert("New student → please fill roll number and class.");
+      }
+
+      user = createUser(name, 'student', { roll, class: cls });
+    }
+    else if (role === 'parent') {
+      const childName = document.getElementById('selectedChild').value;
+      if (!childName) return alert("Please select your child.");
+      user = createUser(name, 'parent', { childName });
+      // Link child → parent
+      const child = db.users.find(u => u.name === childName && u.role === 'student');
+      if (child) child.parentName = name;
+      saveData(db);
+    }
+    else if (role === 'teacher') {
+      const cls = document.getElementById('teacherClass').value.trim();
+      if (!cls) return alert("Please enter the class you teach.");
+      user = createUser(name, 'teacher', { class: cls });
+    }
+  }
+
+  currentUser = user;
+  document.getElementById('authScreen').classList.add('hidden');
+  document.getElementById('logoutBtn').classList.remove('hidden');
+
+  if (role === 'student') document.getElementById('studentScreen').classList.remove('hidden');
+  if (role === 'parent')   document.getElementById('parentScreen').classList.remove('hidden');
+  if (role === 'teacher')  document.getElementById('teacherScreen').classList.remove('hidden');
+
+  refresh();
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  currentUser = null;
+  document.getElementById('authScreen').classList.remove('hidden');
+  document.getElementById('studentScreen').classList.add('hidden');
+  document.getElementById('parentScreen').classList.add('hidden');
+  document.getElementById('teacherScreen').classList.add('hidden');
+  document.getElementById('logoutBtn').classList.add('hidden');
+});
+
+document.getElementById('submitRequest').addEventListener('click', submitRequest);
+
+// Start
+</script>
+</body>
+</html>
