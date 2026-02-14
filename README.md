@@ -2,21 +2,21 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# [TinkCare] 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: [code starters]
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: [Athulya K M ] - [jyothi engineering college]
+- Member 2: [Farha Sherin] - [jyothi engineering collge]
 
 ### Hosted Project Link
-[mention your project hosted link here]
+[]
 
 ### Project Description
-[2-3 lines about what your project does]
+[this is a wearable device which is a smart safety band that integrate with biomedical and enivornmental sensors.it continously monitors the workers vital signs and sends real time data to the ]
 
 ### The Problem statement
 [What problem are you solving?]
