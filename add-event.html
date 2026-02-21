@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Event — EventFinder</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="nav-brand">
+            <div class="logo-icon">🌍</div>
+            <h2>EventFinder</h2>
+        </div>
+        <div class="nav-actions">
+            <a href="/login-page" class="btn btn-outline">🔑 Login</a>
+            <a href="/" class="btn btn-outline">← Back</a>
+        </div>
+    </nav>
+
+    <div class="form-page">
+        <div class="form-card">
+            <h3>Create a New Event</h3>
+            <p class="subtitle">Fill in the details and pin your venue on the map.</p>
+
+            <div id="formToast" class="form-toast" style="display:none;"></div>
+
+            <form id="addEventForm" onsubmit="handleSubmit(event)">
+
+                <!-- Title -->
+                <div class="form-group">
+                    <label for="eventTitle">Event Title *</label>
+                    <input type="text" id="eventTitle" name="name" placeholder="e.g. Jazz Night at River Park" required>
+                </div>
+
+                <!-- District + Place -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventDistrict">District *</label>
+                        <select id="eventDistrict" name="district" required onchange="populatePlaces()">
+                            <option value="">Select District</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventPlace">Place *</label>
+                        <select id="eventPlace" name="place" required>
+                            <option value="">Select Place</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Date + Time -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventDate">Date *</label>
+                        <input type="date" id="eventDate" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventTime">Time *</label>
+                        <input type="time" id="eventTime" name="time" required>
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="eventCategory">Category *</label>
+                    <select id="eventCategory" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="Music">🎵 Music</option>
+                        <option value="Tech">💻 Tech</option>
+                        <option value="Sports">⚽ Sports</option>
+                        <option value="Art">🎨 Art</option>
+                        <option value="Dance">💃 Dance</option>
+                    </select>
+                </div>
+
+                <!-- Paid / Price -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventPaid">Entry</label>
+                        <select id="eventPaid" name="paid" onchange="togglePrice()">
+                            <option value="false">Free</option>
+                            <option value="true">Paid</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="priceGroup" style="display:none;">
+                        <label for="eventPrice">Price (₹)</label>
+                        <input type="number" id="eventPrice" name="price" placeholder="e.g. 200" min="0">
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="eventDesc">Description <span
+                            style="font-weight:400; text-transform:none;">(optional)</span></label>
+                    <textarea id="eventDesc" name="description" rows="3"
+                        placeholder="What's the event about?"></textarea>
+                </div>
+
+                <!-- Map -->
+                <span class="map-label">📍 Pin Event Location on Map *</span>
+                <div id="map"></div>
+                <p id="coordsDisplay" class="coords-hint">Click on the map to set the event location.</p>
+
+                <!-- Hidden lat/lng -->
+                <input type="hidden" id="hiddenLat" name="lat">
+                <input type="hidden" id="hiddenLng" name="lng">
+
+                <div class="submit-row">
+                    <a href="/" class="btn btn-outline">Cancel</a>
+                    <button type="submit" class="btn" id="submitBtn">🚀 Submit Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ── Kerala Districts ───────────────────────────────────────────────────────────
+        const keralaDistricts = {
+            "Thiruvananthapuram": ["Thiruvananthapuram City", "Neyyattinkara", "Kattakada"],
+            "Kollam": ["Kollam City", "Karunagappally", "Kunnathur"],
+            "Pathanamthitta": ["Pathanamthitta Town", "Adoor", "Kozhencherry"],
+            "Alappuzha": ["Alappuzha City", "Cherthala", "Chengannur"],
+            "Kottayam": ["Kottayam City", "Pala", "Vaikom"],
+            "Idukki": ["Painavu", "Thodupuzha", "Munnar"],
+            "Ernakulam": ["Kochi", "Aluva", "Muvattupuzha"],
+            "Thrissur": ["Thrissur City", "Guruvayur", "Chalakudy"],
+            "Palakkad": ["Palakkad City", "Ottapalam", "Chittur"],
+            "Malappuram": ["Malappuram City", "Tirur", "Perinthalmanna"],
+            "Kozhikode": ["Kozhikode City", "Vatakara", "Thamarassery"],
+            "Wayanad": ["Kalpetta", "Sulthan Bathery", "Mananthavady"],
+            "Kannur": ["Kannur City", "Taliparamba", "Payyanur"],
+            "Kasaragod": ["Kasaragod City", "Kanhangad", "Nileshwar"]
+        };
+
+        // Populate district select
+        const distSel = document.getElementById('eventDistrict');
+        Object.keys(keralaDistricts).sort().forEach(d => {
+            const opt = document.createElement('option');
+            opt.value = opt.textContent = d;
+            distSel.appendChild(opt);
+        });
+
+        function populatePlaces() {
+            const d = document.getElementById('eventDistrict').value;
+            const pSel = document.getElementById('eventPlace');
+            pSel.innerHTML = '<option value="">Select Place</option>';
+            if (d && keralaDistricts[d]) {
+                keralaDistricts[d].forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = opt.textContent = p;
+                    pSel.appendChild(opt);
+                });
+            }
+        }
+
+        function togglePrice() {
+            const paid = document.getElementById('eventPaid').value === 'true';
+            document.getElementById('priceGroup').style.display = paid ? 'block' : 'none';
+        }
+
+        // ── Map ────────────────────────────────────────────────────────────────────────
+        var map = L.map('map').setView([10.8505, 76.2711], 7);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var marker;
+        map.on('click', function (e) {
+            if (marker) map.removeLayer(marker);
+            marker = L.marker(e.latlng).addTo(map);
+            document.getElementById('hiddenLat').value = e.latlng.lat.toFixed(6);
+            document.getElementById('hiddenLng').value = e.latlng.lng.toFixed(6);
+            document.getElementById('coordsDisplay').textContent =
+                `📌 Pinned at: ${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(5)}`;
+            document.getElementById('coordsDisplay').style.color = '#6ee7b7';
+        });
+
+        // ── Submit ─────────────────────────────────────────────────────────────────────
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            if (!document.getElementById('hiddenLat').value) {
+                showToast('❗ Please click on the map to pin the event location.', 'error');
+                return;
+            }
+
+            const fd = new FormData(e.target);
+            const payload = {
+                name: fd.get('name'),
+                district: fd.get('district'),
+                place: fd.get('place'),
+                date: fd.get('date'),
+                time: fd.get('time'),
+                category: fd.get('category'),
+                paid: fd.get('paid') === 'true',
+                price: parseFloat(fd.get('price') || 0),
+                description: fd.get('description'),
+                lat: parseFloat(fd.get('lat')),
+                lng: parseFloat(fd.get('lng')),
+            };
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Submitting…';
+
+            try {
+                const res = await fetch('/add-event', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    showToast('✅ ' + data.message, 'success');
+                    btn.textContent = '✅ Event Added!';
+                    btn.style.background = 'linear-gradient(135deg, #34d399, #059669)';
+                    setTimeout(() => window.location.href = '/', 1800);
+                } else {
+                    showToast('❌ ' + (data.message || 'Submission failed.'), 'error');
+                    btn.disabled = false;
+                    btn.textContent = '🚀 Submit Event';
+                }
+            } catch {
+                showToast('❌ Could not reach the backend. Is the Flask server running?', 'error');
+                btn.disabled = false;
+                btn.textContent = '🚀 Submit Event';
+            }
+        }
+
+        function showToast(msg, type) {
+            const t = document.getElementById('formToast');
+            t.textContent = msg;
+            t.className = 'form-toast toast-' + type;
+            t.style.display = 'block';
+            if (type === 'success') setTimeout(() => t.style.display = 'none', 3000);
+        }
+    </script>
+
+</body>
+
+</html>

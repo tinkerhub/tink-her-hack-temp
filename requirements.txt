@@ -1,0 +1,6 @@
+# Community Event Finder — Python dependencies
+# Install with: pip install -r requirements.txt
+
+flask==3.1.1
+flask-cors==6.0.2
+gunicorn==23.0.0

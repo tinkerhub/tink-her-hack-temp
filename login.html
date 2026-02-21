@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — EventFinder</title>
+    <meta name="description" content="Sign in or create an account to discover and manage community events near you.">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ══ NAVBAR ═══════════════════════════════════════════════════════════════ -->
+    <nav>
+        <div class="nav-brand">
+            <div class="logo-icon">🌍</div>
+            <h2>EventFinder</h2>
+        </div>
+        <div class="nav-actions">
+            <a href="/" class="btn btn-outline">← Home</a>
+        </div>
+    </nav>
+
+    <!-- ══ LOGIN PAGE ═══════════════════════════════════════════════════════════ -->
+    <div class="login-page">
+        <!-- Animated floating orbs for background flair -->
+        <div class="login-orb login-orb-1"></div>
+        <div class="login-orb login-orb-2"></div>
+        <div class="login-orb login-orb-3"></div>
+
+        <div class="login-card" id="loginCard">
+            <!-- Logo -->
+            <div class="login-logo">
+                <div class="login-logo-icon">🌍</div>
+            </div>
+
+            <h3 id="loginTitle">Welcome Back</h3>
+            <p class="subtitle" id="loginSubtitle">Sign in to discover events near you</p>
+
+            <div id="loginToast" class="form-toast" style="display:none;"></div>
+
+            <!-- ── SIGN IN FORM ──────────────────────────────────────────────── -->
+            <form id="signinForm" onsubmit="handleSignin(event)">
+                <div class="form-group">
+                    <label for="signinEmail">Email Address</label>
+                    <div class="input-icon-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input type="email" id="signinEmail" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signinPassword">Password</label>
+                    <div class="input-icon-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="signinPassword" placeholder="Enter your password" required
+                            minlength="6">
+                        <button type="button" class="password-toggle" onclick="togglePassword('signinPassword', this)"
+                            aria-label="Toggle password visibility">👁️</button>
+                    </div>
+                </div>
+
+                <div class="login-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                    <button type="button" class="link-btn"
+                        onclick="showToast('📧 Password reset link sent!', 'success')">Forgot password?</button>
+                </div>
+
+                <button type="submit" class="btn login-btn" id="signinBtn">
+                    <span>Sign In</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            </form>
+
+            <!-- ── SIGN UP FORM ──────────────────────────────────────────────── -->
+            <form id="signupForm" onsubmit="handleSignup(event)" style="display:none;">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <div class="input-icon-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="signupName" placeholder="Your full name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <div class="input-icon-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <div class="input-icon-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="signupPassword" placeholder="Create a password (min 6 chars)"
+                            required minlength="6">
+                        <button type="button" class="password-toggle" onclick="togglePassword('signupPassword', this)"
+                            aria-label="Toggle password visibility">👁️</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <div class="input-icon-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="signupConfirm" placeholder="Re-enter your password" required
+                            minlength="6">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn login-btn" id="signupBtn">
+                    <span>Create Account</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            </form>
+
+            <!-- ── TOGGLE ────────────────────────────────────────────────────── -->
+            <div class="login-divider">
+                <span>or</span>
+            </div>
+
+            <p class="toggle-text" id="toggleText">
+                Don't have an account?
+                <button type="button" class="link-btn toggle-link" onclick="toggleMode()">Sign Up</button>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let isSignUp = false;
+
+        function toggleMode() {
+            isSignUp = !isSignUp;
+            const card = document.getElementById('loginCard');
+            card.classList.add('card-flip');
+
+            setTimeout(() => {
+                document.getElementById('signinForm').style.display = isSignUp ? 'none' : 'block';
+                document.getElementById('signupForm').style.display = isSignUp ? 'block' : 'none';
+                document.getElementById('loginTitle').textContent = isSignUp ? 'Create Account' : 'Welcome Back';
+                document.getElementById('loginSubtitle').textContent = isSignUp
+                    ? 'Join EventFinder to discover local events'
+                    : 'Sign in to discover events near you';
+                document.getElementById('toggleText').innerHTML = isSignUp
+                    ? 'Already have an account? <button type="button" class="link-btn toggle-link" onclick="toggleMode()">Sign In</button>'
+                    : 'Don\'t have an account? <button type="button" class="link-btn toggle-link" onclick="toggleMode()">Sign Up</button>';
+
+                card.classList.remove('card-flip');
+            }, 200);
+
+            // Hide any existing toast
+            document.getElementById('loginToast').style.display = 'none';
+        }
+
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁️';
+            }
+        }
+
+        function showToast(msg, type) {
+            const t = document.getElementById('loginToast');
+            t.textContent = msg;
+            t.className = 'form-toast toast-' + type;
+            t.style.display = 'block';
+            if (type === 'success') setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        // ── Sign In handler ──────────────────────────────────────────────────
+        async function handleSignin(e) {
+            e.preventDefault();
+            const email = document.getElementById('signinEmail').value.trim();
+            const password = document.getElementById('signinPassword').value;
+            const btn = document.getElementById('signinBtn');
+
+            btn.disabled = true;
+            btn.querySelector('span').textContent = 'Signing in…';
+
+            try {
+                const res = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    showToast('✅ ' + data.message, 'success');
+                    btn.querySelector('span').textContent = '✅ Signed In!';
+                    btn.style.background = 'linear-gradient(135deg, #34d399, #059669)';
+                    setTimeout(() => window.location.href = '/', 1200);
+                } else {
+                    showToast('❌ ' + (data.message || 'Invalid credentials.'), 'error');
+                    btn.disabled = false;
+                    btn.querySelector('span').textContent = 'Sign In';
+                }
+            } catch {
+                showToast('❌ Could not reach the server. Is Flask running?', 'error');
+                btn.disabled = false;
+                btn.querySelector('span').textContent = 'Sign In';
+            }
+        }
+
+        // ── Sign Up handler ──────────────────────────────────────────────────
+        async function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupConfirm').value;
+            const btn = document.getElementById('signupBtn');
+
+            if (password !== confirm) {
+                showToast('❌ Passwords do not match.', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.querySelector('span').textContent = 'Creating account…';
+
+            try {
+                const res = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    showToast('✅ ' + data.message, 'success');
+                    btn.querySelector('span').textContent = '✅ Account Created!';
+                    btn.style.background = 'linear-gradient(135deg, #34d399, #059669)';
+                    setTimeout(() => {
+                        toggleMode(); // switch to sign in
+                        btn.style.background = '';
+                        btn.disabled = false;
+                        btn.querySelector('span').textContent = 'Create Account';
+                    }, 1800);
+                } else {
+                    showToast('❌ ' + (data.message || 'Registration failed.'), 'error');
+                    btn.disabled = false;
+                    btn.querySelector('span').textContent = 'Create Account';
+                }
+            } catch {
+                showToast('❌ Could not reach the server. Is Flask running?', 'error');
+                btn.disabled = false;
+                btn.querySelector('span').textContent = 'Create Account';
+            }
+        }
+    </script>
+
+</body>
+
+</html>
