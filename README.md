@@ -2,27 +2,27 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# [Enora] 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: [Enora]
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: [Sreyas Linith] - [Vidya Academy Of Science And Technology]
+- Member 2: [Theertha Suran V] - [Vidya Academy Of Science And Technology]
 
 ### Hosted Project Link
-[mention your project hosted link here]
+[https://enoraa.netlify.app/]
 
 ### Project Description
-[2-3 lines about what your project does]
+[ENORA is an Atmospheric Health Sanctuary designed to harmonize with the feminine rhythm.Leveraging context-aware UI/UX, the platform offers a seamless flow between period cycle intelligence, dermatological guidance, and a rapid-response emergency SOS system.From curated skincare sanctuaries to a high-latency SOS safety hub, ENORA is the empathetic bridge between data and well-being."]
 
 ### The Problem statement
-[What problem are you solving?]
+[Traditional women's health apps are often clinical and static, prioritizing raw data while neglecting the emotional and atmospheric needs of the user. Current market solutions suffer from a fragmented landscape where no single platform offers an all-in-one ecosystem for hygiene, health tracking, and personal safety. This forces users to juggle multiple disjointed apps, resulting in a stressful experience with cold, spreadsheet-like interfaces that fail to synchronize with a woman's internal rhythm.]
 
 ### The Solution
-[How are you solving it?]
+[ENORA solves this by introducing a unified Atmospheric Wellness Companion that serves as a single, empathetic sanctuary for all hygiene, health, and safety needs. Through its dynamic Mood-Sync Engine, the platform transforms its entire UI to match the user's emotional state, seamlessly integrating cycle intelligence, skincare guidance, and a high-visibility SOS safety hub into one synchronized digital experience. By consolidating these essential tools, ENORA eliminates app fatigue and provides a proactive, holistic environment designed for the modern woman.]
 
 ---
 
@@ -31,25 +31,29 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+- Languages used: [HTML5 (Semantic Structure), CSS3 (Advanced Layouts), JavaScript (ES6+ Logic)]
+- Frameworks used: [None (Vanilla JS Architecture for maximum performance and zero dependency overhead)]
+- Libraries used: [Google Fonts API: For premium typography (Playfair Display & Inter),FontAwesome / Lucide: For high-clarity iconography]
+- Tools used: [VS Code: Primary Development Environment
+
+Git & GitHub: Version Control and Repository Management
+
+Netlify: Continuous Deployment and Cloud Hosting]
 
 **For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+- Main components: [Not applicable (This is a Cloud-Native Web Application)]
+- Specifications: [Cross-Platform Compatibility: Optimized for Desktop, Tablet, and Mobile (Responsive Design),Browser Support: Compatible with all modern Chromium-based browsers, Safari, and Firefox]
+- Tools required: [Any device with a modern web browser and internet connection]
 
 ---
 
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+- Mood-Sync Atmospheric Engine: [A sophisticated UI system that dynamically adapts the website's cinematic background videos, color palette, and typography in real-time based on the user's emotional state (Relaxed, Energetic, Power, or Period).]
+- All-in-One Wellness Sanctuary: [A unified digital ecosystem that consolidates feminine hygiene resources, dermatological "Skin Sanctuary" insights, and style guidance, eliminating the need for fragmented third-party applications.]
+- Smart Resource Intelligence: [A high-performance, real-time search and filter system that allows users to instantly access a curated database of 50+ wellness and hygiene topics with zero latency.]
+- Instant-Response SOS Safety Hub: [A dedicated emergency dashboard featuring high-contrast design and pulse-animation indicators, engineered for rapid accessibility and visibility during critical safety situations.]
 
 ---
 
@@ -59,21 +63,40 @@ List the key features of your project:
 
 #### Installation
 ```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
+[Installation commands -# Clone the repository
+git clone https://github.com/sreyaslinith/enora.git
+
+# Navigate into the project directory
+cd enora
+
+# (Optional) If using Live Server via Node.js
+npm install -g live-server]
 ```
 
 #### Run
 ```bash
-[Run commands - e.g., npm start, python app.py]
+[Run commands - 
+
+# Option 1: Using the command line (if live-server is installed)
+live-server public
+
+# Option 2: Using Python's built-in server
+python -m http.server 8000]
 ```
 
 ### For Hardware:
 
 #### Components Required
-[List all components needed with specifications]
+[Processor: Dual-core 2.0GHz or higher (for smooth 4K video background rendering).
+
+Memory (RAM): 4GB minimum (8GB recommended for multi-tab wellness browsing).
+
+Display: Minimum resolution of 1024x768 (Optimized for 1080p and Mobile OLED screens).
+
+Network: Broadband internet connection for initial asset loading and HTTPS security handshake.]
 
 #### Circuit Setup
-[Explain how to set up the circuit]
+[Not applicable for this project. The architecture follows a Client-Server model where the logic resides in the browser (Client) and the assets are served via Netlify’s Edge Network (Server).]
 
 ---
 
@@ -83,290 +106,117 @@ List the key features of your project:
 
 #### Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot1](https://drive.google.com/file/d/1zpSIqIV_dKtRO9ieFmxS5E1fo-H4ywXN/view?usp=drive_link)
+*The Dynamic Home (Mood-Sync Landing)
+The entry point of ENORA is an immersive, cinematic experience. It features a transparent Glassmorphism navigation bar and a central "Mood Selector."
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+Purpose: To immediately align the digital environment with the user's emotional state.
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+Key Elements: Dynamic <video> background, real-time CSS theme switching, and an empathetic "How are you feeling?" call-to-action.*
+
+![Screenshot2](https://drive.google.com/file/d/1WThRStHnsiVA89RuhgBrYgzxhHMz_0Qi/view?usp=drive_link)
+*The Calendar is the central intelligence hub of ENORA. It provides a holistic view of the user's monthly rhythm, combining biological tracking with emotional data.
+
+Purpose: To offer a visual representation of the menstrual cycle, identifying the four key phases (Menstrual, Follicular, Ovulatory, and Luteal).
+
+Key Elements:
+
+Phase-Coded Highlights: Each phase of the cycle is color-coded to match the Mood-Sync Engine (e.g., Luteal phase triggers the 'Relaxed' theme).
+
+Symptom Logging: Interactive dates where users can log energy levels, skin changes, and moods.
+
+Predictive Indicators: Visual markers that forecast upcoming cycles based on historical data.*
+
+![Screenshot3](https://drive.google.com/file/d/1oJ66Gbt93kPu7mZneGDg951935omL5cn/view?usp=drive_link)
+* Style Studio (Contextual Fashion)
+A lifestyle module that suggests outfits based on the user's selected mood and physical comfort levels.
+
+Purpose: To boost confidence and comfort by providing curated style inspirations.
+
+Key Elements: High-quality image grid and "Style Tips" that change color palettes based on the active theme (Power, Relaxed, etc.).*
+
+![Screenshot4](https://drive.google.com/file/d/1Opq-9JRSCzEapXmFhr5MBw8JYoFhZQXC/view?usp=drive_link)
+*Wellness Library (Resource Hub)
+The data powerhouse of the application, containing a searchable database of hygiene and health information.
+
+Purpose: To eliminate the need for external searching by providing a verified, all-in-one knowledge base.
+
+Key Elements: A high-speed JavaScript-powered search bar and a categorized grid of 50+ wellness resources.*
+
+![Screenshot5](https://drive.google.com/file/d/1U7MPAgI4L7QhC-hsemMCheJUiayAyJqD/view?usp=drive_link)
+*Skin Sanctuary (Dermatological Guide)
+A dedicated space for skincare wellness that adapts to hormonal changes.
+
+Purpose: To provide phase-specific skincare advice (e.g., Follicular vs. Luteal phase needs).
+
+Key Elements: Interactive 3D-flip cards that reveal detailed ingredients and routines, and a "Skin Type" filter logic.*
+
+![Screenshot6](https://drive.google.com/file/d/1QC1Vp0PTcVDLtPYnx2CeKeYoriNemYQL/view?usp=drive_link)
+*SOS Safety Hub (Emergency Dashboard)
+A mission-critical safety page designed for high-stress situations.
+
+Purpose: To provide immediate, one-tap access to emergency contacts and safety tools.
+
+Key Elements: High-contrast Red/Black UI, "Pulse" animations for visibility, and direct-call buttons for local emergency services*
 
 #### Diagrams
 
 **System Architecture:**
 
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
+![Architecture Diagram](https://drive.google.com/file/d/1u1KrbxTmUQYD_FFdmsu_43l4VsT8XDFx/view?usp=drive_link)
+*ENORA System Architecture
+Client Layer (UI/UX):
+Built with HTML5 and CSS3, utilizing a Glassmorphism design. This layer handles the visual rendering and responsive layouts for mobile and desktop.
+
+Logic Layer (The Mood-Sync Engine):
+A Vanilla JavaScript core that processes user inputs. It dynamically updates CSS variables to change themes and switches background <video> sources without page reloads.
+
+Infrastructure Layer (Deployment):
+The project is version-controlled via GitHub and hosted on Netlify. It uses a global CDN to deliver cinematic assets with high speed and HTTPS security.*
 
 **Application Workflow:**
 
-![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
+![Workflow](https://drive.google.com/file/d/12QuUa0dK8lAszrxm1tMj_TrU_ePq7vKt/view?usp=drive_link)
+*Simplified Architecture & Workflow
+Without the public or src folders, your architecture is a Flat-File Web Application. This is often faster to deploy and easier to maintain for single-page projects.
+
+Frontend (HTML/CSS): The index.html file loads style.css directly from the same folder.
+
+Logic (JavaScript): The script.js file handles all "Mood-Sync" transitions and resource filtering.
+
+Assets: Background videos are pulled from the videos/ folder, and images from the images/ folder.
+
+Deployment: Hosted on Netlify, which serves these static files via HTTPS.*
 
 ---
 
-### For Hardware:
-
-#### Schematic & Circuit
-
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
 
 #### Build Photos
 
-![Team](Add photo of your team here)
+![Team](https://drive.google.com/file/d/1FFGXjHdY_6-U30QVSLZvA8Qr00CBYfv8/view?usp=drive_link)
 
-![Components](Add photo of your components here)
-*List out all components shown*
 
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
-
----
-
-## Additional Documentation
-
-### For Web Projects with Backend:
-
-#### API Documentation
-
-**Base URL:** `https://api.yourproject.com`
-
-##### Endpoints
-
-**GET /api/endpoint**
-- **Description:** [What it does]
-- **Parameters:**
-  - `param1` (string): [Description]
-  - `param2` (integer): [Description]
-- **Response:**
-```json
-{
-  "status": "success",
-  "data": {}
-}
-```
-
-**POST /api/endpoint**
-- **Description:** [What it does]
-- **Request Body:**
-```json
-{
-  "field1": "value1",
-  "field2": "value2"
-}
-```
-- **Response:**
-```json
-{
-  "status": "success",
-  "message": "Operation completed"
-}
-```
-
-[Add more endpoints as needed...]
-
----
-
-### For Mobile Apps:
-
-#### App Flow Diagram
-
-![App Flow](docs/app-flow.png)
-*Explain the user flow through your application*
-
-#### Installation Guide
-
-**For Android (APK):**
-1. Download the APK from [Release Link]
-2. Enable "Install from Unknown Sources" in your device settings:
-   - Go to Settings > Security
-   - Enable "Unknown Sources"
-3. Open the downloaded APK file
-4. Follow the installation prompts
-5. Open the app and enjoy!
-
-**For iOS (IPA) - TestFlight:**
-1. Download TestFlight from the App Store
-2. Open this TestFlight link: [Your TestFlight Link]
-3. Click "Install" or "Accept"
-4. Wait for the app to install
-5. Open the app from your home screen
-
-**Building from Source:**
-```bash
-# For Android
-flutter build apk
-# or
-./gradlew assembleDebug
-
-# For iOS
-flutter build ios
-# or
-xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
-```
-
----
-
-### For Hardware Projects:
-
-#### Bill of Materials (BOM)
-
-| Component | Quantity | Specifications | Price | Link/Source |
-|-----------|----------|----------------|-------|-------------|
-| Arduino Uno | 1 | ATmega328P, 16MHz | ₹450 | [Link] |
-| LED | 5 | Red, 5mm, 20mA | ₹5 each | [Link] |
-| Resistor | 5 | 220Ω, 1/4W | ₹1 each | [Link] |
-| Breadboard | 1 | 830 points | ₹100 | [Link] |
-| Jumper Wires | 20 | Male-to-Male | ₹50 | [Link] |
-| [Add more...] | | | | |
-
-**Total Estimated Cost:** ₹[Amount]
-
-#### Assembly Instructions
-
-**Step 1: Prepare Components**
-1. Gather all components listed in the BOM
-2. Check component specifications
-3. Prepare your workspace
-![Step 1](images/assembly-step1.jpg)
-*Caption: All components laid out*
-
-**Step 2: Build the Power Supply**
-1. Connect the power rails on the breadboard
-2. Connect Arduino 5V to breadboard positive rail
-3. Connect Arduino GND to breadboard negative rail
-![Step 2](images/assembly-step2.jpg)
-*Caption: Power connections completed*
-
-**Step 3: Add Components**
-1. Place LEDs on breadboard
-2. Connect resistors in series with LEDs
-3. Connect LED cathodes to GND
-4. Connect LED anodes to Arduino digital pins (2-6)
-![Step 3](images/assembly-step3.jpg)
-*Caption: LED circuit assembled*
-
-**Step 4: [Continue for all steps...]**
-
-**Final Assembly:**
-![Final Build](images/final-build.jpg)
-*Caption: Completed project ready for testing*
-
----
-
-### For Scripts/CLI Tools:
-
-#### Command Reference
-
-**Basic Usage:**
-```bash
-python script.py [options] [arguments]
-```
-
-**Available Commands:**
-- `command1 [args]` - Description of what command1 does
-- `command2 [args]` - Description of what command2 does
-- `command3 [args]` - Description of what command3 does
-
-**Options:**
-- `-h, --help` - Show help message and exit
-- `-v, --verbose` - Enable verbose output
-- `-o, --output FILE` - Specify output file path
-- `-c, --config FILE` - Specify configuration file
-- `--version` - Show version information
-
-**Examples:**
-
-```bash
-# Example 1: Basic usage
-python script.py input.txt
-
-# Example 2: With verbose output
-python script.py -v input.txt
-
-# Example 3: Specify output file
-python script.py -o output.txt input.txt
-
-# Example 4: Using configuration
-python script.py -c config.json --verbose input.txt
-```
-
-#### Demo Output
-
-**Example 1: Basic Processing**
-
-**Input:**
-```
-This is a sample input file
-with multiple lines of text
-for demonstration purposes
-```
-
-**Command:**
-```bash
-python script.py sample.txt
-```
-
-**Output:**
-```
-Processing: sample.txt
-Lines processed: 3
-Characters counted: 86
-Status: Success
-Output saved to: output.txt
-```
-
-**Example 2: Advanced Usage**
-
-**Input:**
-```json
-{
-  "name": "test",
-  "value": 123
-}
-```
-
-**Command:**
-```bash
-python script.py -v --format json data.json
-```
-
-**Output:**
-```
-[VERBOSE] Loading configuration...
-[VERBOSE] Parsing JSON input...
-[VERBOSE] Processing data...
-{
-  "status": "success",
-  "processed": true,
-  "result": {
-    "name": "test",
-    "value": 123,
-    "timestamp": "2024-02-07T10:30:00"
-  }
-}
-[VERBOSE] Operation completed in 0.23s
-```
+![Final](https://drive.google.com/file/d/119Lk9adBYMHOBvQznFoSXYQkJKzEVmjx/view?usp=drive_link)
+*ENORA: The Atmospheric Wellness Sanctuary
+ENORA is a high-performance, all-in-one wellness ecosystem designed to bridge the gap between clinical health tracking and emotional well-being. Built with a Vanilla JavaScript architecture and a "Flat-File" structure, it provides a seamless, zero-latency experience for modern women.*
 
 ---
 
 ## Project Demo
 
 ### Video
-[Add your demo video link here - YouTube, Google Drive, etc.]
+[Add your demo video link here -https://drive.google.com/file/d/1zpSIqIV_dKtRO9ieFmxS5E1fo-H4ywXN/view?usp=drive_link.]
 
-*Explain what the video demonstrates - key features, user flow, technical highlights*
+*ENORA is an all-in-one atmospheric wellness sanctuary that replaces fragmented health apps by consolidating hygiene tracking, skincare guidance, and personal safety into a single, synchronized ecosystem.
 
-### Additional Demos
-[Add any extra demo materials/links - Live site, APK download, online demo, etc.]
+The heart of the platform is a Vanilla JavaScript Mood-Sync Engine that dynamically transforms the entire interface—switching 4K cinematic backgrounds, color palettes, and typography—to match the user’s emotional and biological rhythm in real-time.
+
+Technically, it utilizes a high-performance flat-file architecture and LocalStorage to ensure that sensitive health data remains private and the user experience is zero-latency.
+
+Beyond tracking, the app features a Cycle Intelligence Calendar and a searchable Wellness Library that provide phase-specific advice for dermatological and lifestyle needs.
+
+For critical moments, ENORA includes a high-visibility SOS Safety Hub with pulse-animation triggers, ensuring that essential emergency resources are always one tap away*
+
 
 ---
 
@@ -374,25 +224,25 @@ python script.py -v --format json data.json
 
 If you used AI tools during development, document them here for transparency:
 
-**Tool Used:** [e.g., GitHub Copilot, v0.dev, Cursor, ChatGPT, Claude]
+**Tool Used:** [Gemini 3 Flash]
 
-**Purpose:** [What you used it for]
-- Example: "Generated boilerplate React components"
-- Example: "Debugging assistance for async functions"
+**Purpose:** [Architectural planning for the Mood-Sync Engine.]
+- Example: "Generating complex CSS for Glassmorphism and responsive layouts."
+- Example: "Structuring the flat-file system and documentation for hackathon compliance."
 - Example: "Code review and optimization suggestions"
 
 **Key Prompts Used:**
 - "Create a REST API endpoint for user authentication"
 - "Debug this async function that's causing race conditions"
-- "Optimize this database query for better performance"
+- "Debugging DOM manipulation logic for real-time video switching."
 
-**Percentage of AI-generated code:** [Approximately X%]
+**Percentage of AI-generated code:** [Approximately 35% (Core logic patterns and styling boilerplate).]
 
 **Human Contributions:**
-- Architecture design and planning
-- Custom business logic implementation
-- Integration and testing
-- UI/UX design decisions
+- Product Vision: Conceptualized the "Atmospheric Wellness" theme and SOS Hub integration.
+-Business Logic: Defined the specific skincare and style rules for each hormonal phase.
+-Curation: Selected and optimized all cinematic video assets and wellness resources.
+- Integration: Manually connected the JS engine to the HTML structure and handled local storage persistence.
 
 *Note: Proper documentation of AI usage demonstrates transparency and earns bonus points in evaluation!*
 
@@ -400,15 +250,14 @@ If you used AI tools during development, document them here for transparency:
 
 ## Team Contributions
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
+- [Sreyas Linith]: [Lead Developer. Architected the Mood-Sync Engine logic, handled the core JavaScript implementation, and managed the technical documentation and flat-file system structure.]
+- [Theertha Suran V]: [UI/UX Designer & Researcher. Responsible for the Glassmorphism visual design, curated the cinematic video assets for each mood, and developed the wellness resource database for the Skin and Style sanctuaries.]
 
 ---
 
 ## License
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT License] License - see the [LICENSE](https://github.com/sreyaslinith/enora/blob/main/LICENSE) file for details.
 
 **Common License Options:**
 - MIT License (Permissive, widely used)
