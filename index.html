@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusCents — Student Budget Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="./style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">Penny<span>Wise</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('walkthrough')">📖 Learn</button>
+    <button class="nav-tab" onclick="switchTab('tracker')">📊 Track</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     WALKTHROUGH SECTION
+══════════════════════════════════════ -->
+<section id="walkthrough" class="section active">
+  <div class="wt-header">
+    <div class="wt-eyebrow">Quick Crash Course</div>
+    <h1>Budget like a <em>pro.</em><br>In under 5 minutes.</h1>
+  </div>
+
+  <div class="wt-section-tabs">
+    <button class="wt-section-btn active" data-section="walkthrough" onclick="switchWTSection('walkthrough')">📖 Budgeting Basics</button>
+    <button class="wt-section-btn" data-section="jargon" onclick="switchWTSection('jargon')">📈 Stock Jargon</button>
+    <button class="wt-section-btn" data-section="beginners" onclick="switchWTSection('beginners')">🚀 Beginner's Guide</button>
+    <button class="wt-section-btn" data-section="invest" onclick="switchToInvest()">💰 Start Investing</button>
+  </div>
+
+  <div class="wt-progress-wrap">
+    <div class="wt-progress-meta">
+      <span class="wt-progress-label" id="wt-step-label">Card 1 of 19</span>
+      <span class="wt-progress-label" id="wt-pct-label">0% complete</span>
+    </div>
+    <div class="wt-progress-bar">
+      <div class="wt-progress-fill" id="wt-progress" style="width:5%"></div>
+    </div>
+  </div>
+
+  <div class="wt-card-stage">
+    <div class="wt-card" id="wt-card">
+      <!-- injected by JS -->
+    </div>
+  </div>
+
+  <div class="wt-nav">
+    <button class="wt-btn" id="wt-prev" onclick="wtGo(-1)" disabled>← Back</button>
+    <div class="wt-dots" id="wt-dots"></div>
+    <button class="wt-btn wt-btn-primary" id="wt-next" onclick="wtGo(1)">Next →</button>
+  </div>
+
+  <p class="wt-hint">↑ Use ← → arrow keys to navigate</p>
+</section>
+
+<!-- ══════════════════════════════════════
+     INVEST PANEL SECTION
+══════════════════════════════════════ -->
+<section id="invest-panel" class="section">
+
+  <div class="wt-header">
+    <div class="wt-eyebrow">Start Investing</div>
+    <h1>Make your money <em>grow.</em><br>Start with just ₹500 a month.</h1>
+  </div>
+
+  <div class="wt-section-tabs">
+    <button class="wt-section-btn" data-section="walkthrough" onclick="switchFromInvest('walkthrough')">📖 Budgeting Basics</button>
+    <button class="wt-section-btn" data-section="jargon" onclick="switchFromInvest('jargon')">📈 Stock Jargon</button>
+    <button class="wt-section-btn" data-section="beginners" onclick="switchFromInvest('beginners')">🚀 Beginner's Guide</button>
+    <button class="wt-section-btn active" data-section="invest" onclick="switchToInvest()">💰 Start Investing</button>
+  </div>
+
+  <div class="invest-grid">
+
+    <!-- LEFT: Fixed ₹500/month SIP -->
+    <div class="invest-card-panel">
+      <div class="invest-panel-header">
+        <div class="invest-panel-badge">🏦 Demat Account SIP</div>
+        <div class="invest-panel-title">₹500 / month</div>
+        <div class="invest-panel-sub">The Nifty 50 has historically returned ~12% p.a. See what a small habit builds over time.</div>
+      </div>
+      <div class="invest-stats-row" id="sip500-stats"></div>
+      <div class="invest-chart-wrap">
+        <svg id="sip500-chart" class="invest-chart-svg" viewBox="0 0 500 180" preserveAspectRatio="none"></svg>
+        <div class="invest-chart-labels" id="sip500-xlabels"></div>
+      </div>
+      <div class="invest-rate-row">
+        <label class="invest-rate-label">Annual return rate</label>
+        <div class="invest-rate-controls">
+          <button class="invest-rate-btn" onclick="changeSip500Rate(-2)">−</button>
+          <span class="invest-rate-val" id="sip500-rate">12%</span>
+          <button class="invest-rate-btn" onclick="changeSip500Rate(2)">+</button>
+        </div>
+      </div>
+      <a class="invest-cta-btn" href="https://zerodha.com" target="_blank" rel="noopener">
+        Open a Demat Account — Free on Zerodha →
+      </a>
+      <div class="invest-disclaimer">Past returns don't guarantee future performance. Invest only what you can afford. Consult a financial advisor.</div>
+    </div>
+
+    <!-- RIGHT: Custom amount calculator -->
+    <div class="invest-card-panel">
+      <div class="invest-panel-header">
+        <div class="invest-panel-badge">🧮 Custom Calculator</div>
+        <div class="invest-panel-title" id="custom-title">₹500 / month</div>
+        <div class="invest-panel-sub">Enter any monthly investment amount and adjust the return rate to see your personalised projection.</div>
+      </div>
+      <div class="invest-custom-inputs">
+        <div class="invest-input-group">
+          <label class="invest-rate-label">Monthly investment (₹)</label>
+          <input type="number" class="invest-amount-input" id="custom-amount" value="500" min="100" step="100" oninput="renderCustomCalc()">
+        </div>
+        <div class="invest-input-group">
+          <label class="invest-rate-label">Annual return rate</label>
+          <div class="invest-rate-controls">
+            <button class="invest-rate-btn" onclick="changeCustomRate(-2)">−</button>
+            <span class="invest-rate-val" id="custom-rate">12%</span>
+            <button class="invest-rate-btn" onclick="changeCustomRate(2)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="invest-stats-row" id="custom-stats"></div>
+      <div class="invest-chart-wrap">
+        <svg id="custom-chart" class="invest-chart-svg" viewBox="0 0 500 180" preserveAspectRatio="none"></svg>
+        <div class="invest-chart-labels" id="custom-xlabels"></div>
+      </div>
+      <div class="invest-disclaimer">This is a projection, not a promise. Real returns vary based on market conditions.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TRACKER SECTION
+══════════════════════════════════════ -->
+<section id="tracker" class="section">
+  <div class="tracker-grid">
+
+    <!-- LEFT COLUMN: ADD EXPENSE + SUMMARY -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+
+      <!-- Budget Setup -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Monthly Budget</div>
+            <div class="panel-subtitle">Set your spending limit</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="budget-setup">
+            <div class="budget-setup-title">₹ Your Budget for This Month</div>
+            <div class="budget-input-row">
+              <input type="number" class="form-input" id="budget-input" placeholder="e.g. 15000" min="0">
+              <button class="budget-save-btn" onclick="saveBudget()">Set →</button>
+            </div>
+          </div>
+
+          <!-- Summary Cards -->
+          <div class="summary-cards">
+            <div class="summary-card budget">
+              <div class="sc-label">Budget</div>
+              <div class="sc-value" id="sc-budget">₹—</div>
+            </div>
+            <div class="summary-card spent">
+              <div class="sc-label">Spent</div>
+              <div class="sc-value" id="sc-spent">₹0</div>
+            </div>
+            <div class="summary-card remaining">
+              <div class="sc-label">Remaining</div>
+              <div class="sc-value" id="sc-remaining">₹—</div>
+            </div>
+            <div class="summary-card savings">
+              <div class="sc-label">Need vs Want</div>
+              <div class="sc-value" id="sc-ratio">—</div>
+            </div>
+          </div>
+
+          <!-- Breakdown bars -->
+          <div class="breakdown-title">Spending by Category</div>
+          <div id="breakdown-bars">
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar-meta">
+                <div class="breakdown-bar-name"><div class="dot" style="background:var(--green)"></div>Needs</div>
+                <div class="breakdown-bar-amount" id="bar-need-amt">₹0</div>
+              </div>
+              <div class="breakdown-bar"><div class="breakdown-bar-fill" id="bar-need-fill" style="width:0%;background:var(--green)"></div></div>
+            </div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar-meta">
+                <div class="breakdown-bar-name"><div class="dot" style="background:var(--blue)"></div>Wants</div>
+                <div class="breakdown-bar-amount" id="bar-want-amt">₹0</div>
+              </div>
+              <div class="breakdown-bar"><div class="breakdown-bar-fill" id="bar-want-fill" style="width:0%;background:var(--blue)"></div></div>
+            </div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar-meta">
+                <div class="breakdown-bar-name"><div class="dot" style="background:var(--amber)"></div>Additional</div>
+                <div class="breakdown-bar-amount" id="bar-extra-amt">₹0</div>
+              </div>
+              <div class="breakdown-bar"><div class="breakdown-bar-fill" id="bar-extra-fill" style="width:0%;background:var(--amber)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Expense -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Add Expense</div>
+            <div class="panel-subtitle">Log where your money went</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-input" id="exp-date">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Amount (₹)</label>
+              <input type="number" class="form-input" id="exp-amount" placeholder="0.00" min="0" step="0.01">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <input type="text" class="form-input" id="exp-desc" placeholder="e.g. Lunch at canteen">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Place / Shop</label>
+            <input type="text" class="form-input" id="exp-place" placeholder="e.g. Campus Canteen">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="exp-subcategory">
+              <option value="">— Select category —</option>
+              <option value="Food & Dining">🍽️ Food & Dining</option>
+              <option value="Groceries">🛒 Groceries</option>
+              <option value="Transport">🚌 Transport</option>
+              <option value="Rent & Utilities">🏠 Rent & Utilities</option>
+              <option value="Books & Stationery">📚 Books & Stationery</option>
+              <option value="Entertainment">🎬 Entertainment</option>
+              <option value="Clothing">👕 Clothing</option>
+              <option value="Health & Medicine">💊 Health & Medicine</option>
+              <option value="Phone & Internet">📱 Phone & Internet</option>
+              <option value="Subscriptions">📺 Subscriptions</option>
+              <option value="Personal Care">🧴 Personal Care</option>
+              <option value="Other">📦 Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Type</label>
+            <div class="cat-toggle">
+              <button class="cat-btn active" data-cat="need" onclick="selectCat('need')">✅ Need</button>
+              <button class="cat-btn" data-cat="want" onclick="selectCat('want')">💙 Want</button>
+              <button class="cat-btn" data-cat="extra" onclick="selectCat('extra')">✨ Extra</button>
+            </div>
+          </div>
+
+          <button class="add-btn" onclick="addExpense()">
+            <span>+</span> Add Expense
+          </button>
+        </div>
+      </div>
+
+      <!-- Smart Tips -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Smart Tips</div>
+            <div class="panel-subtitle">Based on your spending</div>
+          </div>
+        </div>
+        <div class="panel-body" id="smart-tips">
+          <div class="tip-card">
+            <div class="tip-card-label">💡 Getting Started</div>
+            <div class="tip-card-text">Add your first expense and set a monthly budget — we'll give you personalised saving tips right here based on where you're spending.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: TABLE + DONUT -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+
+      <!-- Donut chart panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Monthly Overview</div>
+            <div class="panel-subtitle">Need / Want / Additional split</div>
+          </div>
+          <div class="month-picker">
+            <button class="month-nav-btn" onclick="changeMonth(-1)">‹</button>
+            <div class="month-label" id="month-label">—</div>
+            <button class="month-nav-btn" onclick="changeMonth(1)">›</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="donut-wrap">
+            <svg class="donut-svg" width="130" height="130" viewBox="0 0 130 130" id="donut-svg">
+              <circle cx="65" cy="65" r="52" fill="none" stroke="#ede9e0" stroke-width="18"/>
+              <!-- slices injected by JS -->
+            </svg>
+            <div class="donut-legend" id="donut-legend">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-align:center;padding:20px 0;">No data yet. Add some expenses!</div>
+            </div>
+          </div>
+
+          <!-- Top categories bar chart -->
+          <div class="breakdown-title">Top Spending Categories</div>
+          <div id="cat-breakdown"></div>
+        </div>
+      </div>
+
+      <!-- Expense Log -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Expense Log</div>
+            <div class="panel-subtitle">Every entry this month</div>
+          </div>
+        </div>
+        <div class="expense-table-wrap">
+          <table class="expense-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Place</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="expense-tbody">
+              <tr>
+                <td colspan="7">
+                  <div class="empty-state">
+                    <div class="empty-state-icon">🧾</div>
+                    <div class="empty-state-text">No expenses yet. Add your first one!</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Surplus Growth Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Your Surplus, Invested</div>
+            <div class="panel-subtitle">If you invested your monthly leftover</div>
+          </div>
+        </div>
+        <div class="panel-body" id="surplus-panel-body">
+          <div class="surplus-empty">
+            <div class="surplus-empty-icon">📈</div>
+            <div class="surplus-empty-text">Set a budget and log expenses — we'll show what your surplus could grow into.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FINANCIAL TWIN -->
+<button id="ai-fab" onclick="toggleChat()">
+  <div class="fab-dot"></div>
+  🧠 Finbot
+</button>
+
+<div id="ai-panel">
+  <div id="ai-header">
+    <div id="ai-header-left">
+      <div id="ai-avatar">🧠</div>
+      <div>
+        <div id="ai-title">Finbot</div>
+        <div id="ai-subtitle">Knows your spending · Gemini</div>
+      </div>
+    </div>
+    <button id="ai-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div id="ai-messages"></div>
+  <div id="ai-quick-prompts">
+    <button class="quick-prompt" onclick="askQuick('Am I on track this month?')">On track?</button>
+    <button class="quick-prompt" onclick="askQuick('Where am I wasting money?')">Wasting money?</button>
+    <button class="quick-prompt" onclick="askQuick('How much can I realistically save this month?')">Save how much?</button>
+    <button class="quick-prompt" onclick="askQuick('Give me one actionable tip to cut spending today.')">Quick tip</button>
+  </div>
+  <div id="ai-input-row">
+    <input id="ai-input" type="text" placeholder="Ask anything about your finances…" autocomplete="off">
+    <button id="ai-send" onclick="sendAIMessage()">→</button>
+  </div>
+</div>
+
+<script src="./script.js"></script>
+</body>
+</html>
