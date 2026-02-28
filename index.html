@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpNearby - Community Help</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <section id="page-landing" class="page-view active">
+        <div class="landing-container">
+            <h1 class="main-title">HelpNearby</h1>
+            <p class="subtitle">Hyperlocal Community Help Platform</p>
+
+            <div class="auth-box centered-box">
+                <h2>Request Immediate Help</h2>
+                <p>No account needed. Just fill this out to alert the community.</p>
+
+                <form id="form-guest-request">
+                    <label>College ID <span class="required">*</span></label>
+                    <input type="text" id="guest-id" placeholder="Enter valid College ID (e.g., U240113)" 
+                           required 
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <label>What do you need? <span class="required">*</span></label>
+                    <input type="text" id="guest-title" placeholder="e.g., Need a Type-C charger ASAP" 
+                           required 
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <label>Contact Info (Phone/Email) <span class="required">*</span></label>
+                    <input type="text" id="guest-contact" placeholder="How should helpers reach you?" 
+                           required 
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <label>More Details (Optional)</label>
+                    <textarea id="guest-desc" rows="4" placeholder="Location, urgency, etc."></textarea>
+                    
+                    <button type="submit" class="btn-primary w-100">Post Urgent Request</button>
+                </form>
+
+                <div class="divider">OR</div>
+
+                <div class="login-prompt">
+                    <span>Are you a registered student?</span>
+                    <button type="button" class="btn-text" id="btn-go-to-login">Login with College Mail ID</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-login" class="page-view hidden">
+        <div class="landing-container">
+            <h1 class="main-title">HelpNearby</h1>
+            <p class="subtitle">Student Portal</p>
+
+            <div class="auth-box centered-box">
+                <h2>Welcome Back</h2>
+                <form id="form-login">
+                    <label>College Email <span class="required">*</span></label>
+                    <input type="email" id="login-email" placeholder="name@college.edu" 
+                           required 
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <label>Password <span class="required">*</span></label>
+                    <input type="password" id="login-password" placeholder="Enter your password" 
+                           required 
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <button type="submit" class="btn-primary w-100">Login</button>
+                </form>
+
+                <button type="button" class="btn-text w-100 mt-3" id="btn-back-to-guest">← Back to Guest Mode</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-dashboard" class="page-view hidden">
+        
+        <header class="dash-nav">
+            <h2>HelpNearby</h2>
+            <div class="nav-right">
+                <span class="activity-badge">⭐ <span id="nav-points">0</span> Pts</span>
+                
+                <div class="dropdown">
+                    <button id="btn-menu" class="hamburger-btn">☰</button>
+                    <div id="menu-dropdown" class="dropdown-content hidden">
+                        <a href="#" onclick="showPage('page-profile'); closeMenu()">👤 My Profile</a>
+                        <a href="#" onclick="showPage('page-activity'); closeMenu()">⭐ Activity Points</a>
+                        <a href="#" onclick="displayMyRequests(); showPage('page-my-requests'); closeMenu()">📝 My Requests</a>
+                        <a href="#" onclick="displayHelpOffered(); showPage('page-help-offered'); closeMenu()">🤝 Help Offered</a>
+                        <a href="#" onclick="showPage('page-settings'); closeMenu()">⚙️ Settings</a>
+                        <div class="divider-sm"></div>
+                        <a href="#" id="btn-logout" class="text-danger">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dash-content">
+            <div class="action-cards-grid">
+                <div class="action-card" id="btn-post-request">
+                    <h3>📢 Post Request</h3>
+                    <p>Ask the community for help.</p>
+                </div>
+                
+                <div class="action-card" id="btn-offer-help">
+                    <h3>🤝 Offer Help</h3>
+                    <p>See who needs assistance right now.</p>
+                </div>
+                
+                <div class="action-card" id="btn-view-all">
+                    <h3>📋 View All Requests</h3>
+                    <p>Browse the full feed of open requests.</p>
+                </div>
+            </div>
+
+            <div class="scroll-indicator">
+                <p>Scroll for Leaderboard</p>
+                <span>↓</span>
+            </div>
+
+            <div class="leaderboard-section">
+                <h2>🏆 Community Leaderboard</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" data-target="weekly">Weekly</button>
+                    <button class="tab-btn" data-target="monthly">Monthly</button>
+                </div>
+                <div class="leaderboard-content">
+                    <ul id="list-weekly" class="rank-list active-list">
+                        <li><span class="medal">🥇</span> <strong>User A</strong> <span class="pts">300 pts</span></li>
+                        <li><span class="medal">🥈</span> <strong>User B</strong> <span class="pts">250 pts</span></li>
+                        <li><span class="medal">🥉</span> <strong>User C</strong> <span class="pts">180 pts</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-student-post" class="page-view hidden">
+        <div class="landing-container">
+            <div class="auth-box centered-box">
+                <h2>Post a Request</h2>
+                <form id="form-student-request">
+                    <label>What do you need? <span class="required">*</span></label>
+                    <input type="text" id="student-title" placeholder="e.g., Need a Type-C charger" required>
+                    
+                    <label>Priority Level <span class="required">*</span></label>
+                    <select id="student-priority" required>
+                        <option value="Low">🟢 Low</option>
+                        <option value="Medium">🟡 Medium</option>
+                        <option value="High">🔴 High</option>
+                    </select>
+                    
+                    <label>Contact Info <span class="required">*</span></label>
+                    <input type="text" id="student-contact" placeholder="Phone or Email" required>
+                    
+                    <label>More Details</label>
+                    <textarea id="student-desc" rows="3" placeholder="Location, urgency, etc."></textarea>
+                    
+                    <button type="submit" class="btn-primary w-100">Post Request</button>
+                    <button type="button" class="btn-text w-100 mt-3" onclick="showPage('page-dashboard')">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-feed" class="page-view hidden">
+        <header class="dash-nav">
+            <button class="btn-text" onclick="showPage('page-dashboard')" style="padding-left: 0;">← Back</button>
+            <h2>Community Feed</h2>
+            <div style="width: 60px;"></div> </header>
+        <div class="dash-content">
+            <div id="requestContainer" class="cards-grid">
+                </div>
+        </div>
+    </section>
+    <section id="page-profile" class="page-view hidden">
+        <header class="dash-nav">
+            <button class="btn-text" onclick="showPage('page-dashboard')" style="padding-left: 0;">← Back</button>
+            <h2>My Profile</h2>
+            <div style="width: 60px;"></div>
+        </header>
+        <div class="landing-container">
+            <div class="auth-box centered-box">
+                <form id="form-profile">
+                    <label>Full Name</label>
+                    <input type="text" id="profile-name" placeholder="Enter your name" required>
+                    
+                    <label>College ID</label>
+                    <input type="text" id="profile-id" placeholder="e.g., U240113" required>
+                    
+                    <label>Semester</label>
+                    <select id="profile-sem" required>
+                        <option value="S1">Semester 1</option>
+                        <option value="S2">Semester 2</option>
+                        <option value="S3">Semester 3</option>
+                        <option value="S4">Semester 4</option>
+                        <option value="S5">Semester 5</option>
+                        <option value="S6">Semester 6</option>
+                        <option value="S7">Semester 7</option>
+                        <option value="S8">Semester 8</option>
+                    </select>
+
+                    <label>Branch</label>
+                    <select id="profile-branch" required>
+                        <option value="CSE">Computer Science & Engineering</option>
+                        <option value="ECE">Electronics & Communication</option>
+                        <option value="ME">Mechanical Engineering</option>
+                        <option value="CE">Civil Engineering</option>
+                        <option value="EEE">Electrical & Electronics</option>
+                        <option value="IT">Information Technology</option>
+                        <option value="AE">Aerospace Engineering</option>
+                    </select>
+
+                    <button type="submit" class="btn-primary w-100 mt-3">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-activity" class="page-view hidden">
+        <header class="dash-nav">
+            <button class="btn-text" onclick="showPage('page-dashboard')" style="padding-left: 0;">← Back</button>
+            <h2>Activity Points</h2>
+            <div style="width: 60px;"></div>
+        </header>
+        <div class="dash-content">
+            <div class="centered-box" style="max-width: 700px;">
+                <h3 style="text-align: center; margin-bottom: 1rem;">Total Points: <span id="total-points-display" style="color: var(--primary-color);">0</span></h3>
+                
+                <div class="tabs" style="justify-content: center;">
+                    <button class="tab-btn active" id="btn-chart-weekly" onclick="updateChart('weekly')">Weekly</button>
+                    <button class="tab-btn" id="btn-chart-monthly" onclick="updateChart('monthly')">Monthly</button>
+                </div>
+
+                <canvas id="activityChart" width="400" height="250"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-settings" class="page-view hidden">
+        <header class="dash-nav">
+            <button class="btn-text" onclick="showPage('page-dashboard')" style="padding-left: 0;">← Back</button>
+            <h2>Settings</h2>
+            <div style="width: 60px;"></div>
+        </header>
+        <div class="landing-container">
+            <div class="auth-box centered-box">
+                
+                <div class="setting-row">
+                    <div>
+                        <h3>Dark Mode</h3>
+                        <p style="font-size: 0.85rem;">Switch to a dark color theme</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="toggle-dark-mode">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 1.5rem 0;">
+
+                <div class="setting-row">
+                    <div>
+                        <h3>Email Notifications</h3>
+                        <p style="font-size: 0.85rem;">Get alerted when help is needed</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section id="page-my-requests" class="page-view hidden">
+        <header class="dash-nav">
+            <button class="btn-text" onclick="showPage('page-dashboard')" style="padding-left: 0;">← Back</button>
+            <h2>My Requests</h2>
+            <div style="width: 60px;"></div>
+        </header>
+        <div class="dash-content">
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--text-muted);">
+                Verify completed tasks here to release points to your helpers.
+            </p>
+            <div id="myRequestsContainer" class="cards-grid">
+                </div>
+        </div>
+    </section>
+
+    <section id="page-help-offered" class="page-view hidden">
+        <header class="dash-nav">
+            <button class="btn-text" onclick="showPage('page-dashboard')" style="padding-left: 0;">← Back</button>
+            <h2>Help Offered</h2>
+            <div style="width: 60px;"></div>
+        </header>
+        <div class="dash-content">
+            <p style="text-align: center; margin-bottom: 2rem; color: var(--text-muted);">
+                Tasks you have offered to complete.
+            </p>
+            <div id="helpOfferedContainer" class="cards-grid">
+                </div>
+        </div>
+    </section>
+    <script src="app.js"></script>
+</body>
+</html>

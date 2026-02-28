@@ -2,27 +2,39 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# HelpNearby 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: Binary
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: Avnita Bimal - College of Engineering, Trivandrum
+- Member 2: Inayath Illyas - College of Engineering, Trivandrum
 
 ### Hosted Project Link
-[mention your project hosted link here]
 
 ### Project Description
-[2-3 lines about what your project does]
+HelpNearby is a hyperlocal community help platform designed for college campuses.
+It allows students to post urgent requests, offer help to peers, and earn activity points through meaningful contributions - all in one structured platform instead of messy WhatsApp groups.
 
 ### The Problem statement
-[What problem are you solving?]
+In college campuses:
+  Help requests are scattered across WhatsApp groups.
+  Important urgent needs get lost in chats.
+  No accountability for resolving requests.
+  No structured tracking of who helped.
+  No motivation or reward system.
+This leads to inefficiency and missed opportunities to support peers.
 
 ### The Solution
-[How are you solving it?]
+HelpNearby provides:
+  A centralized help-request platform
+  Urgency-based categorization
+  Structured request tracking
+  Activity-based reward system
+  Live leaderboard for contributors
+Built as a lightweight MVP using HTML, CSS, JavaScript, and LocalStorage - ensuring easy deployment and scalability.
 
 ---
 
@@ -31,10 +43,10 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
+- Languages used: HTML, CSS, JavaScript
+- Frameworks used: None
+- Libraries used: None
+- Tools used: VS Code, GitHub
 
 **For Hardware:**
 - Main components: [List main components]
@@ -46,26 +58,45 @@
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
-
+- User Authentication:
+    College email-based signup/login
+    Session persistence
+    Points tracking per user
+- Post Help Requests:
+    Title
+    Description
+    Category selection
+    Urgency selection (Low / Medium / High)
+    Contact information
+- Smart Points System:
+    +2 for posting request
+    +10 for helping someone
+    +15 if urgency is High
+    +5 bonus for resolving within 1 hour
+- Request Tracking:
+    Each request stores:
+      Posted by
+      Helped by
+      Created time
+      Resolved time
+      Status (Open / Resolved / Expired)
+- Live Leaderboard:
+    Sorted dynamically by points
+    Displays top contributors
+    Encourages community participation
 ---
 
 ## Implementation
 
-### For Software:
+### For Software: No installation required
 
 #### Installation
-```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
-```
+git clone https://github.com/CodeWithInayath/helpnearby.git
+cd helpnearby
 
 #### Run
-```bash
-[Run commands - e.g., npm start, python app.py]
-```
+index.html
+Or use Live Server in VS Code.
 
 ### For Hardware:
 
@@ -83,26 +114,34 @@ List the key features of your project:
 
 #### Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![Guest_page.jpeg]Landing Page
+Guest users can post urgent requests without login.
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![login_page.jpeg]Login Page
+College email-based authentication system.
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![dashboard.jpeg]Dashboard + Leaderboard
+Users can post, help, and track points through leaderboard.
 
 #### Diagrams
 
 **System Architecture:**
 
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
+![Architecture Diagram](architecture.png)
+Frontend built using HTML, CSS, JS
+Data stored in LocalStorage
+No backend server (MVP mode)
+User → UI → JS Logic → LocalStorage → UI update
 
 **Application Workflow:**
 
 ![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
+User signs up/login
+User posts request
+Request stored in LocalStorage
+Another user marks as resolved
+Points awarded dynamically
+Leaderboard updates
 
 ---
 
@@ -119,15 +158,6 @@ List the key features of your project:
 #### Build Photos
 
 ![Team](Add photo of your team here)
-
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ---
 
@@ -147,12 +177,28 @@ List the key features of your project:
   - `param1` (string): [Description]
   - `param2` (integer): [Description]
 - **Response:**
-```json
+Data Model Structure
+User Object
 {
-  "status": "success",
-  "data": {}
+  "email": "ktuid@cet.ac.in",
+  "password": "hashed_or_plain_mvp",
+  "points": 120,
+  "helpedCount": 5,
+  "postedCount": 3
 }
-```
+Request Object
+{
+  "id": 170000000,
+  "title": "Need Charger",
+  "description": "Type C charger urgently",
+  "category": "Academic",
+  "urgency": "High",
+  "postedBy": "user@cet.ac.in",
+  "helpedBy": "helper@cet.ac.in",
+  "createdAt": "ISO Timestamp",
+  "resolvedAt": "ISO Timestamp",
+  "status": "Resolved"
+}
 
 **POST /api/endpoint**
 - **Description:** [What it does]
@@ -399,16 +445,22 @@ If you used AI tools during development, document them here for transparency:
 ---
 
 ## Team Contributions
+Avnita Bimal:
+UI implementation
+LocalStorage integration
+Form validation
+CSS styling
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
-
----
+Inayath Illyas:
+Architecture design
+Points system logic
+Leaderboard algorithm
+Request tracking system
+Documentation and deployment
 
 ## License
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 **Common License Options:**
 - MIT License (Permissive, widely used)

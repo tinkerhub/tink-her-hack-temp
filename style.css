@@ -1,0 +1,230 @@
+/* ==========================================
+   1. VARIABLES & RESET
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #4F46E5;
+    --primary-hover: #4338CA;
+    --bg-color: #F3F4F6;
+    --card-bg: #FFFFFF;
+    --text-main: #111827;
+    --text-muted: #6B7280;
+    --border-color: #E5E7EB;
+    
+    --radius-lg: 12px;
+    --radius-md: 8px;
+    --transition: all 0.2s ease-in-out;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-hover: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.5;
+}
+
+/* ==========================================
+   2. SPA NAVIGATION LOGIC
+   ========================================== */
+.page-view {
+    display: none;
+    min-height: 100vh;
+}
+
+.page-view.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   3. TYPOGRAPHY & BUTTONS
+   ========================================== */
+h1, h2, h3 { font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; }
+p { color: var(--text-muted); }
+
+button {
+    font-family: inherit; font-size: 1rem; font-weight: 500;
+    cursor: pointer; border: none; border-radius: var(--radius-md);
+    padding: 0.75rem 1.5rem; transition: var(--transition);
+}
+
+.btn-primary { background-color: var(--primary-color); color: white; }
+.btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+.btn-secondary { background-color: #E0E7FF; color: var(--primary-color); }
+.btn-secondary:hover { background-color: #C7D2FE; }
+
+.btn-text { background: transparent; color: var(--text-muted); padding: 0.5rem 1rem; }
+.btn-text:hover { color: var(--text-main); }
+
+.w-100 { width: 100%; margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.text-danger { color: #DC2626 !important; }
+
+/* ==========================================
+   4. FORMS & INPUTS
+   ========================================== */
+input, select, textarea {
+    width: 100%; padding: 0.75rem 1rem; margin-top: 0.5rem; margin-bottom: 1.25rem;
+    border: 1px solid var(--border-color); border-radius: var(--radius-md);
+    font-family: inherit; font-size: 1rem; transition: var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+label { font-size: 0.9rem; font-weight: 500; color: var(--text-main); }
+.required { color: #DC2626; font-weight: bold; }
+
+/* ==========================================
+   5. LAYOUT & CONTAINERS
+   ========================================== */
+.landing-container {
+    text-align: center; width: 100%; max-width: 900px; padding: 2rem; margin: 0 auto;
+}
+
+.main-title { font-size: 3rem; color: var(--primary-color); letter-spacing: -1px; }
+.subtitle { font-size: 1.2rem; margin-bottom: 3rem; }
+
+.centered-box {
+    background: var(--card-bg); padding: 3rem; border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md); max-width: 500px; margin: 0 auto; text-align: left;
+}
+
+.divider { font-weight: bold; color: var(--border-color); padding: 1.5rem 0; text-align: center; }
+.login-prompt { text-align: center; margin-top: 0.5rem; color: var(--text-muted); }
+
+/* ==========================================
+   6. DASHBOARD NAVBAR & DROPDOWN
+   ========================================== */
+.dash-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--card-bg); padding: 1rem 5%; box-shadow: var(--shadow-sm);
+    position: sticky; top: 0; z-index: 10;
+}
+
+.dash-nav h2 { color: var(--primary-color); margin: 0; }
+.nav-right { display: flex; align-items: center; }
+
+.activity-badge {
+    background: #FEF3C7; color: #92400E; padding: 0.5rem 1rem;
+    border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-right: 1rem;
+}
+
+.hamburger-btn { background: none; border: none; font-size: 1.5rem; padding: 0.5rem; }
+
+.dropdown { position: relative; display: inline-block; }
+.dropdown-content {
+    position: absolute; right: 0; top: 100%; background-color: var(--card-bg);
+    min-width: 200px; box-shadow: var(--shadow-md); border-radius: var(--radius-md);
+    border: 1px solid var(--border-color); z-index: 100; display: flex; flex-direction: column;
+}
+
+.dropdown-content.hidden { display: none; }
+.dropdown-content a { color: var(--text-main); padding: 12px 16px; text-decoration: none; font-size: 0.95rem; }
+.dropdown-content a:hover { background-color: var(--bg-color); }
+.divider-sm { height: 1px; background-color: var(--border-color); margin: 4px 0; }
+
+/* ==========================================
+   7. DASHBOARD ACTION CARDS & LEADERBOARD
+   ========================================== */
+.dash-content { max-width: 1000px; margin: 3rem auto; padding: 0 1rem; }
+
+.action-cards-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem; margin-bottom: 4rem;
+}
+
+.action-card {
+    background: var(--card-bg); padding: 2rem; border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md); text-align: center; border: 2px solid transparent; transition: var(--transition);
+}
+
+.action-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-color: var(--primary-color); cursor: pointer;}
+.action-card h3 { font-size: 1.5rem; }
+
+.scroll-indicator { text-align: center; margin: 4rem 0; color: var(--text-muted); animation: bounce 2s infinite; }
+@keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+
+.leaderboard-section { background: var(--card-bg); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); max-width: 600px; margin: 0 auto; }
+.tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+.tab-btn { background: none; padding: 0.5rem 0; color: var(--text-muted); border-radius: 0; }
+.tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); margin-bottom: -10px; }
+
+.rank-list { list-style: none; }
+.rank-list li { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid var(--border-color); font-size: 1.1rem; }
+.rank-list li:last-child { border-bottom: none; }
+.pts { font-weight: bold; color: var(--primary-color); }
+
+/* ==========================================
+   8. REQUEST CARDS (FEED)
+   ========================================== */
+.cards-grid { display: flex; flex-direction: column; gap: 1rem; max-width: 700px; margin: 0 auto; }
+
+.request-card {
+    background: var(--card-bg); padding: 1.5rem; border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm); border-left: 4px solid var(--border-color);
+    display: flex; flex-direction: column; gap: 0.5rem;
+}
+
+.priority-high { border-left-color: #DC2626; }
+.priority-medium { border-left-color: #F59E0B; }
+.priority-low { border-left-color: #10B981; }
+
+.status-badge {
+    display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px;
+    font-size: 0.8rem; font-weight: bold; background: #E5E7EB; color: #374151;
+}
+.status-active { background: #DBEAFE; color: #1D4ED8; }
+.status-inprogress { background: #FEF3C7; color: #B45309; }
+.status-resolved { background: #D1FAE5; color: #065F46; }
+/* ==========================================
+   9. DARK MODE & SETTINGS TOGGLES
+   ========================================== */
+/* When the body has this class, it overrides the root variables */
+body.dark-mode {
+    --bg-color: #111827;
+    --card-bg: #1F2937;
+    --text-main: #F9FAFB;
+    --text-muted: #9CA3AF;
+    --border-color: #374151;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* The Toggle Switch */
+.switch {
+    position: relative; display: inline-block;
+    width: 50px; height: 28px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc; transition: .4s;
+}
+.slider:before {
+    position: absolute; content: ""; height: 20px; width: 20px;
+    left: 4px; bottom: 4px; background-color: white; transition: .4s;
+}
+input:checked + .slider { background-color: var(--primary-color); }
+input:checked + .slider:before { transform: translateX(22px); }
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
