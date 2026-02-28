@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpNearby - Community Help</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <section id="page-landing" class="page-view active">
+        <div class="landing-container">
+            <h1 class="main-title">HelpNearby</h1>
+            <p class="subtitle">Hyperlocal Community Help Platform</p>
+
+            <div class="auth-box centered-box">
+                <h2>Request Immediate Help</h2>
+                <p>No account needed. Just fill this out to alert the community.</p>
+
+                <form id="form-guest-request">
+                    <label>College ID <span class="required">*</span></label>
+                    <input type="text" id="guest-id" placeholder="Enter valid College ID" 
+                           required 
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <label>What do you need? <span class="required">*</span></label>
+                    <input type="text" id="guest-title" placeholder="e.g., Need a Type-C charger ASAP" 
+                           required 
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <label>Contact Info (Phone/Email) <span class="required">*</span></label>
+                    <input type="text" id="guest-contact" placeholder="How should helpers reach you?" 
+                           required 
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <label>More Details (Optional)</label>
+                    <textarea id="guest-desc" rows="4" placeholder="Location, urgency, etc."></textarea>
+                    
+                    <button type="submit" class="btn-primary w-100">Post Urgent Request</button>
+                </form>
+
+                <div class="divider">OR</div>
+
+                <div class="login-prompt">
+                    <span>Are you a registered student?</span>
+                    <button type="button" class="btn-text" id="btn-go-to-login">Login with College Mail ID</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-login" class="page-view hidden">
+        <div class="landing-container">
+            <h1 class="main-title">HelpNearby</h1>
+            <p class="subtitle">Student Portal</p>
+
+            <div class="auth-box centered-box">
+                <h2>Welcome Back</h2>
+                <form id="form-login">
+                    <label>College Email <span class="required">*</span></label>
+                    <input type="email" id="login-email" placeholder="ktuid@cet.ac.in" required>
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <label>Password <span class="required">*</span></label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                           oninvalid="this.setCustomValidity('Cannot leave this blank')" 
+                           oninput="this.setCustomValidity('')">
+                    
+                    <button type="submit" class="btn-primary w-100">Login</button>
+                </form>
+
+                <button type="button" class="btn-text w-100 mt-3" id="btn-back-to-guest">← Back to Guest Mode</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-dashboard" class="page-view hidden">
+        
+        <header class="dash-nav">
+            <h2>HelpNearby</h2>
+            <div class="nav-right">
+                <span class="activity-badge">⭐ 120 Pts</span>
+                <button class="btn-text" id="btn-logout">Logout</button>
+            </div>
+        </header>
+
+        <div class="dash-content">
+            <div class="action-cards-grid">
+                <div class="action-card" id="btn-post-request">
+                    <h3>📢 Post Request</h3>
+                    <p>Ask the community for help.</p>
+                </div>
+                
+                <div class="action-card" id="btn-offer-help">
+                    <h3>🤝 Offer Help</h3>
+                    <p>See who needs assistance right now.</p>
+                </div>
+                
+                <div class="action-card" id="btn-view-all">
+                    <h3>📋 View All Requests</h3>
+                    <p>Browse the full feed of open requests.</p>
+                </div>
+            </div>
+
+            <div class="scroll-indicator">
+                <p>Scroll for Leaderboard</p>
+                <span>↓</span>
+            </div>
+
+            <div class="leaderboard-section">
+                <h2>🏆 Community Leaderboard</h2>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" data-target="weekly">Weekly</button>
+                    <button class="tab-btn" data-target="monthly">Monthly</button>
+                </div>
+
+                <div class="leaderboard-content">
+                    <ul id="list-weekly" class="rank-list active-list">
+                        <li><span class="medal">🥇</span> <strong>User A</strong> <span class="pts">300 pts</span></li>
+                        <li><span class="medal">🥈</span> <strong>User B</strong> <span class="pts">250 pts</span></li>
+                        <li><span class="medal">🥉</span> <strong>User C</strong> <span class="pts">180 pts</span></li>
+                    </ul>
+
+                    <ul id="list-monthly" class="rank-list hidden">
+                        <li><span class="medal">🥇</span> <strong>User X</strong> <span class="pts">1200 pts</span></li>
+                        <li><span class="medal">🥈</span> <strong>User Y</strong> <span class="pts">950 pts</span></li>
+                        <li><span class="medal">🥉</span> <strong>User Z</strong> <span class="pts">800 pts</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
