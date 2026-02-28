@@ -2,27 +2,45 @@
   <img src="./img.png" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# CarbonLens 🎯
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: TechTonic
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: Asna S B - TKM College of Engineering Kollam
+- Member 2: Elsa Mary George - TKM College of Engineering Kollam
 
 ### Hosted Project Link
-[mention your project hosted link here]
+Frontend (Streamlit App): (https://carbonlens-ewqqyyodzwvfu9kkcukjlw.streamlit.app/)
+Backend (FastAPI API): (http://127.0.0.1:8000/docs)
 
 ### Project Description
-[2-3 lines about what your project does]
+CarbonLens is a carbon footprint tracking platform that helps individuals monitor emissions generated from daily activities like transport, electricity usage, and spending.
+It provides real-time CO₂ calculations, analytics insights, and a credit-based sustainability tracking system.
 
 ### The Problem statement
-[What problem are you solving?]
+Climate change awareness is increasing, but individuals lack simple tools to measure their personal carbon footprint in daily life.
+
+Most existing tools are:
+-Complex
+-Not transparent about emission    factors
+-Not interactive or analytics-driven
+-There is a need for a lightweight, understandable, and data-driven carbon tracking solution.
 
 ### The Solution
-[How are you solving it?]
+CarbonLens solves this by:
+
+Allowing users to log activities (transport, electricity, spending)
+
+Calculating CO₂ emissions using configurable emission factors
+
+Providing analytics and summaries
+
+Introducing a carbon credit mechanism to encourage sustainable behavior
+
+Offering a clean Streamlit-based user interface
 
 ---
 
@@ -31,25 +49,27 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
-
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+- Languages used: Python
+- Frameworks used: FastAPI (Backend API), Streamlit (Frontend UI)
+- Libraries used: SQLAlchemy (Database ORM), Pydantic (Schema validation), Uvicorn (ASGI server), Requests (Frontend ↔ Backend communication)
+- Tools used: VS Code, Git & GitHub
+, Virtual Environment (.venv), SQLite Database
 
 ---
 
 ## Features
 
-List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
-- Feature 3: [Description]
-- Feature 4: [Description]
+-Feature 1: Multi-Category Emission Tracking
+Transport (car, bus, train, bike), Electricity usage, Spending categories (food, shopping, travel, clothing)
+
+-Feature 2: Dynamic Emission Factor Configuration
+Emission factors are stored in a JSON file and can be updated easily without modifying core logic.
+
+-Feature 3: Carbon Credit System
+Calculates credits based on emissions, Reward logic using configurable credit rates
+
+-Feature 4: Analytics Dashboard
+Aggregated emission summaries, Category-wise breakdown, Total CO₂ tracking
 
 ---
 
@@ -58,22 +78,35 @@ List the key features of your project:
 ### For Software:
 
 #### Installation
+
+Backend Setup
 ```bash
-[Installation commands - e.g., npm install, pip install -r requirements.txt]
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+Frontend Setup
+```bash
+cd frontend
+pip install streamlit requests
 ```
 
 #### Run
+
+Start Backend
 ```bash
-[Run commands - e.g., npm start, python app.py]
+uvicorn app.main:app --reload
 ```
 
-### For Hardware:
+Start Frontend
+```bash
+ streamlit run app.py
+```
 
-#### Components Required
-[List all components needed with specifications]
-
-#### Circuit Setup
-[Explain how to set up the circuit]
+Backend runs on:
+`http://127.0.0.1:8000`
 
 ---
 
@@ -83,51 +116,40 @@ List the key features of your project:
 
 #### Screenshots (Add at least 3)
 
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![alt text](assets/img1.jpeg)
+Shows total emissions summary and analytics visualization.
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![alt text](assets/img2.jpeg)
+User logs transport, electricity, or spending activities.
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![alt text](assets/img3.jpeg)
+Displays earned carbon credits and breakdown.
 
 #### Diagrams
 
 **System Architecture:**
 
-![Architecture Diagram](docs/architecture.png)
-*Explain your system architecture - components, data flow, tech stack interaction*
+![alt text](assets/Architecture.jpeg)
+
+Explanation
+
+-Streamlit collects user inputs.
+-Sends POST requests to FastAPI.
+-FastAPI routes process data.
+-Service layer calculates CO₂.
+-Emission factors are dynamically .loaded from JSON.
+-Events stored in SQLite.
+-Analytics endpoint aggregates emission data.
 
 **Application Workflow:**
 
-![Workflow](docs/workflow.png)
-*Add caption explaining your workflow*
-
----
-
-### For Hardware:
-
-#### Schematic & Circuit
-
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-#### Build Photos
-
-![Team](Add photo of your team here)
-
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
+![alt text](assets/applcn_workflow.jpeg)
+-User selects activity category.
+-Enters value (e.g., km travelled or money spent).
+-Frontend sends data to backend.
+-Backend calculates CO₂ using emission factors.
+-Data stored in database.
+-Dashboard updates analytics + credits.
 
 ---
 
@@ -137,37 +159,50 @@ List the key features of your project:
 
 #### API Documentation
 
-**Base URL:** `https://api.yourproject.com`
+**Base URL:** `http://127.0.0.1:8000`
 
 ##### Endpoints
 
-**GET /api/endpoint**
-- **Description:** [What it does]
+**GET /analytics**
+- **Description:** Returns aggregated emission data: Total CO₂, Category-wise breakdown, Credit summary
 - **Parameters:**
-  - `param1` (string): [Description]
-  - `param2` (integer): [Description]
+  - `start_date` (string): Filter analytics from this date (e.g., 2026-02-01)
+  - `end_date` (string): Filter analytics until this date
 - **Response:**
 ```json
 {
-  "status": "success",
-  "data": {}
+  "total_co2_kg": 120.5,
+  "category_breakdown": {
+    "transport": 45.2,
+    "electricity": 30.3,
+    "spending": 45.0
+  },
+  "total_credits_earned": 12.5,
+  "net_emission_after_credits": 108.0,
+  "events_count": 8
 }
 ```
 
-**POST /api/endpoint**
-- **Description:** [What it does]
+**POST /events**
+- **Description:** Create a new carbon footprint event.
 - **Request Body:**
 ```json
 {
-  "field1": "value1",
-  "field2": "value2"
+  "category": "spending",
+  "description": "Dinner",
+  "value": 1500,
+  "spend_category": "food"
 }
 ```
 - **Response:**
 ```json
 {
-  "status": "success",
-  "message": "Operation completed"
+  "id": 5,
+  "category": "spending",
+  "description": "Dinner",
+  "value": 1500,
+  "co2_kg": 45,
+  "created_at": "2026-02-28T01:43:51"
 }
 ```
 
@@ -212,53 +247,6 @@ flutter build ios
 # or
 xcodebuild -workspace App.xcworkspace -scheme App -configuration Debug
 ```
-
----
-
-### For Hardware Projects:
-
-#### Bill of Materials (BOM)
-
-| Component | Quantity | Specifications | Price | Link/Source |
-|-----------|----------|----------------|-------|-------------|
-| Arduino Uno | 1 | ATmega328P, 16MHz | ₹450 | [Link] |
-| LED | 5 | Red, 5mm, 20mA | ₹5 each | [Link] |
-| Resistor | 5 | 220Ω, 1/4W | ₹1 each | [Link] |
-| Breadboard | 1 | 830 points | ₹100 | [Link] |
-| Jumper Wires | 20 | Male-to-Male | ₹50 | [Link] |
-| [Add more...] | | | | |
-
-**Total Estimated Cost:** ₹[Amount]
-
-#### Assembly Instructions
-
-**Step 1: Prepare Components**
-1. Gather all components listed in the BOM
-2. Check component specifications
-3. Prepare your workspace
-![Step 1](images/assembly-step1.jpg)
-*Caption: All components laid out*
-
-**Step 2: Build the Power Supply**
-1. Connect the power rails on the breadboard
-2. Connect Arduino 5V to breadboard positive rail
-3. Connect Arduino GND to breadboard negative rail
-![Step 2](images/assembly-step2.jpg)
-*Caption: Power connections completed*
-
-**Step 3: Add Components**
-1. Place LEDs on breadboard
-2. Connect resistors in series with LEDs
-3. Connect LED cathodes to GND
-4. Connect LED anodes to Arduino digital pins (2-6)
-![Step 3](images/assembly-step3.jpg)
-*Caption: LED circuit assembled*
-
-**Step 4: [Continue for all steps...]**
-
-**Final Assembly:**
-![Final Build](images/final-build.jpg)
-*Caption: Completed project ready for testing*
 
 ---
 
@@ -329,8 +317,10 @@ Output saved to: output.txt
 **Input:**
 ```json
 {
-  "name": "test",
-  "value": 123
+  "category": "spending",
+  "description": "Dinner",
+  "value": 1500,
+  "spend_category": "food"
 }
 ```
 
@@ -345,13 +335,12 @@ python script.py -v --format json data.json
 [VERBOSE] Parsing JSON input...
 [VERBOSE] Processing data...
 {
-  "status": "success",
-  "processed": true,
-  "result": {
-    "name": "test",
-    "value": 123,
-    "timestamp": "2024-02-07T10:30:00"
-  }
+  "id": 6,
+  "category": "spending",
+  "description": "Dinner",
+  "value": 1500,
+  "co2_kg": 45,
+  "created_at": "2026-02-28T05:10:39.048458"
 }
 [VERBOSE] Operation completed in 0.23s
 ```
@@ -361,9 +350,14 @@ python script.py -v --format json data.json
 ## Project Demo
 
 ### Video
-[Add your demo video link here - YouTube, Google Drive, etc.]
+(https://drive.google.com/drive/folders/1ZEyyUZvlfQuckzBaswhSf0hgrP8gAIS7?usp=sharing)
 
-*Explain what the video demonstrates - key features, user flow, technical highlights*
+The demo showcases:
+
+-Adding emission entries
+-Live CO₂ calculations
+-Analytics dashboard
+-Credit calculation logic
 
 ### Additional Demos
 [Add any extra demo materials/links - Live site, APK download, online demo, etc.]
@@ -374,41 +368,43 @@ python script.py -v --format json data.json
 
 If you used AI tools during development, document them here for transparency:
 
-**Tool Used:** [e.g., GitHub Copilot, v0.dev, Cursor, ChatGPT, Claude]
+**Tool Used:** ChatGPT
 
-**Purpose:** [What you used it for]
-- Example: "Generated boilerplate React components"
-- Example: "Debugging assistance for async functions"
-- Example: "Code review and optimization suggestions"
+**Purpose:** 
+-Debugging backend logic
+-Structuring FastAPI services
+-Assistance with emission factor     architecture
+-Documentation drafting
 
 **Key Prompts Used:**
 - "Create a REST API endpoint for user authentication"
 - "Debug this async function that's causing race conditions"
 - "Optimize this database query for better performance"
 
-**Percentage of AI-generated code:** [Approximately X%]
+**Percentage of AI-generated code:** Approximate AI-generated code: ~20–30%
 
 **Human Contributions:**
-- Architecture design and planning
-- Custom business logic implementation
-- Integration and testing
-- UI/UX design decisions
+-Complete architecture design
+-API logic implementation
+-JSON emission modeling
+-Credit system logic
+-Streamlit integration
 
+Database schema design
 *Note: Proper documentation of AI usage demonstrates transparency and earns bonus points in evaluation!*
 
 ---
 
 ## Team Contributions
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
+- Elsa Mary George: Backend architecture, FastAPI routes, Emission services implementation, Database modeling, Credit logic, Integration with frontend
+- Asna S B: Frontend UI design (Streamlit), Backend integration, UI improvements, Testing, Documentation
 
 ---
 
 ## License
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 **Common License Options:**
 - MIT License (Permissive, widely used)
